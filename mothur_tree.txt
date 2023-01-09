@@ -1,0 +1,45 @@
+mothurPipeline
+├── LICENSE.md
+├── config
+│   ├── config.yaml
+│   ├── pbs-torque
+│   │   ├── cluster.yaml
+│   │   └── config.yaml
+│   └── slurm
+│       ├── cluster.yaml
+│       └── config.yaml
+├── dags
+│   ├── dag.png
+│   ├── dag.svg
+│   ├── rulegraph.png
+│   └── rulegraph.svg
+├── data
+│   └── mothur
+│       ├── process
+│       ├── raw
+│       └── references
+└── workflow
+    ├── Snakefile
+    ├── envs
+    │   ├── mothur.yaml
+    │   └── snakemake.yaml
+    ├── rules
+    └── scripts
+        ├── mothurAlpha.sh
+        ├── mothurBeta.sh
+        ├── mothurCountShared.sh
+        ├── mothurError.sh
+        ├── mothurMock.sh
+        ├── mothurNMDS.sh
+        ├── mothurNames.sh
+        ├── mothurPCoA.sh
+        ├── mothurRarefaction.sh
+        ├── mothurReferences.sh
+        ├── mothurShared.sh
+        ├── mothurSplitShared.sh
+        ├── mothurSubsampleShared.sh
+        ├── read_assembly.sh
+        ├── snakemake.pbs
+        └── snakemake.sh
+
+13 directories, 29 files
