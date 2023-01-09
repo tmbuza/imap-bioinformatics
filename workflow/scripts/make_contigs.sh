@@ -1,20 +1,13 @@
 # Set the variables to be used in this script
 SAMPLEDIR="data/raw"
-SILVAV4="data/references/silva.v4.align"
-RDPFASTA="data/references/trainset16_022016.pds.fasta"
-RDPTAX="data/references/trainset16_022016.pds.tax"
-
-# Other variables
-OUTDIR=data/process/
-ERRORDIR="${OUTDIR}"/error_analysis/
-
+OUTDIR="data/process/"
 
 
 ###################
 # Run QC Analysis #
 ###################
 
-echo PROGRESS: Assembling the reads
+echo PROGRESS: Making sample files before assembling the reads
 # Making output dir
 mkdir -p "${OUTDIR}" "${ERRORDIR}"
 # mothur "#make.file(type=gz, inputdir="${SAMPLEDIR}", outputdir="${OUTDIR}");
@@ -38,12 +31,8 @@ mkdir -p "${OUTDIR}" "${ERRORDIR}"
 # 	get.oturep(fasta=current, count=current, list=current, label=0.03, method=abundance)"
 
 # Making contigs from fastq.gz files, aligning reads to references, removing any non-bacterial sequences, calculating distance matrix, making shared file, and classifying OTUs
-mothur "#
-	set.logfile(name=sample_files.logfile);
-	make.file(type=gz, inputdir="${SAMPLEDIR}", outputdir="${OUTDIR}", prefix=test);
-	
-	set.logfile(name=seq_assembly.logfile);
-	make.contigs(file=current);
-	screen.seqs(fasta=current, group=current, maxambig=0, maxlength=275, maxhomop=8);
-	unique.seqs(count=current);
-	summary.seqs(fasta=current, count=current);
+ mothur "#set.logfile(name=make_contigs.logfile);
+      make.contigs(file=data/process/test.files, inputdir="${SAMPLEDIR}", outputdir="${OUTDIR}");
+      screen.seqs(fasta=current, group=current, maxambig=0, maxlength=275, maxhomop=8);
+      unique.seqs(count=current);
+      summary.seqs(fasta=current, count=current);" 

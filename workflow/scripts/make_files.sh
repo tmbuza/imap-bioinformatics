@@ -1,6 +1,6 @@
 # Set the variables to be used in this script
 SAMPLEDIR="data/raw"
-OUTDIR=data/process/
+OUTDIR="data/process/"
 
 
 ###################
@@ -32,5 +32,11 @@ mkdir -p "${OUTDIR}" "${ERRORDIR}"
 
 # Making contigs from fastq.gz files, aligning reads to references, removing any non-bacterial sequences, calculating distance matrix, making shared file, and classifying OTUs
  mothur "#set.logfile(name=logs/sample_files.logfile);
-    make.file(type=gz, inputdir="${SAMPLEDIR}", outputdir="${OUTDIR}", prefix=test);"
+      make.file(type=gz, inputdir="${SAMPLEDIR}", outputdir="${OUTDIR}", prefix=test);"
+     
+      # set.logfile(name=seq_assembly.logfile);
+      # make.contigs(file=current);
+      # screen.seqs(fasta=current, group=current, maxambig=0, maxlength=275, maxhomop=8);
+      # unique.seqs(count=current);
+      # summary.seqs(fasta=current, count=current);"    
 	

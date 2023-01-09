@@ -22,9 +22,12 @@ configfile: "config/config.yaml"
 # 		"""
 
 
-rule Output_Files:
+rule all:
 	input:
-		"data/process/test.files",
+		expand("data/process/{dataset}.files", dataset="test"),
+		expand("data/process/{dataset}.trim.contigs.good.count_table", dataset="test"),
+		expand("data/process/{dataset}.trim.contigs.good.unique.fasta", dataset="test"),
+		expand("data/process/{dataset}.trim.contigs.good.unique.summary", dataset="test"),
 		"dags/rulegraph.svg",
 		"dags/rulegraph.png",
 		"dags/dag.svg",
@@ -40,6 +43,21 @@ rule make_files:
         "data/process/test.files",
     shell:
         "bash {input.script}"
+
+
+rule make_contigs:
+	input:
+		"data/process/test.files",
+		script="workflow/scripts/make_contigs.sh",
+	output:
+		"data/process/{dataset}.trim.contigs.good.count_table",
+		"data/process/{dataset}.trim.contigs.good.unique.fasta",
+		"data/process/{dataset}.trim.contigs.good.unique.summary",
+	shell:
+		"bash {input.script}"
+
+
+
 
 include: "rules/rules_dag.smk"
 include: "rules/interactive_report.smk"

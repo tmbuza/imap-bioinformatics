@@ -58,6 +58,8 @@ seed: 20170415
 
 dataset: test
 workdir: .
+sampledir: "data/raw"
+outputdir: "data/process/"
 alignment: data/references/silva.seed.align
 classifier: data/references//trainset9_032012.pds.fasta
 taxonomy: data/references/trainset9_032012.pds.tax
