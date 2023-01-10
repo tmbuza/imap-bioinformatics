@@ -1,2 +1,2 @@
 # imap-mothur
-iMAP repo with GitHub Snakemake and GitHub Actions
+iMAP repo with Snakemake and GitHub Actions
