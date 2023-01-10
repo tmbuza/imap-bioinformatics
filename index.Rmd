@@ -200,17 +200,18 @@ a{
 <br>
 <br>
 
-# General overview of `mothur bioinformatics` pipeline
+# General overview
+## Mothur bioinformatics pipeline
 <!-- ![](dags/rulegraph.svg) -->
 <img src="dags/rulegraph.svg"/>
 ```
 
-# Example report workflow
+## Summary report
 <!-- ![](dags/rulegraph.svg) -->
 <img src="dags/summary_report_dag.png"/>
 
 
-# Useful links
+## Useful links
 [https://github.com/wclose/mothurPipeline](https://github.com/wclose/mothurPipeline)
 
 
