@@ -1,6 +1,6 @@
 ---
-title: "Microbiome Bioinformatics <small>&</small> Data Science<br>"
-subtitle: "Fostering Continuous Improvement and Integration<br><br>"
+title: "Microbiome Bioinformatics Pipelines<br>"
+subtitle: "Fostering continuous integration with Snakemake workflow engine <br><br>"
 author: TMBuza
 date: |
   | ![](images/new_horizon.png)<br><br>
@@ -94,19 +94,29 @@ body h3{
 
 #header {
   background-color: #013011;
-  color: #f5f5f5;
+  color: white;
   font-family: "Montserrat", sans-serif;
   text-align: center;
   width: 100%;
   padding: 5% 0% 0% 0%;
   text-transform: none;
+  font-weight: bold;
+  background-image: url("images/bkgd.jpg");
+  /* background-image: url("images/bkgd.jpg"), url("mothurpipe.png"); */
+  background-repeat: no-repeat, repeat;
+  background-color: #cccccc; /* Used if the image is unavailable */
+  height: 100%; /* You must set a specified height */
+  background-position: center; /* Center the image */
+  background-size: cover; /* Resize the background image to cover the entire container */
+  
 }
+
 #header h3, #glimpse h1{
   color: #b5f56b;
 }
 
 #header h1{
-  font-size: 3.5em;
+  font-size: 4em;
 }
 
 #header h3{
@@ -159,16 +169,27 @@ a{
   max-width: 80%;
   margin-left: auto;
   margin-right: auto;
-}   
+}
+
+ 
 ```
 
-# General overview of `mothur` pipeline
+<br>
+<br>
+<br>
+
+# General overview of `mothur bioinformatics` pipeline
 <!-- ![](dags/rulegraph.svg) -->
 <img src="dags/rulegraph.svg"/>
+```
+
+# Example report workflow
+<!-- ![](dags/rulegraph.svg) -->
+<img src="dags/summary_report_dag.png"/>
 
 
 # Useful links
-![https://github.com/wclose/mothurPipeline](https://github.com/wclose/mothurPipeline)
+[https://github.com/wclose/mothurPipeline](https://github.com/wclose/mothurPipeline)
 
 
 

@@ -1,4 +1,12 @@
 #! /bin/bash
+# mothurReferences.sh
+# William L. Close
+# Schloss Lab
+# University of Michigan
+
+##################
+# Set Script Env #
+##################
 
 # Other variables
 OUTDIR=data/references/ # Directory for storing mothur reference files
@@ -8,6 +16,8 @@ OUTDIR=data/references/ # Directory for storing mothur reference files
 ####################################
 # Preparing Mothur Reference Files #
 ####################################
+
+echo PROGRESS: Preparing mothur reference files. 
 
 # Making reference output directory
 mkdir -p "${OUTDIR}"/ "${OUTDIR}"/tmp/
@@ -24,8 +34,7 @@ curl -L -R -o "${OUTDIR}"/tmp/silva.seed_v138.tgz -z "${OUTDIR}"/tmp/silva.seed_
 tar -xvzf "${OUTDIR}"/tmp/silva.seed_v138.tgz -C "${OUTDIR}"/tmp/
 
 # Using mothur to pull out bacterial sequences and only keep sequences from the v4 region of the 16S rRNA DNA region
-mothur "#set.logfile(name=get_lineage.logfile);
-	get.lineage(fasta="${OUTDIR}"/tmp/silva.seed_v138.align, taxonomy="${OUTDIR}"/tmp/silva.seed_v138.tax, taxon=Bacteria);
+mothur "#get.lineage(fasta="${OUTDIR}"/tmp/silva.seed_v138.align, taxonomy="${OUTDIR}"/tmp/silva.seed_v138.tax, taxon=Bacteria);
 	pcr.seqs(fasta=current, start=11894, end=25319, keepdots=F, processors=8)"
 
 # Renaming the final output files

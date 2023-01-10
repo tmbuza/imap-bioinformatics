@@ -9,7 +9,7 @@
 ##################
 
 # Other variables
-OUTDIR=data/references/ # Directory for storing mothur reference files
+OUTDIR=data/mothur/references/ # Directory for storing mothur reference files
 
 
 
@@ -47,12 +47,12 @@ cp "${OUTDIR}"/silva.seed.align "${OUTDIR}"/zymo.mock.16S.fasta "${OUTDIR}"/tmp/
 # Will generate the following warning message '[WARNING]: 4 of your sequences generated alignments that eliminated too many bases' 
 # because 4 of the community sequences are from Cryptococcus and Saccharomyces so those will be filtered out
 mothur "#align.seqs(fasta="${OUTDIR}"/tmp/zymo.mock.16S.fasta, reference="${OUTDIR}"/tmp/silva.seed.align, processors=8);
-	pcr.seqs(fasta="${OUTDIR}"/tmp/zymo.mock.16S.align, keepdots=F);
+	pcr.seqs(fasta="${OUTDIR}"/tmp/zymo.mock.16S.align, start=11894, end=25319, keepdots=F);
 	degap.seqs(fasta="${OUTDIR}"/tmp/zymo.mock.16S.pcr.align)"
 
 # Sorting the output file by the first field (read name) and second letter (ignores the '>' at the read header and will sort on the second letter instead)
 # Not super important but it makes it more human friendly
-awk '{ORS=NR%2?",":"\n";print}' "${OUTDIR}"/tmp/zymo.mock.16S.pcr.ng.fasta | sort -k 1.2 | tr , '\n' > "${OUTDIR}"/zymo.mock.16S.fasta
+awk '{ORS=NR%2?",":"\n";print}' "${OUTDIR}"/tmp/zymo.mock.16S.pcr.ng.fasta | sort -k 1.2 | tr , '\n' > "${OUTDIR}"/zymo.mock.16S.v4.fasta
 
 # Cleaning up
 rm -rf "${OUTDIR}"/tmp/
