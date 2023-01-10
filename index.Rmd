@@ -39,6 +39,25 @@ body{
   font-size: 14px;
   text-align: left;
 }
+
+#header {
+  background-color: #013011;
+  color: white;
+  font-family: "Montserrat", sans-serif;
+  text-align: center;
+  width: 100%;
+  padding: 5% 0% 0% 0%;
+  text-transform: none;
+  font-weight: bold;
+  background-image: url("images/bkgd.jpg");
+  /* background-image: url("images/bkgd.jpg"), url("mothurpipe.png"); */
+  background-repeat: no-repeat, repeat;
+  background-color: #cccccc; /* Used if the image is unavailable */
+  height: 100%; /* You must set a specified height */
+  background-position: center; /* Center the image */
+  background-size: cover; /* Resize the background image to cover the entire container */
+  
+}
 @media only screen and (max-width: 768px) {
   .main-container {
   max-width: 100%;
@@ -49,15 +68,33 @@ body{
   margin-right: auto;
 
   }
+  #header {
+  background-color: #013011;
+  color: white;
+  font-family: "Montserrat", sans-serif;
+  text-align: center;
+  width: 100%;
+  padding: 5% 0% 0% 0%;
+  text-transform: none;
+  font-weight: bold;
+  background-image: url("images/bkgd.jpg");
+  /* background-image: url("images/bkgd.jpg"), url("mothurpipe.png"); */
+  background-repeat: no-repeat, repeat;
+  background-color: #cccccc; /* Used if the image is unavailable */
+  height: 100%; /* You must set a specified height */
+  background-position: center; /* Center the image */
+  background-size: cover; /* Resize the background image to cover the entire container */
+  
+  }
    body {
     font-size: 12px;
     width: 100%;
   }
   #header h1{
-    font-size: 2.2em;  
+    font-size: 2em;  
   }
   #glimpse h1{
-    font-size: 3.0em;
+    font-size: 2em;
   } 
   #glimpse p{
     font-size: 1.5em;
@@ -92,26 +129,9 @@ body h3{
 #tablefield h2{
   font-size: 1.6em;
 }
+
 }
 
-#header {
-  background-color: #013011;
-  color: white;
-  font-family: "Montserrat", sans-serif;
-  text-align: center;
-  width: 100%;
-  padding: 5% 0% 0% 0%;
-  text-transform: none;
-  font-weight: bold;
-  background-image: url("images/bkgd.jpg");
-  /* background-image: url("images/bkgd.jpg"), url("mothurpipe.png"); */
-  background-repeat: no-repeat, repeat;
-  background-color: #cccccc; /* Used if the image is unavailable */
-  height: 100%; /* You must set a specified height */
-  background-position: center; /* Center the image */
-  background-size: cover; /* Resize the background image to cover the entire container */
-  
-}
 
 #header h3, #glimpse h1{
   color: #b5f56b;
