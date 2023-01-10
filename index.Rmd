@@ -220,8 +220,8 @@ a{
 
 <div id="footer">
 Last updated on `r format(Sys.time(), '%B %d, %Y')`. <br><br>
-These microbiome workflows are continuously being reviewed, integrated, tested and are maintained by [Teresia Mrema-Buza](mailto:`r rmarkdown::metadata$email_address`).  
+These microbiome workflows are continuously being reviewed, integrated, tested by [Teresia Mrema-Buza](mailto:`r rmarkdown::metadata$email_address`).  
 Github_Repo: `r rmarkdown::metadata$github_repo`.  
 Github_Page: `r rmarkdown::metadata$github_page`.  
-Visit the [CDI website](`r rmarkdown::metadata$website`) for more practical user guides (...in progress).  
+Visit the [CDI website](`r rmarkdown::metadata$related_website`) for more practical user guides (...in progress).  
 </div>
