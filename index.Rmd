@@ -6,7 +6,9 @@ date: |
   | ![](images/new_horizon.png)<br><br>
   | Updated on `r Sys.time()` <br><br>
 email_address: "tmbuza@complexdatainsights.com"
-website: "https://complexdatainsights.com"
+github_repo: "https://github.com/tmbuza/imap-mothur"
+github_page: "https://tmbuza.github.io/imap-mothur/"
+related_website: "https://complexdatainsights.com"
 ---
 
 <br><br>
@@ -196,7 +198,9 @@ a{
 <br><br><hr>
 
 <div id="footer">
-Last updated on `r format(Sys.time(), '%B %d, %Y')`.  
-These workflows have been reviewed, tested and compiled by [TMBuza](mailto:`r rmarkdown::metadata$email_address`).  
-For more workflows, visit the [CDI website](`r rmarkdown::metadata$website`) (...in progress).  
+Last updated on `r format(Sys.time(), '%B %d, %Y')`. <br><br>
+These microbiome workflows are continuously being reviewed, integrated, tested and are maintained by [Teresia Mrema-Buza](mailto:`r rmarkdown::metadata$email_address`).  
+Github_Repo: `r rmarkdown::metadata$github_repo`.  
+Github_Page: `r rmarkdown::metadata$github_page`.  
+Visit the [CDI website](`r rmarkdown::metadata$website`) for more practical user guides (...in progress).  
 </div>
