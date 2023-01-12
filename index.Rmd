@@ -260,6 +260,68 @@ metadata <- sraruntable %>%
   theme_light()
 ```
 
+## Original OTU table
+```{r}
+library(tidyverse, suppressPackageStartupMessages())
+
+shared <- read_tsv("data/process/final.opti_mcc.shared", show_col_types = F)
+head(shared)
+```
+
+
+## Tidy OTU long table
+```{r}
+otutable_long <- shared %>%
+  rename_all(tolower) %>% 
+  select(-label, -numotus) %>%
+  rename(sample_id = group) %>% 
+  rename_all(tolower) %>% 
+  pivot_longer(-sample_id, names_to="otu", values_to="count") %>% 
+  filter(count != 0)
+
+  head(otutable_long)
+```
+
+## Tidy OTU wide table
+```{r}
+otutable <- otutable_long %>%
+  pivot_wider(id_cols = otu, names_from = sample_id, values_from = count) %>%
+  mutate_if(is.numeric, ~replace(., is.na(.), 0))
+
+  head(otutable)
+
+  paste("Dimension of the phylotype table table is", 
+      dim(otutable)[1], "rows and", 
+      dim(otutable)[2], "columns")
+  ```
+
+
+## Original taxonomy table
+```{r}
+head(read_tsv("data/process/final.opti_mcc.0.03.cons.taxonomy", show_col_types = F))
+```
+
+
+## Tidy taxonomy table
+```{r}
+taxlevels <- c("kingdom", "phylum", "class", "order", "family", "genus")
+taxonomy <- read_tsv("data/process/final.opti_mcc.0.03.cons.taxonomy", show_col_types = F) %>%
+  rename_all(tolower) %>%
+  select(otu, taxonomy) %>%
+  mutate(otu = tolower(otu),
+         taxonomy = str_replace_all(taxonomy, "\\(\\d+\\)", ""),
+         taxonomy = str_replace(taxonomy, ";unclassified", "_unclassified"),
+         taxonomy = str_replace_all(taxonomy, ";unclassified", ""),
+         taxonomy = str_replace_all(taxonomy, ";$", "")) %>% 
+  mutate(pretty_otu = str_replace(string = otu,
+                         pattern = "otu0*",
+                         replacement = "OTU ")) %>% 
+  relocate(pretty_otu, .after = "otu") %>% 
+  separate(taxonomy, into = all_of(taxlevels), sep = ";")
+
+  head(taxonomy)
+```
+
 
 ## Useful links
 [https://github.com/wclose/mothurPipeline](https://github.com/wclose/mothurPipeline)
