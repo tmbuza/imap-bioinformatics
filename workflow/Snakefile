@@ -5,14 +5,18 @@ configfile: "config/config.yaml"
 mothurSamples = list(set(glob_wildcards(os.path.join('data/raw/', '{sample}_{readNum, R[12]}_001.fastq.gz')).sample))
 
 # Master rule for controlling workflow.
-rule all:
+rule Output_Files:
 	input:
-		"data/process/final.0.03.shared",
-		"data/process/final.0.03.cons.taxonomy",
-		"data/process/final.0.03.count.summary"
-		# "report/report.html",
-		# "index.html"
-
+		"data/process/final.opti_mcc.list",
+		"data/process/final.opti_mcc.steps",
+		"data/process/final.opti_mcc.sensspec",
+		"data/process/final.opti_mcc.shared",
+		"data/process/final.opti_mcc.0.03.cons.taxonomy",
+		"data/process/final.opti_mcc.0.03.cons.tax.summary",
+		"data/process/final.opti_mcc.0.03.rep.count_table",
+		"data/process/final.opti_mcc.0.03.rep.fasta",
+		"data/process/final.opti_mcc.0.03.biom",
+		"data/process/final.opti_mcc.0.03.lefse",
 
 ###################################
 #
@@ -51,73 +55,27 @@ rule get_zymo_mock:
 
 
 ###################################
-#
-# Part 2: Generate Shared Files 
-#
-
+# Part 2: Generate OTU table (shared file)
 ###################################
 
-# Generating master OTU shared file.
-rule clean_sequences:
+rule mothur_microbial_profiling:
 	input:
 		script="workflow/scripts/mothurShared.sh",
 		raw=expand('data/raw/{mothurSamples}_{readNum}_001.fastq.gz',
 			mothurSamples = mothurSamples, readNum = config["readNum"]),
 		refs=rules.get_references.output
 	output:
-		shared="data/process/final.0.03.shared",
-		taxonomy="data/process/final.0.03.cons.taxonomy",
+		listfile="data/process/final.opti_mcc.list",
+		steps="data/process/final.opti_mcc.steps",
+		sensspec="data/process/final.opti_mcc.sensspec",
+		shared="data/process/final.opti_mcc.shared",
+		taxonomy="data/process/final.opti_mcc.0.03.cons.taxonomy",
+		summary="data/process/final.opti_mcc.0.03.cons.tax.summary",
+		counttable="data/process/final.opti_mcc.0.03.rep.count_table",
+		fasta="data/process/final.opti_mcc.0.03.rep.fasta",
+		biom="data/process/final.opti_mcc.0.03.biom",
+		lefse="data/process/final.opti_mcc.0.03.lefse",
 	conda:
 		"envs/mothur.yaml"
 	shell:
 		"bash {input.script} data/raw/ {input.refs}"
-
-
-# Counting number of reads in each of the new shared files.
-rule count_shared:
-	input:
-		script="workflow/scripts/mothurCountShared.sh",
-		shared="data/process/final.0.03.shared"
-	output:
-		count1="data/process/final.0.03.count.summary"
-	conda:
-		"envs/mothur.yaml"
-	shell:
-		"bash {input.script} {input.shared}"
-
-#############
-# REPORT
-#############
-
-
-rule get_dag:
-	output:
-		"dags/rulegraph.svg",
-		"dags/rulegraph.png",
-		"dags/dag.svg",
-		"dags/dag.png"
-	shell:
-		"bash workflow/scripts/rulegraph.sh"
-
-
-rule interactive_report:
-	output:
-		"report/report.html",
-	shell:
-		"bash workflow/scripts/interactive_report.sh"
-
-
-rule render_index:
-    input:
-        rmd="index.Rmd",
-        rulegraph="dags/rulegraph.svg",
-        dag="dags/dag.svg"
-    output:
-        doc="index.html",
-    log:
-        "logs/render_index.log",
-    shell:
-        """
-        R -e "library(rmarkdown); render('{input.rmd}')"
-        """
-

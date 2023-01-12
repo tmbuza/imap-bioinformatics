@@ -19,8 +19,24 @@ related_website: "https://complexdatainsights.com"
 
 
 ```{r echo = FALSE, message = FALSE}
+
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE,
+  cache = FALSE,
+  comment = NA,
+  fig.path='./figures/',
+  fig.show='asis',
+  dev = 'png',
+  fig.align='center',
+  out.width = "70%",
+  fig.width = 7,
+  fig.asp = 0.7,
+  fig.show = "asis"
+)
 library(tidyverse)
-library(lubridate)
+
 ```
 
 ```{css echo = FALSE}
@@ -200,15 +216,49 @@ a{
 <br>
 <br>
 
-# General overview
-## Mothur bioinformatics pipeline
+# Mothur bioinformatics pipeline
 <!-- ![](dags/rulegraph.svg) -->
 <img src="dags/rulegraph.svg"/>
-```
 
 ## Summary report
+
 <!-- ![](dags/rulegraph.svg) -->
 <img src="dags/summary_report_dag.png"/>
+
+
+
+# Metadata profiling
+```{r}
+library(tidyverse, suppressPackageStartupMessages())
+sraruntable <- read_delim("data/metadata/SraRunTable.txt", show_col_types = FALSE)
+
+metadata <- sraruntable %>%  
+  rename_all(tolower) %>% 
+  rename(sample_id = run) %>% 
+  drop_na(lat_lon) %>% 
+  mutate(
+    geo_loc_name = str_replace_all(geo_loc_name, "Tanzania: ", ""),
+    geo_loc_name = str_replace_all(geo_loc_name, "The Greater Serengeti Ecosystem", "Serengeti"),
+    geo_loc_name = str_replace_all(geo_loc_name, " Ecosystem", ""),
+    isolate = str_replace_all(isolate, "_\\d*$", ""),
+    lat_lon = str_replace_all(lat_lon, " E$", ""),
+    latitude = as.numeric(str_replace_all(lat_lon, " S.*", "")) * -1,
+    longitude = as.numeric(str_replace_all(lat_lon, ".*S ", ""))) %>% 
+  rename(ecosystem = geo_loc_name) %>%
+  rename(description = host) %>% 
+  mutate(bases = round(bases/1E6, digits = 0)) %>% 
+  select(sample_id, ecosystem, isolate, latitude, longitude, milionbases=bases, description)
+```
+
+```{r readsize}
+ metadata %>% 
+  ggplot(aes(x = isolate, y = milionbases, fill = ecosystem)) +
+  facet_grid(~ ecosystem) +
+  geom_col(position = "dodge") +
+  coord_flip() +
+  labs(x = "Animal Name", y = "Read size (milion bases)") +
+  theme_light()
+```
 
 
 ## Useful links

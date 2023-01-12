@@ -22,7 +22,7 @@ RDPTAX="data/references/trainset16_022016.pds.tax"
 
 # Other variables
 OUTDIR="data/process"
-ERRORDIR="data/process/error_analysis"
+# ERRORDIR="data/process/error_analysis"
 
 # Other variables
 
@@ -61,8 +61,6 @@ mkdir -p "${OUTDIR}" "${ERRORDIR}"
 # 	get.oturep(fasta=current, count=current, list=current, label=0.03, method=abundance)"
 
 mothur "#set.logfile(name=${OUTDIR}/logs/sample_files.logfile);
-	set.dir(inputdir="${SAMPLEDIR}", outputdir="${OUTDIR}");
-	
 	make.file(type=fastq, prefix=test, inputdir="${SAMPLEDIR}", outputdir="${OUTDIR}");
 	
 	set.logfile(name=${OUTDIR}/logs/seq_assembly.logfile);
@@ -93,33 +91,35 @@ mothur "#set.logfile(name=${OUTDIR}/logs/sample_files.logfile);
    	classify.seqs(fasta=current, count=current, reference="${RDPFASTA}", taxonomy="${RDPTAX}", cutoff=80);
 	remove.lineage(fasta=current, count=current, taxonomy=current, taxon=Chloroplast-Mitochondria-unknown-Archaea-Eukaryota);
 	
+	set.logfile(name=name=${OUTDIR}/logs/final_files.logfile);
+	rename.file(fasta=current, count=current, taxonomy=current, prefix=final);
+
+
 	set.logfile(name=${OUTDIR}/logs/otu_clustering.logfile);
 	set.current(fasta=current, count=current, taxonomy=current, list=current);
 	dist.seqs(fasta=current, cutoff=0.03);
-	cluster(column=current, count=current);
+	cluster(column=current, count=current, cutoff=0.03);
 	make.shared(list=current, count=current, label=0.03);
 	classify.otu(list=current, count=current, taxonomy=current, label=0.03);
 	get.oturep(fasta=current, count=current, list=current, label=0.03, method=abundance);
-
-	set.logfile(name=${OUTDIR}/logs/lefse_n_biom.logfile);
-	set.current(shared=current, constaxonomy=current);
 	make.lefse(shared=current, constaxonomy=current);
 	make.biom(shared=current, constaxonomy=current);"
 
 
-# Renaming output files for use later
-mv "${OUTDIR}"/*.precluster.pick.pick.fasta "${ERRORDIR}"/errorinput.fasta
-mv "${OUTDIR}"/*.vsearch*.pick.count_table "${ERRORDIR}"/errorinput.count_table
-mv "${OUTDIR}"/*.opti_mcc.list "${OUTDIR}"/final.0.03.list
-mv "${OUTDIR}"/*.opti_mcc.steps "${OUTDIR}"/final.0.03.steps
-mv "${OUTDIR}"/*.opti_mcc.sensspec "${OUTDIR}"/final.0.03.sensspec
-mv "${OUTDIR}"/*.opti_mcc.shared "${OUTDIR}"/final.0.03.shared
-mv "${OUTDIR}"/*.0.03.cons.taxonomy "${OUTDIR}"/final.0.03.cons.taxonomy
-mv "${OUTDIR}"/*.0.03.cons.tax.summary "${OUTDIR}"/final.0.03.cons.tax.summary
-mv "${OUTDIR}"/*.0.03.rep.fasta "${OUTDIR}"/final.0.03.rep.fasta
-mv "${OUTDIR}"/*.0.03.rep.count_table "${OUTDIR}"/final.0.03.rep.count_table
-mv "${OUTDIR}"/*.0.03.lefse "${OUTDIR}"/final.0.03.lefse
-mv "${OUTDIR}"/*.0.03.biom "${OUTDIR}"/final.0.03.biom
+
+# # Renaming output files for use later
+# mv "${OUTDIR}"/*.precluster*.pick.fasta "${ERRORDIR}"/errorinput.fasta
+# mv "${OUTDIR}"/*.vsearch*.count_table "${ERRORDIR}"/errorinput.count_table
+# mv "${OUTDIR}"/*.opti_mcc.list "${OUTDIR}"/final.0.03.list
+# mv "${OUTDIR}"/*.opti_mcc.steps "${OUTDIR}"/final.0.03.steps
+# mv "${OUTDIR}"/*.opti_mcc.sensspec "${OUTDIR}"/final.0.03.sensspec
+# mv "${OUTDIR}"/*.opti_mcc.shared "${OUTDIR}"/final.0.03.shared
+# mv "${OUTDIR}"/*.0.03.cons.taxonomy "${OUTDIR}"/final.0.03.cons.taxonomy
+# mv "${OUTDIR}"/*.0.03.cons.tax.summary "${OUTDIR}"/final.0.03.cons.tax.summary
+# mv "${OUTDIR}"/*.0.03.rep.fasta "${OUTDIR}"/final.0.03.rep.fasta
+# mv "${OUTDIR}"/*.0.03.rep.count_table "${OUTDIR}"/final.0.03.rep.count_table
+# mv "${OUTDIR}"/*.0.03.lefse "${OUTDIR}"/final.0.03.lefse
+# mv "${OUTDIR}"/*.0.03.biom "${OUTDIR}"/final.0.03.biom
 
 
 ###############
