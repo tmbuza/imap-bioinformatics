@@ -18,7 +18,7 @@ related_website: "https://complexdatainsights.com"
 <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
 
 
-```{r echo = FALSE, message = FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 
 knitr::opts_chunk$set(
   echo = FALSE,
@@ -35,7 +35,7 @@ knitr::opts_chunk$set(
   fig.asp = 0.7,
   fig.show = "asis"
 )
-library(tidyverse)
+library(tidyverse, suppressPackageStartupMessages())
 
 ```
 
