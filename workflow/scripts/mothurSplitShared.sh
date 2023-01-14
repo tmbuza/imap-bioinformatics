@@ -9,13 +9,13 @@
 ##################
 
 # Set the variables to be used in this script
-MOCKGROUPS=${1:?ERROR: Need to define MOCKGROUPS.} # List of mock groups in raw data dir separated by '-'
-CONTROLGROUPS=${2:?ERROR: Need to define CONTROLGROUPS.} # List of control groups in raw data dir separated by '-'
+MOCKGROUPS="Mock1-Mock2-Mock3" # List of mock groups in raw data dir separated by '-'
+CONTROLGROUPS="Water1-Water2-Water3" # List of control groups in raw data dir separated by '-'
 
 # Other variables
-OUTDIR=data/mothur/process/
+OUTDIR="data/mothur/process"
 COMBINEDGROUPS=$(echo "${MOCKGROUPS}"-"${CONTROLGROUPS}") # Combines the list of mock and control groups into a single string separated by '-'
-
+LOGS="data/mothur/logs"
 
 
 ####################################
@@ -26,7 +26,9 @@ COMBINEDGROUPS=$(echo "${MOCKGROUPS}"-"${CONTROLGROUPS}") # Combines the list of
 echo PROGRESS: Creating sample shared file.
 
 # Removing all mock and control groups from shared file leaving only samples
-mothur "#remove.groups(shared="${OUTDIR}"/final.shared, groups="${COMBINEDGROUPS}")"
+mothur "#
+set.logfile(name=${LOGS}/sample_shared.logfile);
+remove.groups(shared="${OUTDIR}"/final.shared, groups="${COMBINEDGROUPS}")"
 
 # Renaming output file
 mv "${OUTDIR}"/final.0.03.pick.shared "${OUTDIR}"/sample.final.shared
@@ -37,7 +39,9 @@ mv "${OUTDIR}"/final.0.03.pick.shared "${OUTDIR}"/sample.final.shared
 echo PROGRESS: Creating mock shared file.
 
 # Removing non-mock groups from shared file
-mothur "#get.groups(shared="${OUTDIR}"/final.shared, groups="${MOCKGROUPS}")"
+mothur "#
+set.logfile(name=${LOGS}/mock_shared.logfile);
+get.groups(shared="${OUTDIR}"/final.shared, groups="${MOCKGROUPS}")"
 
 # Renaming output file
 mv "${OUTDIR}"/final.0.03.pick.shared "${OUTDIR}"/mock.final.shared
@@ -48,8 +52,9 @@ mv "${OUTDIR}"/final.0.03.pick.shared "${OUTDIR}"/mock.final.shared
 echo PROGRESS: Creating control shared file.
 
 # Removing any non-control groups from shared file
-mothur "#get.groups(shared="${OUTDIR}"/final.shared, groups="${CONTROLGROUPS}")"
+mothur "#
+set.logfile(name=${LOGS}/control_shared.logfile);
+get.groups(shared="${OUTDIR}"/final.shared, groups="${CONTROLGROUPS}")"
 
 # Renaming output file
 mv "${OUTDIR}"/final.0.03.pick.shared "${OUTDIR}"/control.final.shared
-

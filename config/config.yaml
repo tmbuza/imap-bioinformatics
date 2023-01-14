@@ -15,12 +15,13 @@
 mothurMock:
   - Mock1
   - Mock2
+  - Mock3
 
 # Group names of control samples (e.g. Water1_S2_L001_R1_001.fastq.gz = Water1).
 mothurControl:
-  - NA
-  - Water
+  - Water1
   - Water2
+  - Water3
 
 # Desired alpha diversity metrics.
 mothurAlpha:
@@ -55,25 +56,3 @@ mothurGroups:
 
 # Random seed
 seed: 20170415
-
-dataset: test
-workdir: .
-sampledir: "data/raw"
-outputdir: "data/process/"
-alignment: data/references/silva.seed.align
-classifier: data/references/trainset9_032012.pds.fasta
-taxonomy: data/references/trainset9_032012.pds.tax
-maxambig: 0
-maxlength: 275
-start: 11894
-end: 25319
-keepdots: F
-maxhomop: 8
-vertical: T
-trump: .
-diff: 2
-dereplicate: t
-cutoff: 80
-taxon: Chloroplast-Mitochondria-unknown-Archaea-Eukaryota
-group: Mock
-dist_cutoff: 0.20

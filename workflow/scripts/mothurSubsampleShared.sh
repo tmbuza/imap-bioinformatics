@@ -9,8 +9,8 @@
 ##################
 
 # Set the variables to be used in this script
-SHARED="data/mothur/process/final.shared" # Shared file
-COUNT="data/mothur/process/final.shared" # Count file generated from shared file
+SHARED="data/mothur/process/sample.final.shared" # Shared file
+COUNT="data/mothur/process/sample.final.count.summary" # Count file generated from shared file
 SUBTHRESH=1000 # Setting threshold for minimum number of reads to subsample
 
 

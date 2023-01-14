@@ -9,7 +9,7 @@
 ##################
 
 # Set the variables to be used in this script
-SHARED=${1:?ERROR: Need to define SHARED} # Shared file to be counted
+SHARED="data/mothur/process/final.shared" # Shared file to be counted
 
 
 

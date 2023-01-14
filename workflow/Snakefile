@@ -1,29 +1,29 @@
+# Snakefile
+# William L. Close
+# Schloss Lab
+# University of Michigan
+
+# Snakemake file for running mothur 16S pipeline
+
 # Configuration file containing all user-specified settings
 configfile: "config/config.yaml"
 
 # Function for aggregating list of raw sequencing files.
-mothurSamples = list(set(glob_wildcards(os.path.join('data/raw/', '{sample}_{readNum, R[12]}_001.fastq.gz')).sample))
+mothurSamples = list(set(glob_wildcards(os.path.join('data/mothur/raw/', '{sample}_{readNum, R[12]}_001.fastq.gz')).sample))
 
 # Master rule for controlling workflow.
-rule Output_Files:
+rule all:
 	input:
-		"data/process/final.opti_mcc.list",
-		"data/process/final.opti_mcc.steps",
-		"data/process/final.opti_mcc.sensspec",
-		"data/process/final.opti_mcc.shared",
-		"data/process/final.opti_mcc.0.03.cons.taxonomy",
-		"data/process/final.opti_mcc.0.03.cons.tax.summary",
-		"data/process/final.opti_mcc.0.03.rep.count_table",
-		"data/process/final.opti_mcc.0.03.rep.fasta",
-		"data/process/final.opti_mcc.0.03.biom",
-		"data/process/final.opti_mcc.0.03.lefse",
+		"data/mothur/process/final.shared",
+		"data/mothur/process/final.taxonomy",
+		expand("data/mothur/process/{group}.final.shared", group = config["mothurGroups"]),
 
-###################################
+
+##################################################################
 #
 # Part 1: Generate Reference and Mock Control Files
 #
-
-###################################
+##################################################################
 
 # Downloading and formatting SILVA and RDP reference databases. The v4 region is extracted from 
 # SILVA database for use as reference alignment.
@@ -31,9 +31,9 @@ rule get_references:
 	input:
 		script="workflow/scripts/mothurReferences.sh"
 	output:
-		silvaV4="data/references/silva.v4.align",
-		rdpFasta="data/references/trainset16_022016.pds.fasta",
-		rdpTax="data/references/trainset16_022016.pds.tax"
+		silvaV4="data/mothur/references/silva.v4.align",
+		rdpFasta="data/mothur/references/trainset16_022016.pds.fasta",
+		rdpTax="data/mothur/references/trainset16_022016.pds.tax"
 	conda:
 		"envs/mothur.yaml"
 	shell:
@@ -46,7 +46,7 @@ rule get_zymo_mock:
 		script="workflow/scripts/mothurMock.sh",
 		silvaV4=rules.get_references.output.silvaV4
 	output:
-		mockV4="data/references/zymo.mock.16S.v4.fasta"
+		mockV4="data/mothur/references/zymo.mock.16S.v4.fasta"
 	conda:
 		"envs/mothur.yaml"
 	shell:
@@ -54,28 +54,41 @@ rule get_zymo_mock:
 
 
 
-###################################
-# Part 2: Generate OTU table (shared file)
-###################################
 
-rule mothur_microbial_profiling:
+
+##################################################################
+#
+# Part 2: Generate Shared Files 
+#
+##################################################################
+
+# Generating master OTU shared file.
+rule create_otutable:
 	input:
 		script="workflow/scripts/mothurShared.sh",
-		raw=expand('data/raw/{mothurSamples}_{readNum}_001.fastq.gz',
+		raw=expand('data/mothur/raw/{mothurSamples}_{readNum}_001.fastq.gz',
 			mothurSamples = mothurSamples, readNum = config["readNum"]),
 		refs=rules.get_references.output
 	output:
-		listfile="data/process/final.opti_mcc.list",
-		steps="data/process/final.opti_mcc.steps",
-		sensspec="data/process/final.opti_mcc.sensspec",
-		shared="data/process/final.opti_mcc.shared",
-		taxonomy="data/process/final.opti_mcc.0.03.cons.taxonomy",
-		summary="data/process/final.opti_mcc.0.03.cons.tax.summary",
-		counttable="data/process/final.opti_mcc.0.03.rep.count_table",
-		fasta="data/process/final.opti_mcc.0.03.rep.fasta",
-		biom="data/process/final.opti_mcc.0.03.biom",
-		lefse="data/process/final.opti_mcc.0.03.lefse",
+		shared="data/mothur/process/final.shared",
+		taxonomy="data/mothur/process/final.taxonomy",
 	conda:
 		"envs/mothur.yaml"
 	shell:
-		"bash {input.script} data/raw/ {input.refs}"
+		"bash {input.script} data/mothur/raw/ {input.refs}"
+
+# Splitting shared by group
+rule split_otutable:
+	input:
+		script="workflow/scripts/mothurSplitShared.sh",
+		shared="data/mothur/process/final.shared"
+	output:
+		shared=expand("data/mothur/process/{group}.final.shared",
+			group = config["mothurGroups"])
+	params:
+		mockGroups='-'.join(config["mothurMock"]), # Concatenates all mock group names with hyphens
+		controlGroups='-'.join(config["mothurControl"]) # Concatenates all control group names with hyphens
+	conda:
+		"envs/mothur.yaml"
+	shell:
+		"bash {input.script} {params.mockGroups} {params.controlGroups}"

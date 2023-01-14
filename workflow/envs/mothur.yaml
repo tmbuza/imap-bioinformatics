@@ -2,19 +2,5 @@ name: mothur
 channels:
   - conda-forge
   - bioconda
-  - r
 dependencies:
-  - snakemake>6.0.0
-  - mothur=1.48.0
-  - r-base=4
-  - r-doFuture
-  - r-cowplot
-  - r-foreach
-  - r-future
-  - r-future.apply
-  - r-import
-  - r-mikropml>=1.4.0
-  - r-rmarkdown
-  - r-rpart
-  - r-schtools>=0.3.0
-  - r-tidyverse
+  - mothur=1.44.1

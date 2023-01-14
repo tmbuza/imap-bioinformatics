@@ -230,7 +230,7 @@ a{
 # Metadata profiling
 ```{r}
 library(tidyverse, suppressPackageStartupMessages())
-sraruntable <- read_delim("data/metadata/SraRunTable.txt", show_col_types = FALSE)
+sraruntable <- read_delim("data/mothur/metadata/SraRunTable.txt", show_col_types = FALSE)
 
 metadata <- sraruntable %>%  
   rename_all(tolower) %>% 
@@ -250,6 +250,13 @@ metadata <- sraruntable %>%
   select(sample_id, ecosystem, isolate, latitude, longitude, milionbases=bases, description)
 ```
 
+## Compact structure of metadata
+```{r}
+str(metadata)
+```
+<br>
+<br>
+
 ```{r readsize}
  metadata %>% 
   ggplot(aes(x = isolate, y = milionbases, fill = ecosystem)) +
@@ -264,7 +271,7 @@ metadata <- sraruntable %>%
 ```{r}
 library(tidyverse, suppressPackageStartupMessages())
 
-shared <- read_tsv("data/process/final.opti_mcc.shared", show_col_types = F)
+shared <- read_tsv("data/mothur/process/final.shared", show_col_types = F)
 head(shared)
 ```
 
@@ -283,6 +290,7 @@ otutable_long <- shared %>%
 ```
 
 ## Tidy OTU wide table
+
 ```{r}
 otutable <- otutable_long %>%
   pivot_wider(id_cols = otu, names_from = sample_id, values_from = count) %>%
@@ -293,19 +301,19 @@ otutable <- otutable_long %>%
   paste("Dimension of the phylotype table table is", 
       dim(otutable)[1], "rows and", 
       dim(otutable)[2], "columns")
-  ```
+```
 
 
 ## Original taxonomy table
 ```{r}
-head(read_tsv("data/process/final.opti_mcc.0.03.cons.taxonomy", show_col_types = F))
+head(read_tsv("data/mothur/process/final.taxonomy", show_col_types = F))
 ```
 
 
 ## Tidy taxonomy table
 ```{r}
 taxlevels <- c("kingdom", "phylum", "class", "order", "family", "genus")
-taxonomy <- read_tsv("data/process/final.opti_mcc.0.03.cons.taxonomy", show_col_types = F) %>%
+taxonomy <- read_tsv("data/mothur/process/final.taxonomy", show_col_types = F) %>%
   rename_all(tolower) %>%
   select(otu, taxonomy) %>%
   mutate(otu = tolower(otu),
