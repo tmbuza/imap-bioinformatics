@@ -1,16 +1,39 @@
 # config.yaml
-# William L. Close
 
-# Purpose: Snakemake config file containing user-provided settings for analyzing 16S data using mothur.
+# Change these settings before running workflow.
 
-##################################################################
-#
-# Mothur
-#
-##################################################################
 
-# NOTE: As required, change these settings before running workflow.
+workdir: .
 
+outdir: data/mothur/process
+
+# Auto created from fastq files
+dataset: test
+
+# Manually created file
+samples:
+
+metadata:
+
+# Mothur processes
+assemble: final.contigs
+
+align: final.aligned
+
+denoise: final.denoised
+
+rmvchimeras: final.nochimeras
+
+classify: final.onlybacteria
+
+cluster: final.cluster97
+
+otutable: final.otu.shared
+
+phylotable: final.phylotype.shared
+
+asvtable: final.asv.shared
+  
 # Group names of mock samples (e.g. Mock1_S1_L001_R1_001.fastq.gz = Mock1).
 mothurMock:
   - Mock1
@@ -37,10 +60,8 @@ mothurBeta:
   - thetayc
   - braycurtis
 
-# Minimum read threshold for subsampling.
+# Minimum read threshold for subsampling. Review sample statistics from preprocessing step
 subthresh: 1000
-
-
 
 # NOTE: Leave these settings as is.
 
@@ -49,10 +70,37 @@ readNum:
   - R1
   - R2
 
+sraNum:
+  - 1
+  - 2
+
 mothurGroups:
   - sample
   - mock
   - control
 
+
 # Random seed
-seed: 20170415
+seed: 110912
+
+
+# # More paraametersor reference
+#   dataset: stability
+#   workdir: data
+#   reference: silva.bacteria/silva.bacteria
+#   trainset: trainset9_032012.pds.fasta
+#   taxonomy: trainset9_032012.pds.tax
+#   maxambig: 0
+#   maxlength: 275
+#   start: 11894
+#   end: 25319
+#   keepdots: F
+#   maxhomop: 8
+#   vertical: T
+#   trump: .
+#   diff: 2
+#   dereplicate: t
+#   cutoff: 80
+#   taxon: Chloroplast-Mitochondria-unknown-Archaea-Eukaryota
+#   group: Mock
+#   dist_cutoff: 0.20

@@ -1,32 +1,40 @@
-# Set the variables to be used in this script
-SAMPLEDIR="data/raw"
-OUTDIR="data/process/"
-FASTA2ALIGN="data/process/test.trim.contigs.good.fasta"
-SILVAALIGN="data/references/silva.seed.align"
-# RDPFASTA="data/references/trainset16_022016.pds.fasta"
-# RDPTAX="data/references/trainset16_022016.pds.tax"
+#! /bin/bash
+
+# makealign_n_filter_contigs.sh
+
+SILVAALIGN="data/mothur/references/silva.v4.align"
+OUTDIR="data/mothur/process"
+FASTA="test.trim.contigs.good.unique.fasta"
+COUNT="test.trim.contigs.good.count_table"
+LOGS="data/mothur/logs"
 
 
-# # Making contigs from fastq.gz files, aligning reads to references, removing any non-bacterial sequences, calculating distance matrix, making shared file, and classifying OTUs
-#  mothur "#set.logfile(name=make_contigs.logfile);
-#       make.contigs(file=data/process/test.files, inputdir="${SAMPLEDIR}", outputdir="${OUTDIR}");
-#       screen.seqs(fasta=current, group=current, maxambig=0, maxlength=275, maxhomop=8);
-#       unique.seqs(count=current);
-#       summary.seqs(fasta=current, count=current);" 
+echo PROGRESS: Aligning and filtering bad alignments.
 
-
-# Aligning reads to references, removing any non-bacterial sequences, calculating distance matrix, making shared file, and classifying OTUs
-mothur "#set.logfile(name=align_n_clean.logfile);
-	align.seqs(fasta="${FASTA2ALIGN}", reference="${SILVAALIGN}, inputdir="${OUTDIR}", outputdir="${OUTDIR});
+mkdir -p "${OUTDIR}" 
+	
+mothur "#set.logfile(name=${LOGS}/align_n_filter.logfile);
+	set.current(fasta=${OUTDIR}/${FASTA}, count=${OUTDIR}/${COUNT});
+    align.seqs(fasta=current, reference=${SILVAALIGN}, inputdir=${OUTDIR}, outputdir=${OUTDIR});
     screen.seqs(fasta=current, count=current, maxhomop=8);
     filter.seqs(fasta=current, vertical=T, trump=.);
     unique.seqs(fasta=current, count=current);
-    pre.cluster(fasta=current, count=current, diffs=2);"
+	summary.seqs(fasta=current, count=current);"
 
-# Calculating distance matrix, making shared file, and classifying OTUs
-# 	dist.seqs(fasta=current, cutoff=0.03);
-# 	cluster(column=current, count=current);
-# 	make.shared(list=current, count=current, label=0.03);
-# 	classify.otu(list=current, count=current, taxonomy=current, label=0.03);
-# 	get.oturep(fasta=current, count=current, list=current, label=0.03, method=abundance)"
+    # set.logfile(name=${LOGS}/precluster_n_chimera_removal.logfile);
+    # pre.cluster(fasta=current, count=current, diffs=2);
+	
+	# summary.seqs(fasta=current, count=current);
+	# screen.seqs(fasta=current, count=current, start=13862, end=23444, maxhomop=8);
+	# filter.seqs(fasta=current, vertical=T, trump=.);
+	# pre.cluster(fasta=current, count=current, diffs=2);
+	# unique.seqs(fasta=current, count=current);
 
+	# set.logfile(name=chimera_removal.logfile)
+	# chimera.vsearch(fasta=current, count=current, dereplicate=t);
+
+	# set.logfile(name=silva_seed_classification.logfile)
+	# classify.seqs(fasta=current, count=current, reference=silva.seed_v138_1.align, taxonomy=silva.seed_v138_1.tax, cutoff=100);
+	# remove.lineage(fasta=current, count=current, taxonomy=current, taxon=Chloroplast-Mitochondria-unknown-Archaea-Eukaryota);"
+
+	# "rename.file(fasta=current, count=current, taxonomy=current, prefix=final)"
