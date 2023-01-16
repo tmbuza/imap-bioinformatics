@@ -7,13 +7,13 @@ workdir: .
 
 outdir: data/mothur/process
 
+dbdir: data/mothur/references
+
 # Auto created from fastq files
 dataset: test
 
 # Manually created file
-samples:
-
-metadata:
+samplesfiles: data/mothur/metadata/test.files
 
 # Mothur processes
 assemble: final.contigs
@@ -24,7 +24,7 @@ denoise: final.denoised
 
 rmvchimeras: final.nochimeras
 
-classify: final.onlybacteria
+classify: final.bacterial
 
 cluster: final.cluster97
 

@@ -18,7 +18,7 @@ echo PROGRESS: Assembling and Screening unique representative sequences.
 mkdir -p "${OUTDIR}" "${LOGS}"
 
 mothur "#set.logfile(name=${LOGS}/seq_assembly.logfile);
-	set.current(file=${OUTDIR}/test.files);
+	set.current(file=${OUTDIR}/${FILES});
 	make.contigs(file=current, inputdir=${SAMPLEDIR}, outputdir=${OUTDIR});
 	
 	set.logfile(name=${LOGS}/screen_unique.logfile);
