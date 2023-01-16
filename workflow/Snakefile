@@ -12,33 +12,32 @@ sraSamples = list(set(glob_wildcards(os.path.join('{outdir}/raw/', '{sample}_{sr
 
 rule all:
     input:
-        expand("{outdir}/{group}.final.shared", outdir=config["outdir"], group = config["mothurGroups"])
-        # expand("{dbdir}/silva.seed.align", dbdir=config["dbdir"]),
-        # expand("{dbdir}/trainset16_022016.pds.fasta", dbdir=config["dbdir"]),
-        # expand("{dbdir}/trainset16_022016.pds.tax", dbdir=config["dbdir"]),
-        # expand("{dbdir}/zymo.mock.16S.fasta", dbdir=config["dbdir"]),
+        expand("{dbdir}/silva.seed.align", dbdir=config["dbdir"]),
+        expand("{dbdir}/trainset16_022016.pds.fasta", dbdir=config["dbdir"]),
+        expand("{dbdir}/trainset16_022016.pds.tax", dbdir=config["dbdir"]),
+        expand("{dbdir}/zymo.mock.16S.fasta", dbdir=config["dbdir"]),
+        expand("{outdir}/{dataset}.files", outdir=config["outdir"], dataset=config["dataset"]),
+        expand("{outdir}/{dataset}.trim.contigs.good.unique.fasta", outdir=config["outdir"], dataset=config["dataset"]),
+        expand("{outdir}/{dataset}.trim.contigs.good.count_table", outdir=config["outdir"], dataset=config["dataset"]),
+        expand("{outdir}/{dataset}.trim.contigs.good.unique.align", outdir=config["outdir"], dataset=config["dataset"]),
+        expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.fasta", outdir=config["outdir"], dataset=config["dataset"]),
+        expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.count_table", outdir=config["outdir"], dataset=config["dataset"]),
+        expand("{outdir}/{dataset}..trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.fasta", outdir=config["outdir"], dataset=config["dataset"]),
+        expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pds.wang.pick.taxonomy", outdir=config["outdir"], dataset=config["dataset"]),
+        expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.count_table", outdir=config["outdir"], dataset=config["dataset"]),
+        # "data/mothur/process/sample.final.shared", 
+        # "data/mothur/process/mock.final.shared", 
+        # "data/mothur/process/control.final.shared"
+        "dags/rulegraph.svg",
+        "dags/rulegraph.png",
+        "dags/dag.svg",
+        "dags/dag.png",
+        "report/report.html",
+        "index.html"
 
-        # expand("{outdir}/{dataset}.files", outdir=config["outdir"], dataset=config["dataset"]),
-        # expand("{outdir}/{dataset}.trim.contigs.good.unique.fasta", outdir=config["outdir"], dataset=config["dataset"]),
-        # expand("{outdir}/{dataset}.trim.contigs.good.count_table", outdir=config["outdir"], dataset=config["dataset"]),
-        # expand("{outdir}/{dataset}.trim.contigs.good.unique.align", outdir=config["outdir"], dataset=config["dataset"]),
-        # expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.fasta", outdir=config["outdir"], dataset=config["dataset"]),
-        # expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.count_table", outdir=config["outdir"], dataset=config["dataset"]),
-        # expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.fasta", outdir=config["outdir"], dataset=config["dataset"]),
-        # expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.count_table", outdir=config["outdir"], dataset=config["dataset"]),
-        # expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pds.wang.pick.taxonomy", outdir=config["outdir"], dataset=config["dataset"]),
-        # expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.count_table", outdir=config["outdir"], dataset=config["dataset"]),
-        # expand("{outdir}/{group}.final.shared", outdir=config["outdir"], group = config["mothurGroups"])
-		# "data/process/final.opti_mcc.list",
-		# "data/process/final.opti_mcc.steps",
-		# "data/process/final.opti_mcc.sensspec",
-		# "data/process/final.opti_mcc.shared",
-		# "data/process/final.opti_mcc.0.03.cons.taxonomy",
-		# "data/process/final.opti_mcc.0.03.cons.tax.summary",
-		# "data/process/final.opti_mcc.0.03.rep.count_table",
-		# "data/process/final.opti_mcc.0.03.rep.fasta",
-		# "data/process/final.opti_mcc.0.03.biom",
-		# "data/process/final.opti_mcc.0.03.lefse",        
+include: "rules/rules_dag.smk"
+include: "rules/interactive_report.smk"
+include: "rules/render_index.smk"     
 
 	
 # SILVA database for use as reference alignment.
@@ -114,30 +113,29 @@ rule align_n_filter:
         "bash {input.script} {input.refs}"
 
 rule denoise_n_classify_otus:
-	input:
-		script="workflow/scripts/denoise_n_classify.sh",
-		fasta=rules.align_n_filter.output.fasta,
-		ctable=rules.align_n_filter.output.ctable,
-		fastaref=expand("{dbdir}/trainset16_022016.pds.fasta", dbdir=config["dbdir"]),
-		taxref=expand("{dbdir}/trainset16_022016.pds.tax", dbdir=config["dbdir"]),
-	output:
-		fasta = "{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.fasta",
-		ctable = "{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.count_table",
-		taxonomy = "{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pds.wang.pick.taxonomy",
-	shell:
-		"bash {input.script} {input.fastaref} {input.taxref}"
+    input:
+        script="workflow/scripts/denoise_n_classify.sh",
+        fasta=rules.align_n_filter.output.fasta,
+        ctable=rules.align_n_filter.output.ctable,
+        fastaref=expand("{dbdir}/trainset16_022016.pds.fasta", dbdir=config["dbdir"]),
+        taxref=expand("{dbdir}/trainset16_022016.pds.tax", dbdir=config["dbdir"]),
+    output:
+        fasta = "{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.fasta",
+        ctable = "{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.count_table",
+        taxonomy = "{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pds.wang.pick.taxonomy",
+    shell:
+        "bash {input.script} {input.fastaref} {input.taxref}"
 
 
 # Splitting shared by group
 rule split_otutable:
 	input:
 		script="workflow/scripts/mothurSplitShared.sh",
-		shared="data/mothur/process/final.shared"
 	output:
 		shared=expand("{outdir}/{group}.final.shared", outdir=config["outdir"], group = config["mothurGroups"])
 	params:
-		mockGroups='-'.join(config["mothurMock"]), # Concatenates all mock group names with hyphens
-		controlGroups='-'.join(config["mothurControl"]) # Concatenates all control group names with hyphens
+		mockGroups='-'.join(config["mothurMock"]),
+		controlGroups='-'.join(config["mothurControl"])
 	conda:
 		"envs/mothur.yaml"
 	shell:
