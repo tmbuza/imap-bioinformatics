@@ -32,5 +32,5 @@ mv ${OUTDIR}/tmp/silva.seed_v138.pick.pcr.align ${OUTDIR}/silva.v4.align
 # Cleaning up reference dir
 rm -rf "${OUTDIR}"/tmp/
 
-mothur "#set.logfile(name=${LOGS}/gdegap_silva_align.logfile);
+mothur "#set.logfile(name=${LOGS}/degap_silva_align.logfile);
 	degap.seqs(fasta=${OUTDIR}/silva.seed.align)"

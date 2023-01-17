@@ -28,7 +28,7 @@ classify: final.bacterial
 
 cluster: final.cluster97
 
-otutable: final.otu.shared
+final: final
 
 phylotable: final.phylotype.shared
 

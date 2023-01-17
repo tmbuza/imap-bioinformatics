@@ -2,7 +2,6 @@
 # make_contigs.sh
 
 SAMPLEDIR="data/mothur/raw"
-SAMPLEMAPPING="data/mothur/metadata/sample_metadata.tsv"
 OUTDIR="data/mothur/process"
 LOGS="data/mothur/logs"
 FILES="test.files"
@@ -17,7 +16,7 @@ echo PROGRESS: Assembling and Screening unique representative sequences.
 # Output dirs
 mkdir -p "${OUTDIR}" "${LOGS}"
 
-mothur "#set.logfile(name=${LOGS}/seq_assembly.logfile);
+mothur "#set.logfile(name=${LOGS}/make_contigs.logfile);
 	set.current(file=${OUTDIR}/${FILES});
 	make.contigs(file=current, inputdir=${SAMPLEDIR}, outputdir=${OUTDIR});
 	
