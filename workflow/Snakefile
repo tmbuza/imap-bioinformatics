@@ -14,50 +14,51 @@ mothurSamples = list(set(glob_wildcards(os.path.join('{outdir}/raw/', '{sample}_
 sraSamples = list(set(glob_wildcards(os.path.join('{outdir}/raw/', '{sample}_{sraNum, [12]}.fastq.gz')).sample))
 
 
-rule Output_Files:
+# rule Output_Files:
+rule all:
     input:
-        expand("{outdir}/{dataset}.files", outdir=config["outdir"], dataset=config["dataset"]),
+        # expand("{outdir}/{dataset}.files", outdir=config["outdir"], dataset=config["dataset"]),
 
-        expand("{outdir}/{dataset}.trim.contigs.good.unique.fasta", outdir=config["outdir"], dataset=config["dataset"]),
-        expand("{outdir}/{dataset}.trim.contigs.good.count_table", outdir=config["outdir"], dataset=config["dataset"]),
+        # expand("{outdir}/{dataset}.trim.contigs.good.unique.fasta", outdir=config["outdir"], dataset=config["dataset"]),
+        # expand("{outdir}/{dataset}.trim.contigs.good.count_table", outdir=config["outdir"], dataset=config["dataset"]),
 
-        expand("{outdir}/{dataset}.trim.contigs.good.unique.align", outdir=config["outdir"], dataset=config["dataset"]),
-        expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.fasta", outdir=config["outdir"], dataset=config["dataset"]),
-        expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.count_table", outdir=config["outdir"], dataset=config["dataset"]),
+        # expand("{outdir}/{dataset}.trim.contigs.good.unique.align", outdir=config["outdir"], dataset=config["dataset"]),
+        # expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.fasta", outdir=config["outdir"], dataset=config["dataset"]),
+        # expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.count_table", outdir=config["outdir"], dataset=config["dataset"]),
 
-        expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.count_table", outdir=config["outdir"], dataset=config["dataset"]),
-        expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.fasta", outdir=config["outdir"], dataset=config["dataset"]),
+        # expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.count_table", outdir=config["outdir"], dataset=config["dataset"]),
+        # expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.fasta", outdir=config["outdir"], dataset=config["dataset"]),
        
-        expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.dist", outdir=config["outdir"], dataset=config["dataset"]),
+        # expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.dist", outdir=config["outdir"], dataset=config["dataset"]),
         
-        expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.opti_mcc.list", outdir=config["outdir"], dataset=config["dataset"]),
-        expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.opti_mcc.steps", outdir=config["outdir"], dataset=config["dataset"]),
-        expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.opti_mcc.sensspec", outdir=config["outdir"], dataset=config["dataset"]),
+        # expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.opti_mcc.list", outdir=config["outdir"], dataset=config["dataset"]),
+        # expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.opti_mcc.steps", outdir=config["outdir"], dataset=config["dataset"]),
+        # expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.opti_mcc.sensspec", outdir=config["outdir"], dataset=config["dataset"]),
         
-        expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.opti_mcc.shared", outdir=config["outdir"], dataset=config["dataset"]),
-        expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.opti_mcc.0.03.cons.taxonomy", outdir=config["outdir"], dataset=config["dataset"]),
-        expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.opti_mcc.0.03.cons.tax.summary", outdir=config["outdir"], dataset=config["dataset"]),
-        expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.opti_mcc.0.03.rep.count_table", outdir=config["outdir"], dataset=config["dataset"]),
-        expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.opti_mcc.0.03.lefse", outdir=config["outdir"], dataset=config["dataset"]),
-        expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.opti_mcc.0.03.biom", outdir=config["outdir"], dataset=config["dataset"]),
+        # expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.opti_mcc.shared", outdir=config["outdir"], dataset=config["dataset"]),
+        # expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.opti_mcc.0.03.cons.taxonomy", outdir=config["outdir"], dataset=config["dataset"]),
+        # expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.opti_mcc.0.03.cons.tax.summary", outdir=config["outdir"], dataset=config["dataset"]),
+        # expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.opti_mcc.0.03.rep.count_table", outdir=config["outdir"], dataset=config["dataset"]),
+        # expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.opti_mcc.0.03.lefse", outdir=config["outdir"], dataset=config["dataset"]),
+        # expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.opti_mcc.0.03.biom", outdir=config["outdir"], dataset=config["dataset"]),
 
         expand("{outdir}/{final}.shared", outdir=config["outdir"], final = config["final"]),
 
         expand("{outdir}/{group}.final.shared", outdir=config["outdir"], group = config["mothurGroups"]),
 
         
-        "dags/rulegraph.svg",
-        "dags/rulegraph.png",
-        "dags/dag.svg",
-        "dags/dag.png",
+#         "dags/rulegraph.svg",
+#         "dags/rulegraph.png",
+#         "dags/dag.svg",
+#         "dags/dag.png",
 
-        "report/report.html",
+#         "report/report.html",
 
-        "index.html"
+#         "index.html"
 
-include: "rules/rules_dag.smk"
-include: "rules/interactive_report.smk"
-include: "rules/render_index.smk"     
+# include: "rules/rules_dag.smk"
+# include: "rules/interactive_report.smk"
+# include: "rules/render_index.smk"     
 
 	
 # SILVA database for use as reference alignment.
