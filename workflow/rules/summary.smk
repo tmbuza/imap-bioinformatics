@@ -3,7 +3,7 @@ from snakemake.utils import min_version
 min_version("6.10.0")
 
 
-rule all:
+rule Output_Files:
     input:
         "dags/rulegraph.svg",
         "dags/rulegraph.png",
