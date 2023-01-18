@@ -1,6 +1,3 @@
-import pandas as pd
-
-# Snakemake file for 16S pipeline
 from snakemake.utils import min_version
 
 min_version("6.10.0")
@@ -9,207 +6,83 @@ min_version("6.10.0")
 configfile: "config/config.yaml"
 
 # Function for aggregating list of raw sequencing files.
-mothurSamples = list(set(glob_wildcards(os.path.join('{outdir}/raw/', '{sample}_{readNum, R[12]}_001.fastq.gz')).sample))
+mothurSamples = list(set(glob_wildcards(os.path.join('data/mothur/raw/', '{sample}_{readNum, R[12]}_001.fastq.gz')).sample))
 
-sraSamples = list(set(glob_wildcards(os.path.join('{outdir}/raw/', '{sample}_{sraNum, [12]}.fastq.gz')).sample))
+sraSamples = list(set(glob_wildcards(os.path.join('data/mothur/raw/', '{sample}_{sraNum, [12]}.fastq.gz')).sample))
 
 
-# rule Output_Files:
 rule all:
     input:
-        # expand("{outdir}/{dataset}.files", outdir=config["outdir"], dataset=config["dataset"]),
+    # get_references.smk
+        expand("{refsdir}/{silva}.seed.align", refsdir=config["refsdir"], silva="silva"),
+        expand("{refsdir}/{silva}.v4.align", refsdir=config["refsdir"], silva="silva"),
+        expand("{refsdir}/{silva}.seed.ng.fasta", refsdir=config["refsdir"], silva="silva"),
+        expand("{refsdir}/{silva}.v4.ng.fasta", refsdir=config["refsdir"], silva="silva"),
+        expand("{refsdir}/{rpd}.pds.fasta", refsdir=config["refsdir"], rpd="trainset16_022016"),
+        expand("{refsdir}/{rpd}.pds.tax", refsdir=config["refsdir"], rpd="trainset16_022016"),
+        expand("{refsdir}/{zymo}.mock.16S.v4.fasta", refsdir=config["refsdir"], zymo="zymo"),
 
-        # expand("{outdir}/{dataset}.trim.contigs.good.unique.fasta", outdir=config["outdir"], dataset=config["dataset"]),
-        # expand("{outdir}/{dataset}.trim.contigs.good.count_table", outdir=config["outdir"], dataset=config["dataset"]),
+        # make_files.smk
+        expand("{outdir}/{dataset}.files", outdir=config["outdir"], dataset=config["dataset"]),
 
-        # expand("{outdir}/{dataset}.trim.contigs.good.unique.align", outdir=config["outdir"], dataset=config["dataset"]),
-        # expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.fasta", outdir=config["outdir"], dataset=config["dataset"]),
-        # expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.count_table", outdir=config["outdir"], dataset=config["dataset"]),
+        # make_contigs.smk
+        expand("{outdir}/{dataset}.trim.contigs.good.unique.fasta", outdir=config["outdir"], dataset=config["dataset"]),
+        expand("{outdir}/{dataset}.trim.contigs.good.count_table", outdir=config["outdir"], dataset=config["dataset"]),
+        expand("{outdir}/{dataset}.trim.contigs.good.unique.summary", outdir=config["outdir"], dataset=config["dataset"]),
 
-        # expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.count_table", outdir=config["outdir"], dataset=config["dataset"]),
-        # expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.fasta", outdir=config["outdir"], dataset=config["dataset"]),
-       
-        # expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.dist", outdir=config["outdir"], dataset=config["dataset"]),
+        # align_n_filter.smk
+        expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.fasta", outdir=config["outdir"], dataset=config["dataset"]),
+        expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.count_table", outdir=config["outdir"], dataset=config["dataset"]),
+
+        # denoise_n_classify80.smk
+        expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.count_table", outdir=config["outdir"], dataset=config["dataset"]),
+        expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.fasta", outdir=config["outdir"], dataset=config["dataset"]),
+        expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pds.wang.pick.taxonomy", outdir=config["outdir"], dataset=config["dataset"]),
+        expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pds.wang.accnos", outdir=config["outdir"], dataset=config["dataset"]),
+
+        # cluster_identity97
+        expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.opti_mcc.list", outdir=config["outdir"], dataset=config["dataset"]),
+        expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.opti_mcc.steps", outdir=config["outdir"], dataset=config["dataset"]),
+        expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.opti_mcc.sensspec", outdir=config["outdir"], dataset=config["dataset"]),
+
+        # get_otutable
+        expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.opti_mcc.shared", outdir=config["outdir"], dataset=config["dataset"]),
+        expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.opti_mcc.0.03.cons.taxonomy", outdir=config["outdir"], dataset=config["dataset"]),
+        expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.opti_mcc.0.03.cons.tax.summary", outdir=config["outdir"], dataset=config["dataset"]),
+        expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.opti_mcc.0.03.rep.count_table", outdir=config["outdir"], dataset=config["dataset"]),
+        expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.opti_mcc.0.03.lefse", outdir=config["outdir"], dataset=config["dataset"]),
+        expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.opti_mcc.0.03.biom", outdir=config["outdir"], dataset=config["dataset"]),
+
+        # reformat_files
+        "data/mothur/process/final.list",
+        "data/mothur/process/final.shared",
+        "data/mothur/process/final.steps",
+        "data/mothur/process/final.sensspec",
+        "data/mothur/process/final.cons.taxonomy",
+        "data/mothur/process/final.cons.tax.summary",
+        "data/mothur/process/final.rep.fasta",
+        "data/mothur/process/final.rep.count_table",
+        "data/mothur/process/final.lefse",
+        "data/mothur/process/final.biom",
         
-        # expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.opti_mcc.list", outdir=config["outdir"], dataset=config["dataset"]),
-        # expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.opti_mcc.steps", outdir=config["outdir"], dataset=config["dataset"]),
-        # expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.opti_mcc.sensspec", outdir=config["outdir"], dataset=config["dataset"]),
-        
-        # expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.opti_mcc.shared", outdir=config["outdir"], dataset=config["dataset"]),
-        # expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.opti_mcc.0.03.cons.taxonomy", outdir=config["outdir"], dataset=config["dataset"]),
-        # expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.opti_mcc.0.03.cons.tax.summary", outdir=config["outdir"], dataset=config["dataset"]),
-        # expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.opti_mcc.0.03.rep.count_table", outdir=config["outdir"], dataset=config["dataset"]),
-        # expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.opti_mcc.0.03.lefse", outdir=config["outdir"], dataset=config["dataset"]),
-        # expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.opti_mcc.0.03.biom", outdir=config["outdir"], dataset=config["dataset"]),
-
-        expand("{outdir}/{final}.shared", outdir=config["outdir"], final = config["final"]),
-
+        # split_otutable
         expand("{outdir}/{group}.final.shared", outdir=config["outdir"], group = config["mothurGroups"]),
 
-        
-#         "dags/rulegraph.svg",
-#         "dags/rulegraph.png",
-#         "dags/dag.svg",
-#         "dags/dag.png",
-
-#         "report/report.html",
-
-#         "index.html"
-
-# include: "rules/rules_dag.smk"
-# include: "rules/interactive_report.smk"
-# include: "rules/render_index.smk"     
-
-	
-# SILVA database for use as reference alignment.
-rule get_silva_alignements:
-	input:
-		script="workflow/scripts/mothur_silva.sh"
-	output:
-		align="{dbdir}/silva.seed.align",
-	conda:
-		"envs/mothur.yaml"
-	shell:
-		"bash {input.script}"
+        # summary.smk
+        "dags/rulegraph.svg",
+        "report/report.html",
+        "index.html",      
 
 
-# RDP database for use as reference classifier.
-rule get_rdp_classifier:
-	input:
-		script="workflow/scripts/mothur_rdp.sh"
-	output:
-		rdpfasta="{dbdir}/trainset16_022016.pds.fasta",
-		rdptax="{dbdir}/trainset16_022016.pds.tax"
-	conda:
-		"envs/mothur.yaml"
-	shell:
-		"bash {input.script}"
+include: "rules/get_references.smk"
+include: "rules/make_files.smk"
+include: "rules/make_contigs.smk"
+include: "rules/align_n_filter.smk"
+include: "rules/denoise_n_classify80.smk"
+include: "rules/cluster_identity97.smk"
+include: "rules/get_otutable.smk"
+include: "rules/reformat_files.smk"
+include: "rules/split_otutable.smk"
 
+# include: "rules/summary.smk"
 
-# Downloading the Zymo mock sequence files and extracting v4 region for error estimation.
-rule get_zymo_mock:
-	input:
-		script="workflow/scripts/mothur_zymo_mock.sh",
-		refs=rules.get_silva_alignements.output.align
-	output:
-		mockrefs="{dbdir}/zymo.mock.16S.fasta"
-	conda:
-		"envs/mothur.yaml"
-	shell:
-		"bash {input.script}"
-
-
-rule make_files:
-    input:
-        script="workflow/scripts/make_files.sh",
-    output:
-        files="{outdir}/{dataset}.files",
-    shell:
-        "bash {input.script}"
-
-
-rule make_contigs:
-    input:
-        script="workflow/scripts/make_contigs.sh",
-        files=rules.make_files.output.files
-    output:
-        fasta = "{outdir}/{dataset}.trim.contigs.good.unique.fasta",
-        ctable = "{outdir}/{dataset}.trim.contigs.good.count_table",
-    threads: 2
-    shell:
-        "bash {input.script} {input.files}"
-
-
-rule align_n_filter:
-    input:
-        script="workflow/scripts/align_n_filter.sh",
-        fasta=rules.make_contigs.output.fasta,
-        ctable=rules.make_contigs.output.ctable,
-        refs=expand("{dbdir}/silva.seed.align", dbdir=config["dbdir"]),
-    output:
-        align = "{outdir}/{dataset}.trim.contigs.good.unique.align",
-        fasta = "{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.fasta",
-        ctable = "{outdir}/{dataset}.trim.contigs.good.unique.good.filter.count_table",
-    shell:
-        "bash {input.script} {input.refs}"
-
-rule denoise_n_classify80:
-    input:
-        script="workflow/scripts/denoise_n_classify80.sh",
-        fasta=rules.align_n_filter.output.fasta,
-        ctable=rules.align_n_filter.output.ctable,
-        fastaref=expand("{dbdir}/trainset16_022016.pds.fasta", dbdir=config["dbdir"]),
-        taxref=expand("{dbdir}/trainset16_022016.pds.tax", dbdir=config["dbdir"]),
-    output:
-        fasta = "{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.fasta",
-        ctable = "{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.count_table",
-        taxonomy = "{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pds.wang.pick.taxonomy",
-
-    shell:
-        "bash {input.script} {input.fastaref} {input.taxref}"
-
-
-rule cluster_seq97:
-    input:
-        script="workflow/scripts/get_otutable.sh",
-        fasta=rules.denoise_n_classify80.output.fasta,
-        ctable=rules.denoise_n_classify80.output.ctable,
-    output:
-        dist="{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.dist",
-        mcclist="{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.opti_mcc.list",
-        steps="{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.opti_mcc.steps",
-        sensspec="{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.opti_mcc.sensspec"
-    shell:
-        "bash {input.script}"
-
-
-rule get_otutable:
-    input:
-        script="workflow/scripts/get_otutable.sh",
-        mcclist=rules.cluster_seq97.output.mcclist,
-        ctable=rules.denoise_n_classify80.output.ctable,
-        taxonomy=rules.denoise_n_classify80.output.taxonomy,
-    output:
-        shared="{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.opti_mcc.shared",
-        constaxonomy="{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.opti_mcc.0.03.cons.taxonomy",
-        taxsummary="{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.opti_mcc.0.03.cons.tax.summary",
-        fasta="{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.opti_mcc.0.03.rep.fasta",
-        ctable="{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.opti_mcc.0.03.rep.count_table",
-        lefse="{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.opti_mcc.0.03.lefse",
-        biom="{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.opti_mcc.0.03.biom",
-    shell:
-        "bash {input.script}"
-
-
-rule reformat_files:
-    input:
-        script="workflow/scripts/reformat_files.sh",
-        shared=expand(rules.get_otutable.output.shared, outdir=config["outdir"], dataset=config["dataset"]),
-    output:
-        # fnlist="{outdir}/{final}.list",
-        # steps="{outdir}/{final}.steps",
-        # sensspec="{outdir}/{final}.sensspec",
-        shared="{outdir}/{final}.shared",
-        # constaxonomy="{outdir}/{final}.cons.taxonomy",
-        # taxsummary="{outdir}/{final}.cons.tax.summary",
-        # ctable="{outdir}/{final}.rep.count_table",
-        # lefse="{outdir}/{final}.lefse",
-        # biom="{outdir}/{final}.biom",
-    shell:
-        "bash  {input.script}"
-        
-
-# Splitting shared by group
-rule split_otutable:
-    input:
-        script="workflow/scripts/split_otutable.sh",
-        shared=expand(rules.reformat_files.output.shared, outdir=config["outdir"], final=config["final"]),
-    output:
-        shared=expand("{outdir}/{group}.final.shared", outdir=config["outdir"], group = config["mothurGroups"])
-    params:
-        mockGroups='-'.join(config["mothurMock"]),
-        controlGroups='-'.join(config["mothurControl"])
-    conda:
-        "envs/mothur.yaml"
-    shell:
-        "bash {input.script} {params.mockGroups} {params.controlGroups}"

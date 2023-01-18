@@ -5,9 +5,13 @@
 
 workdir: .
 
-outdir: data/mothur/process
+rawdir: data/mothur/raw
 
-dbdir: data/mothur/references
+metadir: data/mothur/metadata
+
+refsdir: data/mothur/references
+
+outdir: data/mothur/process
 
 # Auto created from fastq files
 dataset: test

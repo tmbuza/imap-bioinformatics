@@ -28,12 +28,12 @@ mkdir -p "${OUTDIR}"
 
 	set.logfile(name=name=${LOGS}/classify_seq.logfile);
 	classify.seqs(fasta=current, count=current, reference=${DBREFSDIR}/${CLASSIFIER}, taxonomy=${DBREFSDIR}/${TAXONOMY}, cutoff=97);
-	remove.lineage(fasta=current, count=current, taxonomy=current, taxon=Chloroplast-Mitochondria-unknown-Archaea-Eukaryota);
+	remove.lineage(fasta=current, count=current, taxonomy=current, taxon=Chloroplast-Mitochondria-unknown-Archaea-Eukaryota);"
     
-	set.logfile(name=${LOGS}/cluster_n_classify_otu.logfile);
+	# set.logfile(name=${LOGS}/cluster_n_classify_otu.logfile);
 
-	dist.seqs(fasta=current, cutoff=0.03, inputdir=${OUTDIR}, outputdir=${OUTDIR});
-	cluster(column=current, count=current);"
+	# dist.seqs(fasta=current, cutoff=0.03, inputdir=${OUTDIR}, outputdir=${OUTDIR});
+	# cluster(column=current, count=current);"
 
 
 	# set.logfile(name=${LOGS}/cluster_n_classify.logfile);

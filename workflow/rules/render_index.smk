@@ -1,8 +1,4 @@
-# rule target:
-# 	input:
-# 		"index.html",
-
-rule render_index:
+rule ghp_index:
     input:
         rmd="index.Rmd",
         rulegraph="dags/rulegraph.svg",

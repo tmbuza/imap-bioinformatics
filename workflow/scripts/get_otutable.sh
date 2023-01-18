@@ -9,7 +9,7 @@ LOGS="data/mothur/logs"
 MCCLIST="test.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.opti_mcc.list"
 COUNT="test.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.count_table"
 TAXONOMY="test.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pds.wang.pick.taxonomy"
-FASTA="test.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.opti_mcc.list"
+FASTA="test.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.fasta"
 
 echo PROGRESS: Generating the OTU table, the shared file.
 

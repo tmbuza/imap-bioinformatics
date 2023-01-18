@@ -8,59 +8,52 @@ configfile: "config/config.yaml"
 # Function for aggregating list of raw sequencing files.
 mothurSamples = list(set(glob_wildcards(os.path.join('data/mothur/raw/', '{sample}_{readNum, R[12]}_001.fastq.gz')).sample))
 
-
-rule all:
-    input: 
-        expand("data/mothur/process_test/{dataset}.files", dataset=config["dataset"]),
-        expand("data/mothur/process_test/{dataset}.trim.contigs.good.fasta", dataset=config["dataset"]),
-        "dags/rulegraph.svg",
-        "dags/rulegraph.png",
-        "dags/dag.svg",
-        "dags/dag.png",
-        "report/report.html",
-        "index.html"
-# Snakefile
-# Snakemake file for 16S pipeline
-
-# Configuration file containing all user-specified settings
-configfile: "config/config.yaml"
-
-# Function for aggregating list of raw sequencing files.
-mothurSamples = list(set(glob_wildcards(os.path.join('data/mothur/raw/', '{sample}_{readNum, R[12]}_001.fastq.gz')).sample))
-
 sraSamples = list(set(glob_wildcards(os.path.join('data/mothur/raw/', '{sample}_{sraNum, [12]}.fastq.gz')).sample))
 
-# Master rule for controlling workflow.
-
-"""
-Preprocess results using mothur
-"""
 
 rule all:
     input:
+        # make_files.smk
         expand("{outdir}/{dataset}.files", outdir=config["outdir"], dataset=config["dataset"]),
-        expand("{outdir}/{dataset}.trim.contigs.fasta", outdir=config["outdir"], dataset=config["dataset"]),
+
+        # get_references.smk
+        "data/mothur/references/silva.seed.align",
+        "data/mothur/references/silva.v4.align",
+        "data/mothur/references/trainset16_022016.pds.fasta",
+        "data/mothur/references/trainset16_022016.pds.tax",
+        "data/mothur/references/zymo.mock.16S.v4.fasta"
+
+        # summary.smk
+        "dags/rulegraph.svg",
+        "report/report.html",
+        "index.html"
 
 
-rule make_files:
-    input:
-        script="workflow/scripts/make_files.sh",
-    output:
-        files="{outdir}/{dataset}.files",
-    shell:
-        "bash {input.script}"
+
+include: "get_references.smk"
+include: "make_files.smk"
+include: "summary.smk"
 
 
-rule make_contigs:
-    input:
-        script="workflow/scripts/make_contigs.sh",
-        files=rules.make_files.output.files,
-        raw=expand("{outdir}/{mothurSamples}_{readNum}_001.fastq.gz", mothurSamples = mothurSamples, readNum = config["readNum"]),
-    output:
-        fasta = "{outdir}/{dataset}.trim.contigs.fasta",
-    threads: 2
-    shell:
-        "bash {input.script} {input.files}"
+# rule make_files:
+#     input:
+#         script="workflow/scripts/make_files.sh",
+#     output:
+#         files="{outdir}/{dataset}.files",
+#     shell:
+#         "bash {input.script}"
+
+
+# rule make_contigs:
+#     input:
+#         script="workflow/scripts/make_contigs.sh",
+#         files=rules.make_files.output.files,
+#         raw=expand("{outdir}/{mothurSamples}_{readNum}_001.fastq.gz", mothurSamples = mothurSamples, readNum = config["readNum"]),
+#     output:
+#         fasta = "{outdir}/{dataset}.trim.contigs.fasta",
+#     threads: 2
+#     shell:
+#         "bash {input.script} {input.files}"
 
 
 # rule screen:
@@ -158,6 +151,3 @@ rule make_contigs:
 #         "report/report.html",
 #         "index.html"
 
-include: "rules_dag.smk"
-include: "interactive_report.smk"
-include: "render_index.smk"

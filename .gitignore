@@ -2,6 +2,7 @@
 data/*
 dags/*
 images/*
+figures/*
 report/*
 .snakemake
 *.logfile

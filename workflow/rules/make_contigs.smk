@@ -3,7 +3,9 @@ rule make_contigs:
         script="workflow/scripts/make_contigs.sh",
         files=rules.make_files.output.files
     output:
-        fasta="{prefix}.fasta",
-        counttable="{prefix}.count.table",
+        fasta="{outdir}/{dataset}.trim.contigs.good.unique.fasta",
+        ctable="{outdir}/{dataset}.trim.contigs.good.count_table",
+        uniqsmry="{outdir}/{dataset}.trim.contigs.good.unique.summary",
+    threads: 2
     shell:
         "bash {input.script} {input.files}"

@@ -1,6 +1,6 @@
 #! /bin/bash
 
-# classify_seq97.sh
+# cluster_identity97.sh
 
 OUTDIR="data/mothur/process"
 
@@ -20,3 +20,4 @@ mothur "#
 
 	dist.seqs(fasta=current, cutoff=0.03, inputdir=${OUTDIR}, outputdir=${OUTDIR});
 	cluster(column=current, count=current);"
+

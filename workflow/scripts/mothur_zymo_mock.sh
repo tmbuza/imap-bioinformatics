@@ -11,11 +11,10 @@
 # Other variables
 REFSDIR="data/mothur/references/" # Directory for storing mothur reference files
 
-
-
 ####################
 # Running Pipeline #
 ####################
+
 
 echo PROGRESS: Preparing v4 mock sequence files for mothur. 
 
@@ -46,7 +45,8 @@ cp "${REFSDIR}"/silva.seed.align "${REFSDIR}"/zymo.mock.16S.fasta "${REFSDIR}"/t
 # Aligning mock sequences to the SILVA v4 region
 # Will generate the following warning message '[WARNING]: 4 of your sequences generated alignments that eliminated too many bases' 
 # because 4 of the community sequences are from Cryptococcus and Saccharomyces so those will be filtered out
-mothur "#align.seqs(fasta="${REFSDIR}"/tmp/zymo.mock.16S.fasta, reference="${REFSDIR}"/tmp/silva.seed.align, processors=8);
+mothur "#set.logfile(name=${LOGS}/silva_alignmentszymo_mock.logfile);
+	align.seqs(fasta="${REFSDIR}"/tmp/zymo.mock.16S.fasta, reference="${REFSDIR}"/tmp/silva.seed.align, processors=8);
 	pcr.seqs(fasta="${REFSDIR}"/tmp/zymo.mock.16S.align, start=11894, end=25319, keepdots=F);
 	degap.seqs(fasta="${REFSDIR}"/tmp/zymo.mock.16S.pcr.align)"
 
