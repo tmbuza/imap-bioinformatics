@@ -67,8 +67,8 @@ body{
   padding: 5% 0% 0% 0%;
   text-transform: none;
   font-weight: bold;
-  background-image: url("images/bkgd.jpg");
-  /* background-image: url("images/bkgd.jpg"), url("mothurpipe.png"); */
+  background-image: url("images/bkgd.png");
+  /* background-image: url("images/bkgd.png"), url("mothurpipe.png"); */
   background-repeat: no-repeat, repeat;
   background-color: #cccccc; /* Used if the image is unavailable */
   height: 100%; /* You must set a specified height */
@@ -95,8 +95,8 @@ body{
   padding: 5% 0% 0% 0%;
   text-transform: none;
   font-weight: bold;
-  background-image: url("images/bkgd.jpg");
-  /* background-image: url("images/bkgd.jpg"), url("mothurpipe.png"); */
+  background-image: url("images/bkgd.png");
+  /* background-image: url("images/bkgd.png"), url("mothurpipe.png"); */
   background-repeat: no-repeat, repeat;
   background-color: #cccccc; /* Used if the image is unavailable */
   height: 100%; /* You must set a specified height */
