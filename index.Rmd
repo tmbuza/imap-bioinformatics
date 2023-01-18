@@ -1,9 +1,8 @@
 ---
 title: "Integrated Microbiome Pipelines<br>"
-subtitle:
+subtitle: "Fostering continuous improvement and integration<br><br>"
 author: TMBuza
 date: |
-  | ![](images/new_horizon.png)<br><br>
   | Updated on `r Sys.time()` <br><br>
 email_address: "tmbuza@complexdatainsights.com"
 github_repo: "https://github.com/tmbuza/imap-mothur"
@@ -11,7 +10,7 @@ github_page: "https://tmbuza.github.io/imap-mothur/"
 related_website: "https://complexdatainsights.com"
 ---
 
-
+  # | ![](images/new_horizon.png)<br><br>
   
 <br><br>
 
