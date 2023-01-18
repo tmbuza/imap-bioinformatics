@@ -1,8 +1,9 @@
 ---
-title: "Integrated Microbiome Pipelines<br>"
-subtitle: "Fostering continuous improvement and integration<br><br>"
+title: "Integrated Microbiome<br>Analysis Pipelines<br>"
+subtitle: "<br>Fostering continuous improvement and integration<br><br>"
 author: TMBuza
 date: |
+  | ![](images/new_horizon.png)<br><br>
   | Updated on `r Sys.time()` <br><br>
 email_address: "tmbuza@complexdatainsights.com"
 github_repo: "https://github.com/tmbuza/imap-mothur"
@@ -10,17 +11,12 @@ github_page: "https://tmbuza.github.io/imap-mothur/"
 related_website: "https://complexdatainsights.com"
 ---
 
-  # | ![](images/new_horizon.png)<br><br>
-  
-<br><br>
-
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
 
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
-
 knitr::opts_chunk$set(
   echo = FALSE,
   message = FALSE,
@@ -36,13 +32,21 @@ knitr::opts_chunk$set(
   fig.asp = 0.7,
   fig.show = "asis"
 )
+
 library(tidyverse, suppressPackageStartupMessages())
+library(mikropml)
+library(schtools)
 
 ```
 
 
+
 ```{css echo = FALSE}
-.author {
+/* ############
+# CONTAINER CSS
+############ */
+
+.author, .subtitle{
   display: none;
 } 
 .main-container {
@@ -68,102 +72,47 @@ body{
   text-transform: none;
   font-weight: bold;
   background-image: url("images/bkgd.png");
-  /* background-image: url("images/bkgd.png"), url("mothurpipe.png"); */
   background-repeat: no-repeat, repeat;
-  background-color: #cccccc; /* Used if the image is unavailable */
+  background-color: none;
   height: 100%; /* You must set a specified height */
   background-position: center; /* Center the image */
   background-size: cover; /* Resize the background image to cover the entire container */
   
 }
-@media only screen and (max-width: 768px) {
-  .main-container {
-  max-width: 100%;
-  background-color: black;
-  color: white;
-  padding: 1% 1% 1% 1%;
-  margin-left: auto;
-  margin-right: auto;
+```
 
-  }
-  #header {
-  background-color: #013011;
-  color: white;
-  font-family: "Montserrat", sans-serif;
-  text-align: center;
-  width: 100%;
-  padding: 5% 0% 0% 0%;
-  text-transform: none;
-  font-weight: bold;
-  background-image: url("images/bkgd.png");
-  /* background-image: url("images/bkgd.png"), url("mothurpipe.png"); */
-  background-repeat: no-repeat, repeat;
-  background-color: #cccccc; /* Used if the image is unavailable */
-  height: 100%; /* You must set a specified height */
-  background-position: center; /* Center the image */
-  background-size: cover; /* Resize the background image to cover the entire container */
-  
-  }
-   body {
-    font-size: 12px;
-    width: 100%;
-  }
-  #header h1{
-    font-size: 2em;  
-  }
-  #glimpse h1{
-    font-size: 2em;
-  } 
-  #glimpse p{
-    font-size: 1.5em;
-  } 
-  #footer {
-    text-align: left;
-    font-size: 1.1em;
-  } 
-  #header h3{
-    font-size: 1.8em;
-  }
-  #header img{
-  max-width:80%;
-  }
-  #tablefield {
-  width: 100%;
-  margin-left: auto;
-  margin-right: auto;
+
+
+```{css echo = FALSE} 
+/* ############
+# BODY CSS
+############ */
+#header h1{
+  font-size: 4em;
+  text-transform: capitalize;
+  color: black;
+}
+#header h2{
+  font-size: 3em;
+}
+
+#header h3{
+  font-size: 2.5em;
+  color: black;
 } 
+#header img{
+width:80%;
+}
 body h1{
-  font-size: 1.8em;
+  font-size: 2.5em;
   text-transform: capitalize;
 }
 body h2{
-  font-size: 1.6em;
+  font-size: 1.8em;
 }
 
 body h3{
   font-size: 1.6em;
-}
-
-#tablefield h2{
-  font-size: 1.6em;
-}
-
-}
-
-
-#header h3, #glimpse h1{
-  color: #b5f56b;
-}
-
-#header h1{
-  font-size: 4em;
-}
-
-#header h3{
-  font-size: 2.0em;
-}
-#header img{
-width:70%;
 }
 
 body {
@@ -211,8 +160,63 @@ a{
   margin-right: auto;
 }
 
- 
 ```
+
+```{css echo = FALSE} 
+/* ############
+# MEDIA: max-width: 768px
+############ */
+@media only screen and (max-width: 768px) {
+  .main-container {
+  max-width: 100%;
+  padding: 1% 1% 1% 1%;
+  margin-left: auto;
+  margin-right: auto;
+  }
+
+  #header img{
+  max-width: 80%;
+  }
+  #header h1{
+    font-size: 2.8em;
+    text-transform: capitalize;
+    color: black;
+  }
+
+   body {
+    font-size: 12px;
+    width: 100%; 
+  } 
+  #footer {
+    text-align: left;
+    font-size: 1.1em;
+  } 
+
+  #tablefield {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+} 
+body h1{
+  font-size: 0.5em;
+  text-transform: capitalize;
+}
+body h2{
+  font-size: 1.6em;
+}
+
+body h3{
+  font-size: 1.6em;
+}
+
+#tablefield h2{
+  font-size: 1.6em;
+}
+
+}
+```
+
+
 
 <br>
 <br>
@@ -232,7 +236,7 @@ a{
 
 <div id="footer">
 Last updated on `r format(Sys.time(), '%B %d, %Y')`. <br><br>
-These microbiome workflows are continuously being reviewed, integrated, tested by [Teresia Mrema-Buza](mailto:`r rmarkdown::metadata$email_address`).  
+Workflows continuously reviewed, integrated, tested and compiled by [Teresia Mrema-Buza](mailto:`r rmarkdown::metadata$email_address`).  
 Github_Repo: `r rmarkdown::metadata$github_repo`.  
 Github_Page: `r rmarkdown::metadata$github_page`.  
 Visit the [CDI website](`r rmarkdown::metadata$related_website`) for more practical user guides (...in progress).  
