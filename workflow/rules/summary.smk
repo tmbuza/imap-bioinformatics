@@ -1,3 +1,14 @@
+from snakemake.utils import min_version
+
+min_version("6.10.0")
+
+
+rule all:
+    input:
+        "dags/rulegraph.svg",
+        "report/report.html",
+        "index.html",  
+
 rule get_dag:
     input:
         script="workflow/scripts/rulegraph.sh"

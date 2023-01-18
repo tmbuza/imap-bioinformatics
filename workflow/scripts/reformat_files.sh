@@ -30,15 +30,10 @@ cp "${OUTDIR}"/*.0.03.biom "${OUTDIR}"/final.biom
 # Cleaning Up #
 ###############
 
-# echo PROGRESS: Cleaning up working directory.
+echo PROGRESS: Cleaning up working directory.
 
-# # Making dir for storing intermediate files (can be deleted later)
-# mkdir -p "${OUTDIR}"/intermediate/
+# Making dir for storing intermediate files (can be deleted later)
+mkdir -p "${OUTDIR}"/intermediate/
 
-# # # # Deleting unneccessary files
-# # rm "${OUTDIR}"/*filter.unique.precluster*fasta
-# rm "${OUTDIR}"/*.map
-# # rm "${OUTDIR}"/*filter.unique.precluster*count_table
-
-# # Moving all remaining intermediate files to the intermediate dir
-# mv "${OUTDIR}"/${DATASET}* "${OUTDIR}"/intermediate/
+# Moving all remaining intermediate files to the intermediate dir
+mv "${OUTDIR}"/${DATASET}* "${OUTDIR}"/intermediate/

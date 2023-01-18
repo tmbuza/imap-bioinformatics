@@ -220,12 +220,6 @@ a{
 <!-- ![](dags/rulegraph.svg) -->
 <img src="dags/rulegraph.svg"/>
 
-## Summary report
-
-<!-- ![](dags/rulegraph.svg) -->
-<img src="dags/summary_report_dag.png"/>
-
-
 
 # Metadata profiling
 ```{r}
@@ -306,14 +300,14 @@ otutable <- otutable_long %>%
 
 ## Original taxonomy table
 ```{r}
-head(read_tsv("data/mothur/process/final.taxonomy", show_col_types = F))
+head(read_tsv("data/mothur/process/final.cons.taxonomy", show_col_types = F))
 ```
 
 
 ## Tidy taxonomy table
 ```{r}
 taxlevels <- c("kingdom", "phylum", "class", "order", "family", "genus")
-taxonomy <- read_tsv("data/mothur/process/final.taxonomy", show_col_types = F) %>%
+taxonomy <- read_tsv("data/mothur/process/final.cons.taxonomy", show_col_types = F) %>%
   rename_all(tolower) %>%
   select(otu, taxonomy) %>%
   mutate(otu = tolower(otu),
@@ -328,7 +322,7 @@ taxonomy <- read_tsv("data/mothur/process/final.taxonomy", show_col_types = F) %
   separate(taxonomy, into = all_of(taxlevels), sep = ";")
 
   head(taxonomy)
-```
+``` -->
 
 
 ## Useful links

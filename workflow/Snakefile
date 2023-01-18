@@ -67,12 +67,7 @@ rule all:
         
         # split_otutable
         expand("{outdir}/{group}.final.shared", outdir=config["outdir"], group = config["mothurGroups"]),
-
-        # summary.smk
-        "dags/rulegraph.svg",
-        "report/report.html",
-        "index.html",      
-
+    
 
 include: "rules/get_references.smk"
 include: "rules/make_files.smk"
@@ -84,5 +79,4 @@ include: "rules/get_otutable.smk"
 include: "rules/reformat_files.smk"
 include: "rules/split_otutable.smk"
 
-# include: "rules/summary.smk"
 
