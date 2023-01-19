@@ -142,7 +142,6 @@ mothur "#set.logfile(name=${LOGS}/sample_files.logfile);
     chimera.vsearch(fasta=current, count=current, dereplicate=T);
     remove.seqs(fasta=current, accnos=current);
 
-
 	set.logfile(name=${LOGS}/remove_lineage.logfile);
 	set.current(fasta=current, count=current);
    	classify.seqs(fasta=current, count=current, reference=${CLASSIFIER}, taxonomy=${TAXONOMY}, cutoff=80);
@@ -162,73 +161,73 @@ mothur "#set.logfile(name=${LOGS}/sample_files.logfile);
 	make.biom(shared=current, constaxonomy=current);"
 
 
-echo PROGRESS: Formating file for downstream analysis
+# echo PROGRESS: Formating file for downstream analysis
 
-mkdir -p "${OUTDIR}"  "${LOGS}" 
+# mkdir -p "${OUTDIR}"  "${LOGS}" 
 
-mothur "#set.logfile(name=${LOGS}/format_files.logfile);"
-# Renaming output files for use later
-# mv ${OUTDIR}/*.precluster*pick.fasta ${ERRORDIR}/errorinput.fasta
-# mv ${OUTDIR}/*.vsearch*.pick.count_table ${ERRORDIR}"/errorinput.count_table
+# mothur "#set.logfile(name=${LOGS}/format_files.logfile);"
+# # Renaming output files for use later
+# # mv ${OUTDIR}/*.precluster*pick.fasta ${ERRORDIR}/errorinput.fasta
+# # mv ${OUTDIR}/*.vsearch*.pick.count_table ${ERRORDIR}"/errorinput.count_table
 
-mv "${OUTDIR}"/*.opti_mcc.list "${OUTDIR}"/final.list
-mv "${OUTDIR}"/*.opti_mcc.steps "${OUTDIR}"/final.steps
-mv "${OUTDIR}"/*.opti_mcc.sensspec "${OUTDIR}"/final.sensspec
-mv "${OUTDIR}"/*.opti_mcc.shared "${OUTDIR}"/final.shared
-mv "${OUTDIR}"/*.0.03.cons.taxonomy "${OUTDIR}"/final.taxonomy
-mv "${OUTDIR}"/*.0.03.cons.tax.summary "${OUTDIR}"/final.tax.summary
-mv "${OUTDIR}"/*.0.03.rep.fasta "${OUTDIR}"/final.rep.fasta
-mv "${OUTDIR}"/*.0.03.rep.count_table "${OUTDIR}"/final.rep.count_table
-mv "${OUTDIR}"/*.0.03.lefse "${OUTDIR}"/final.lefse
-mv "${OUTDIR}"/*.0.03.biom "${OUTDIR}"/final.biom
-
-
-###############
-# Cleaning Up #
-###############
-
-echo PROGRESS: Cleaning up working directory.
-
-# Making dir for storing intermediate files (can be deleted later)
-mkdir -p "${OUTDIR}"/intermediate/
-
-# # # Deleting unneccessary files
-# rm "${OUTDIR}"/*filter.unique.precluster*fasta
-rm "${OUTDIR}"/*.map
-# rm "${OUTDIR}"/*filter.unique.precluster*count_table
-
-# Moving all remaining intermediate files to the intermediate dir
-mv "${OUTDIR}"/test* "${OUTDIR}"/intermediate/
+# mv "${OUTDIR}"/*.opti_mcc.list "${OUTDIR}"/final.list
+# mv "${OUTDIR}"/*.opti_mcc.steps "${OUTDIR}"/final.steps
+# mv "${OUTDIR}"/*.opti_mcc.sensspec "${OUTDIR}"/final.sensspec
+# mv "${OUTDIR}"/*.opti_mcc.shared "${OUTDIR}"/final.shared
+# mv "${OUTDIR}"/*.0.03.cons.taxonomy "${OUTDIR}"/final.taxonomy
+# mv "${OUTDIR}"/*.0.03.cons.tax.summary "${OUTDIR}"/final.tax.summary
+# mv "${OUTDIR}"/*.0.03.rep.fasta "${OUTDIR}"/final.rep.fasta
+# mv "${OUTDIR}"/*.0.03.rep.count_table "${OUTDIR}"/final.rep.count_table
+# mv "${OUTDIR}"/*.0.03.lefse "${OUTDIR}"/final.lefse
+# mv "${OUTDIR}"/*.0.03.biom "${OUTDIR}"/final.biom
 
 
-###############
-# Splitting Otutable #
-###############
+# ###############
+# # Cleaning Up #
+# ###############
 
-MOCKGROUPS="Mock1-Mock2-Mock3" # List of mock groups in raw data dir separated by '-'
-CONTROLGROUPS="Water1-Water2-Water3" # List of control groups in raw data dir separated by '-'
-COMBINEDGROUPS=$(echo "${MOCKGROUPS}"-"${CONTROLGROUPS}") # Combines the list of mock and control groups into a single string separated by '-'
+# echo PROGRESS: Cleaning up working directory.
+
+# # Making dir for storing intermediate files (can be deleted later)
+# mkdir -p "${OUTDIR}"/intermediate/
+
+# # # # Deleting unneccessary files
+# # rm "${OUTDIR}"/*filter.unique.precluster*fasta
+# rm "${OUTDIR}"/*.map
+# # rm "${OUTDIR}"/*filter.unique.precluster*count_table
+
+# # Moving all remaining intermediate files to the intermediate dir
+# mv "${OUTDIR}"/test* "${OUTDIR}"/intermediate/
 
 
-# Sample shared file
-echo PROGRESS: Creating sample shared file.
+# ###############
+# # Splitting Otutable #
+# ###############
 
-# Removing all mock and control groups from shared file leaving only samples
-mothur "#set.logfile(name=${LOGS}/split_otutable.logfile);
-remove.groups(shared="${OUTDIR}"/final.shared, groups="${COMBINEDGROUPS}")"
-mv "${OUTDIR}"/final.0.03.pick.shared "${OUTDIR}"/sample.final.shared
+# MOCKGROUPS="Mock1-Mock2-Mock3" # List of mock groups in raw data dir separated by '-'
+# CONTROLGROUPS="Water1-Water2-Water3" # List of control groups in raw data dir separated by '-'
+# COMBINEDGROUPS=$(echo "${MOCKGROUPS}"-"${CONTROLGROUPS}") # Combines the list of mock and control groups into a single string separated by '-'
 
 
-# Mock shared file
-echo PROGRESS: Creating mock shared file.
+# # Sample shared file
+# echo PROGRESS: Creating sample shared file.
 
-# Removing non-mock groups from shared file
-mothur "#get.groups(shared="${OUTDIR}"/final.shared, groups="${MOCKGROUPS}")"
-mv "${OUTDIR}"/final.0.03.pick.shared "${OUTDIR}"/mock.final.shared
+# # Removing all mock and control groups from shared file leaving only samples
+# mothur "#set.logfile(name=${LOGS}/split_otutable.logfile);
+# remove.groups(shared="${OUTDIR}"/final.shared, groups="${COMBINEDGROUPS}")"
+# mv "${OUTDIR}"/final.0.03.pick.shared "${OUTDIR}"/sample.final.shared
 
-# Control shared file
-echo PROGRESS: Creating control shared file.
 
-# Removing any non-control groups from shared file
-mothur "#get.groups(shared="${OUTDIR}"/final.shared, groups="${CONTROLGROUPS}")"
-mv "${OUTDIR}"/final.0.03.pick.shared "${OUTDIR}"/control.final.shared
+# # Mock shared file
+# echo PROGRESS: Creating mock shared file.
+
+# # Removing non-mock groups from shared file
+# mothur "#get.groups(shared="${OUTDIR}"/final.shared, groups="${MOCKGROUPS}")"
+# mv "${OUTDIR}"/final.0.03.pick.shared "${OUTDIR}"/mock.final.shared
+
+# # Control shared file
+# echo PROGRESS: Creating control shared file.
+
+# # Removing any non-control groups from shared file
+# mothur "#get.groups(shared="${OUTDIR}"/final.shared, groups="${CONTROLGROUPS}")"
+# mv "${OUTDIR}"/final.0.03.pick.shared "${OUTDIR}"/control.final.shared

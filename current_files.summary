@@ -1,5 +1,3 @@
-fasta=data/mothur/process/test.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.fasta
-list=data/mothur/process/test.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.opti_mcc.list
-taxonomy=data/mothur/process/test.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pds.wang.pick.taxonomy
-count=data/mothur/process/test.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.count_table
+fasta=data/mothur/process/test.trim.contigs.good.unique.good.filter.unique.fasta
+count=data/mothur/process/test.trim.contigs.good.unique.good.filter.count_table
 processors=8

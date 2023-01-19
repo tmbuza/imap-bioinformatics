@@ -6,7 +6,7 @@ rule denoise_n_classify80:
         rdpfasta=expand(rules.get_rdp_classifier.output.rdpfasta, refsdir=config["refsdir"], rdp="trainset16_022016"),
         rdptax=expand(rules.get_rdp_classifier.output.rdptax, refsdir=config["refsdir"], rdp="trainset16_022016"),
     output:
-        fasta="{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.fasta",
+        fasta="{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.pick.fasta",
         ctable="{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.count_table",
         taxonomy="{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pds.wang.pick.taxonomy",
         accnos="{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pds.wang.accnos",

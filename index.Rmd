@@ -5,8 +5,8 @@ author: TMBuza
 date: |
   | ![](images/new_horizon.png)<br><br>
   | Updated on `r Sys.time()` <br><br>
-csl: [library/apa-numeric-superscript.csl]
-bibliography: library/references.bib
+#csl: [library/apa-numeric-superscript.csl]
+#bibliography: library/references.bib
 email_address: "tmbuza@complexdatainsights.com"
 github_repo: "https://github.com/tmbuza/imap-mothur"
 github_page: "https://tmbuza.github.io/imap-mothur/"

@@ -6,12 +6,12 @@ CLASSIFIER="trainset16_022016.pds.fasta"
 TAXONOMY="trainset16_022016.pds.tax"
 
 OUTDIR="data/mothur/process"
-DBREFSDIR="data/mothur/references"
+LOGS="data/mothur/logs"
 
+REFSDIR="data/mothur/references"
 FASTA="test.trim.contigs.good.unique.good.filter.unique.fasta"
 COUNT="test.trim.contigs.good.unique.good.filter.count_table"
 
-LOGS="data/mothur/logs"
 
 echo PROGRESS: Aligning and filtering bad alignments.
 
@@ -25,29 +25,12 @@ mkdir -p "${OUTDIR}"
 
 	set.logfile(name=name=${LOGS}/chimera_removal.logfile);
 	chimera.vsearch(fasta=current, count=current, dereplicate=t);
-
+    remove.seqs(fasta=current, accnos=current);
+	
 	set.logfile(name=name=${LOGS}/classify_seq.logfile);
-	classify.seqs(fasta=current, count=current, reference=${DBREFSDIR}/${CLASSIFIER}, taxonomy=${DBREFSDIR}/${TAXONOMY}, cutoff=97);
+	classify.seqs(fasta=current, count=current, reference=${REFSDIR}/${CLASSIFIER}, taxonomy=${REFSDIR}/${TAXONOMY}, cutoff=97);
 	remove.lineage(fasta=current, count=current, taxonomy=current, taxon=Chloroplast-Mitochondria-unknown-Archaea-Eukaryota);"
-    
-	# set.logfile(name=${LOGS}/cluster_n_classify_otu.logfile);
-
-	# dist.seqs(fasta=current, cutoff=0.03, inputdir=${OUTDIR}, outputdir=${OUTDIR});
-	# cluster(column=current, count=current);"
-
-
-	# set.logfile(name=${LOGS}/cluster_n_classify.logfile);
-	# dist.seqs(fasta=current, cutoff=0.03);
-	# cluster(column=current, count=current);
-	# make.shared(list=current, count=current, label=0.03);
-	# classify.otu(list=current, count=current, taxonomy=current, label=0.03);
-	# get.oturep(fasta=current, count=current, list=current, label=0.03, method=abundance);
-
-	# set.logfile(name=${LOGS}/lefse_n_biom.logfile);
-	# set.current(shared=current, constaxonomy=current);
-	# make.lefse(shared=current, constaxonomy=current);
-	# make.biom(shared=current, constaxonomy=current);"
-
+   
 	
 # # Renaming output files for use later
 # # mv ${OUTDIR}/*.precluster*pick.fasta ${ERRORDIR}/errorinput.fasta

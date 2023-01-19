@@ -6,7 +6,7 @@ DATASET="test"
 OUTDIR="data/mothur/process"
 LOGS="data/mothur/logs"
 
-MCCLIST="test.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.opti_mcc.list"
+MCCLIST="test.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.pick.opti_mcc.list"
 COUNT="test.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.count_table"
 TAXONOMY="test.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pds.wang.pick.taxonomy"
 FASTA="test.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.fasta"
@@ -26,3 +26,4 @@ mothur "#set.logfile(name=${LOGS}/get_otutable.logfile);
 	set.current(shared=current, constaxonomy=current);
 	make.lefse(shared=current, constaxonomy=current);
 	make.biom(shared=current, constaxonomy=current);"
+
