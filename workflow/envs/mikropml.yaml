@@ -15,3 +15,4 @@ dependencies:
   - r-rpart
   - r-schtools>=0.3.0
   - r-tidyverse
+  - r-formatr

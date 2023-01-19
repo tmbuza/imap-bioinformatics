@@ -1,15 +1,20 @@
 ---
-title: "Integrated Microbiome<br>Analysis Pipelines<br>"
-subtitle: "<br>Fostering continuous improvement and integration<br><br>"
+title: "Integrated Microbiome<br>Analysis Pipelines<br><br>"
+subtitle: "Fostering continuous improvement and integration<br><br>"
 author: TMBuza
 date: |
   | ![](images/new_horizon.png)<br><br>
   | Updated on `r Sys.time()` <br><br>
+csl: [library/apa-numeric-superscript.csl]
+bibliography: library/references.bib
 email_address: "tmbuza@complexdatainsights.com"
 github_repo: "https://github.com/tmbuza/imap-mothur"
 github_page: "https://tmbuza.github.io/imap-mothur/"
 related_website: "https://complexdatainsights.com"
+description: |
+  This guide provides integrated and highly curated solutions for achieving better results.
 ---
+
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -159,8 +164,30 @@ a{
   margin-left: auto;
   margin-right: auto;
 }
+hr {
+  display: inline-block;
+  text-align: left;
+  margin: 0px;
+}
+#glimpse hr {
+  display: inline-block;
+  margin: 0px;
+}
 
 ```
+
+# Quick Glimpse {-#glimpse}
+
+...Placeholder for cover image...
+
+<img src="images/gene_ontology.png" alt="Cover Image" width="100%" style="padding: 50px 0px 50px 0px; float: right;"/>
+
+## Structure of this guide {-}
+This is an example report showing the major parts of microbiome data analysis workflows. 
+
+<br><br><hr width="100%">
+
+
 
 ```{css echo = FALSE} 
 /* ############
@@ -178,7 +205,7 @@ a{
   max-width: 80%;
   }
   #header h1{
-    font-size: 2.8em;
+    font-size: 2.5em;
     text-transform: capitalize;
     color: black;
   }
@@ -198,7 +225,7 @@ a{
   margin-right: auto;
 } 
 body h1{
-  font-size: 0.5em;
+  font-size: 2.0em;
   text-transform: capitalize;
 }
 body h2{
@@ -222,7 +249,10 @@ body h3{
 <br>
 <br>
 
-# Mothur bioinformatics pipeline
+# Mothur Microbiome Snakemake Workflow
+We use snakemake [@Dadasnake2021] to maintain reproducibility and improvement of the bioinformatics analysis of microbiome data.  
+<br>
+<br>
 <!-- ![](dags/rulegraph.svg) -->
 <img src="dags/rulegraph.svg"/>
 
@@ -230,14 +260,36 @@ body h3{
 ## Reference links
 - [https://github.com/wclose/mothurPipeline](https://github.com/wclose/mothurPipeline)
 
+<br>
+<br>
+
+# Example of common FAQs (in progress)
+<ol>
+  <li>Mothur dist.seqs taking too long.</li>
+  <ul>
+    <li>Length of the merged reads (merged reads over 300pb).</li>
+    <li>Not enough overlaping when merging the paired reads.</li>
+    <li>Use other pre-cluster algorithm like Deblur.</li>
+    <li>Too many uniques?</li>
+    <li>Not enough computer power?: Use HPC or Cluster.</li>
+    <li>Try to make contigs using maxee instead of deltaq or use phylogeny approach for downstream analysis, or use clister.split based on taxonomy.</li>
+    <li>do not forget to use controls.</li>
+  </ul>
+</ol>
 
 
-<br><br><hr>
+<br><br><hr width="30%">
 
-<div id="footer">
+<div id="footer"><br>
 Last updated on `r format(Sys.time(), '%B %d, %Y')`. <br><br>
-Workflows continuously reviewed, integrated, tested and compiled by [Teresia Mrema-Buza](mailto:`r rmarkdown::metadata$email_address`).  
+These workflows are continuously reviewed, integrated, tested and compiled by [Teresia Mrema-Buza](mailto:`r rmarkdown::metadata$email_address`).  
 Github_Repo: `r rmarkdown::metadata$github_repo`.  
-Github_Page: `r rmarkdown::metadata$github_page`.  
-Visit the [CDI website](`r rmarkdown::metadata$related_website`) for more practical user guides (...in progress).  
+Github_Page (this document): `r rmarkdown::metadata$github_page`.  
+Visit the [Complex Data Insights (CDI) website](`r rmarkdown::metadata$related_website`) for more practical user guides (...in progress).  
 </div>
+
+<br>
+<br>
+<br>
+
+# References
