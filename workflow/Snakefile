@@ -40,6 +40,9 @@ rule all:
         expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.pds.wang.pick.taxonomy", outdir=config["outdir"], dataset=config["dataset"]),
         expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.pds.wang.accnos", outdir=config["outdir"], dataset=config["dataset"]),
 
+        ########################
+        # OTU CLASSIFICATION
+        ########################
         # compute_seqdist003
         expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.pick.dist", outdir=config["outdir"], dataset=config["dataset"]),
         
@@ -52,32 +55,77 @@ rule all:
         expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.pick.opti_mcc.shared", outdir=config["outdir"], dataset=config["dataset"]),
         expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.pick.opti_mcc.0.03.cons.taxonomy", outdir=config["outdir"], dataset=config["dataset"]),
         expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.pick.opti_mcc.0.03.cons.tax.summary", outdir=config["outdir"], dataset=config["dataset"]),
-        # expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.pick.opti_mcc.0.03.rep.fasta", outdir=config["outdir"], dataset=config["dataset"]),
         expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.pick.opti_mcc.0.03.rep.count_table", outdir=config["outdir"], dataset=config["dataset"]),
         expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.pick.opti_mcc.0.03.lefse", outdir=config["outdir"], dataset=config["dataset"]),
         expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.pick.opti_mcc.0.03.biom", outdir=config["outdir"], dataset=config["dataset"]),
 
         
-        # reformat_files
-        "data/mothur/final/final.list",
-        "data/mothur/final/final.shared",
-        "data/mothur/final/final.steps",
-        "data/mothur/final/final.sensspec",
-        "data/mothur/final/final.cons.taxonomy",
-        "data/mothur/final/final.cons.tax.summary",
-        "data/mothur/final/final.rep.fasta",
-        "data/mothur/final/final.rep.count_table",
-        "data/mothur/final/final.lefse",
-        "data/mothur/final/final.biom",
-        
-        # split_otutable
-        expand("{finaldir}/{group}.final.shared", finaldir=config["finaldir"], group=config["mothurGroups"]),
-    	
-        # count_groups.smk
-        expand("{finaldir}/{group}.final.count.summary", finaldir=config["finaldir"], group="sample"),
+        ########################
+        # PHYLOTYPE CLASSIFICATION
+        ########################
 
-        # # subsample_otutable
-        expand("{finaldir}/{group}.final.0.03.subsample.shared", finaldir=config["finaldir"], group="sample"),
+         # phylotype       
+        expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.pds.wang.pick.tx.list", outdir=config["outdir"], dataset=config["dataset"]),
+
+        # classify_phylotype
+        expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.pds.wang.pick.tx.rabund", outdir=config["outdir"], dataset=config["dataset"]),
+        expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.pds.wang.pick.tx.sabund", outdir=config["outdir"], dataset=config["dataset"]),
+        expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.pds.wang.pick.tx.shared", outdir=config["outdir"], dataset=config["dataset"]),
+        expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.pds.wang.pick.tx.1.cons.taxonomy", outdir=config["outdir"], dataset=config["dataset"]),
+        expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.pds.wang.pick.tx.1.lefse", outdir=config["outdir"], dataset=config["dataset"]),
+        expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.pds.wang.pick.tx.1.biom", outdir=config["outdir"], dataset=config["dataset"]),
+       
+
+        ########################
+        # ASV CLASSIFICATION
+        ########################
+
+
+
+        ########################
+        # PHYLOGENY CLASSIFICATION
+        ########################
+
+        # "data/mothur/final/final.list",
+        # "data/mothur/final/final.shared",
+        # "data/mothur/final/final.steps",
+        # "data/mothur/final/final.sensspec",
+        # "data/mothur/final/final.cons.taxonomy",
+        # "data/mothur/final/final.cons.tax.summary",
+        # "data/mothur/final/final.rep.fasta",
+        # "data/mothur/final/final.rep.count_table",
+        # "data/mothur/final/final.lefse",
+        # "data/mothur/final/final.biom",
+        
+# OTU ANALYSIS
+        expand("{finalotus}/final.list", finalotus=config["finalotus"]),
+        expand("{finalotus}/final.shared", finalotus=config["finalotus"]),
+        expand("{finalotus}/final.steps", finalotus=config["finalotus"]),
+        expand("{finalotus}/final.sensspec", finalotus=config["finalotus"]),
+        expand("{finalotus}/final.cons.taxonomy", finalotus=config["finalotus"]),
+        expand("{finalotus}/final.cons.tax.summary", finalotus=config["finalotus"]),
+        expand("{finalotus}/final.rep.fasta", finalotus=config["finalotus"]),
+        expand("{finalotus}/final.rep.count_table", finalotus=config["finalotus"]),
+        expand("{finalotus}/final.lefse", finalotus=config["finalotus"]),
+        expand("{finalotus}/final.biom", finalotus=config["finalotus"]),
+
+# PHYLOTYPE ANALYSIS
+        expand("{finalphylotype}/final.tx.list", finalphylotype=config["finalphylotype"]),
+        expand("{finalphylotype}/final.tx.rabund", finalphylotype=config["finalphylotype"]),
+        expand("{finalphylotype}/final.final.tx.sabund", finalphylotype=config["finalphylotype"]),
+        expand("{finalphylotype}/final.final.tx.shared", finalphylotype=config["finalphylotype"]),
+        expand("{finalphylotype}/final.final.tx.cons.taxonomy", finalphylotype=config["finalphylotype"]),
+        expand("{finalphylotype}/final.final.tx.lefse", finalphylotype=config["finalphylotype"]),
+        expand("{finalphylotype}/final.final.tx.biom", finalphylotype=config["finalphylotype"]),
+
+        # # split_otutable
+        # expand("{finaldir}/{group}.final.shared", finaldir=config["finaldir"], group=config["mothurGroups"]),
+    	
+        # # count_groups.smk
+        # expand("{finaldir}/{group}.final.count.summary", finaldir=config["finaldir"], group="sample"),
+
+        # # # subsample_otutable
+        # expand("{finaldir}/{group}.final.0.03.subsample.shared", finaldir=config["finaldir"], group="sample"),
 
 
 		# expand("data/mothur/process/{group}.final.count.summary",
@@ -103,13 +151,15 @@ include: "rules/make_files.smk"
 include: "rules/make_contigs.smk"
 include: "rules/align_n_filter.smk"
 include: "rules/denoise_n_classify80.smk"
-include: "rules/compute_seqdist003.smk"
-include: "rules/cluster_otu97.smk"
 include: "rules/classify_otu97.smk"
+include: "rules/classify_phylotype.smk"
+# include: "rules/classify_asv.smk"
+# include: "rules/classify_phylogeny.smk"
 include: "rules/final_bioinfo_files.smk"
-include: "rules/split_group_otutable.smk"
-include: "rules/count_groups.smk"
-include: "rules/subsample_otutable.smk"
+
+# include: "rules/split_group_otutable.smk"
+# include: "rules/count_groups.smk"
+# include: "rules/subsample_otutable.smk"
 include: "rules/summary.smk"
 
 
