@@ -1,7 +1,7 @@
 rule final_bioinfo_files:
     input:
         script="workflow/scripts/final_bioinfo_files.sh",
-        shared=expand(rules.get_otutable.output, outdir=config["outdir"], dataset=config["dataset"]),
+        shared=expand(rules.classify_otu97.output, outdir=config["outdir"], dataset=config["dataset"]),
     output:
         "data/mothur/process/final.list",
         "data/mothur/process/final.shared",

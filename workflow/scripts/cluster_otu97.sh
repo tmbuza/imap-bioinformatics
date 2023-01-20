@@ -15,6 +15,7 @@ mkdir -p "${OUTDIR}"
 	
 mothur "#set.logfile(name=${LOGS}/cluster_otu97.logfile);
 	set.current(column=${OUTDIR}/${COLUMN}, count=${OUTDIR}/${COUNT});
-	cluster(column=current, count=current);"
+	cluster(column=current, count=current);
+	get.current();"
 	
 

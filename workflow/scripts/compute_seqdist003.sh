@@ -16,4 +16,5 @@ mkdir -p "${OUTDIR}"
 	
 mothur "#set.logfile(name=${LOGS}/compute_seqdist003.logfile);
 	set.current(fasta=${OUTDIR}/${FASTA}, count=${OUTDIR}/${COUNT}, taxonomy=${OUTDIR}/${TAXONOMY});
-	dist.seqs(fasta=current, cutoff=0.03, inputdir=${OUTDIR}, outputdir=${OUTDIR});"
+	dist.seqs(fasta=current, cutoff=0.03, inputdir=${OUTDIR}, outputdir=${OUTDIR});
+	get.current();"

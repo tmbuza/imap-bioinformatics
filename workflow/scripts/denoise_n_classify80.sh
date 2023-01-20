@@ -29,7 +29,8 @@ mkdir -p "${OUTDIR}"
 	
 	set.logfile(name=name=${LOGS}/classify_seq.logfile);
 	classify.seqs(fasta=current, count=current, reference=${REFSDIR}/${CLASSIFIER}, taxonomy=${REFSDIR}/${TAXONOMY}, cutoff=97);
-	remove.lineage(fasta=current, count=current, taxonomy=current, taxon=Chloroplast-Mitochondria-unknown-Archaea-Eukaryota);"
+	remove.lineage(fasta=current, count=current, taxonomy=current, taxon=Chloroplast-Mitochondria-unknown-Archaea-Eukaryota);
+	get.current()"
    
 	
 # # Renaming output files for use later

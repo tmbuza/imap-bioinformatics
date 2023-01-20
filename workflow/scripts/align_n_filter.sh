@@ -21,7 +21,8 @@ mothur "#set.logfile(name=${LOGS}/align_n_filter.logfile);
 	summary.seqs(fasta=current, count=current);	
 	screen.seqs(fasta=current, count=current, maxhomop=8);
     filter.seqs(fasta=current, vertical=T, trump=.);
-    unique.seqs(fasta=current, count=current);"
+    unique.seqs(fasta=current, count=current);
+	get.current()"
 
 
     # set.logfile(name=${LOGS}/precluster_n_chimera_removal.logfile);

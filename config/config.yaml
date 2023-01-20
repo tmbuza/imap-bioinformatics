@@ -32,6 +32,8 @@ classify: final.bacterial
 
 cluster: final.cluster97
 
+finaldir: data/mothur/final
+
 final: final
 
 phylotable: final.phylotype.shared

@@ -1,3 +1,2 @@
-fasta=data/mothur/process/test.trim.contigs.good.unique.good.filter.unique.fasta
-count=data/mothur/process/test.trim.contigs.good.unique.good.filter.count_table
+shared=data/mothur/final/sample.final.shared
 processors=8

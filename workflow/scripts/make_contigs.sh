@@ -23,7 +23,8 @@ mothur "#set.logfile(name=${LOGS}/make_contigs.logfile);
 	set.logfile(name=${LOGS}/screen_unique.logfile);
 	screen.seqs(fasta=current, group=current, maxambig=0, maxlength=275, maxhomop=8);
 	unique.seqs(count=current);
-	summary.seqs(fasta=current, count=current);"
+	summary.seqs(fasta=current, count=current);
+	get.current()"
 
 
 # 	set.logfile(name=${LOGS}/seq_align_precluster.logfile);

@@ -1,10 +1,9 @@
-# Splitting shared by group
 rule split_group_otutable:
     input:
         script="workflow/scripts/split_group_otutable.sh",
-        shared=expand("{outdir}/final.shared", outdir=config["outdir"]),
+        shared=expand("{finaldir}/final.shared", finaldir=config["finaldir"]),
     output:
-        shared=expand("{outdir}/{group}.final.shared", outdir=config["outdir"], group = config["mothurGroups"])
+        shared=expand("{finaldir}/{group}.final.shared", finaldir=config["finaldir"], group = "mothurGroups")
     params:
         mockGroups='-'.join(config["mothurMock"]),
         controlGroups='-'.join(config["mothurControl"])
