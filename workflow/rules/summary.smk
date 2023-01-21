@@ -1,19 +1,11 @@
-from snakemake.utils import min_version
-
-min_version("6.10.0")
-
-
-# rule all:
-#     input:
-#         "dags/rulegraph.svg",
-#         "report/report.html",
-#         "index.html",  
-
 rule get_dag:
     input:
         script="workflow/scripts/rulegraph.sh"
     output:
         "dags/rulegraph.svg",
+        "dags/rulegraph.png",
+        "dags/dag.svg",
+        "dags/dag.png",
     shell:
         "bash {input.script}"
 
@@ -35,6 +27,20 @@ rule interactive_report:
     input:
         script="workflow/scripts/interactive_report.sh"
     output:
+        "report/report.html",
+    shell:
+        "bash {input.script}"
+
+
+rule summary_report:
+    input:
+        script="workflow/scripts/summary.sh"
+    output:
+        "dags/rulegraph.svg",
+        "dags/rulegraph.png",
+        "dags/dag.svg",
+        "dags/dag.png",
+        "index.html"
         "report/report.html",
     shell:
         "bash {input.script}"

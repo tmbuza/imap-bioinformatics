@@ -5,13 +5,17 @@ DATASET="test"
 OUTDIR="data/mothur/process"
 FINALDIR="data/mothur/final"
 LOGS="data/mothur/logs"
+
 OTUANALYSIS="${FINALDIR}"/otu_analysis/
 PHYLOTYPEANALYSIS="${FINALDIR}"/phylotype_analysis/
+ASVANALYSIS="${FINALDIR}"/asv_analysis/
+PHYLOGENYANALYSIS="${FINALDIR}"/phylogeny_analysis/
+
 ERRORDIR="${FINALDIR}"/error_analysis/
 
 echo PROGRESS: Formating file for downstream analysis
 
-mkdir -p "${OUTDIR}"  "${LOGS}" "${FINALDIR}" "${OTUANALYSIS}" "${PHYLOTYPEANALYSIS}" "${ERRORDIR}"
+mkdir -p "${OUTDIR}" "${LOGS}" "${FINALDIR}" "${OTUANALYSIS}" "${PHYLOTYPEANALYSIS}" "${ASVANALYSIS}" "${PHYLOGENYANALYSIS}" "${ERRORDIR}"
 
 mothur "#set.logfile(name=${LOGS}/final_files.logfile);"
 
@@ -33,13 +37,26 @@ cp "${OUTDIR}"/*.0.03.lefse "${OTUANALYSIS}"/final.lefse
 cp "${OUTDIR}"/*.0.03.biom "${OTUANALYSIS}"/final.biom
 
 # For downstream phylotype analysis
-cp "${OUTDIR}"/*.tx.list  "${PHYLOTYPEANALYSIS}"/final.tx.list
-cp "${OUTDIR}"/*.tx.rabund  "${PHYLOTYPEANALYSIS}"/final.tx.rabund
-cp "${OUTDIR}"/*.tx.sabund  "${PHYLOTYPEANALYSIS}"/final.tx.sabund
-cp "${OUTDIR}"/*.tx.shared  "${PHYLOTYPEANALYSIS}"/final.tx.shared
-cp "${OUTDIR}"/*.tx.1.cons.taxonomy  "${PHYLOTYPEANALYSIS}"/final.tx.cons.taxonomy
-cp "${OUTDIR}"/*.tx.1.lefse  "${PHYLOTYPEANALYSIS}"/final.tx.lefse
-cp "${OUTDIR}"/*.tx.1.biom  "${PHYLOTYPEANALYSIS}"/final.tx.biom
+cp "${OUTDIR}"/*.tx.list "${PHYLOTYPEANALYSIS}"/final.tx.list
+cp "${OUTDIR}"/*.tx.rabund "${PHYLOTYPEANALYSIS}"/final.tx.rabund
+cp "${OUTDIR}"/*.tx.sabund "${PHYLOTYPEANALYSIS}"/final.tx.sabund
+cp "${OUTDIR}"/*.tx.shared "${PHYLOTYPEANALYSIS}"/final.tx.shared
+cp "${OUTDIR}"/*.tx.1.cons.taxonomy "${PHYLOTYPEANALYSIS}"/final.tx.cons.taxonomy
+cp "${OUTDIR}"/*.tx.1.cons.tax.summary "${PHYLOTYPEANALYSIS}"/final.tx.cons.tax.summary
+cp "${OUTDIR}"/*.tx.1.lefse "${PHYLOTYPEANALYSIS}"/final.tx.lefse
+cp "${OUTDIR}"/*.tx.1.biom "${PHYLOTYPEANALYSIS}"/final.tx.biom
+
+# For downstream asv analysis
+cp "${OUTDIR}"/*.asv.list "${ASVANALYSIS}"/final.asv.list
+cp "${OUTDIR}"/*.asv.shared "${ASVANALYSIS}"/final.asv.shared
+cp "${OUTDIR}"/*.asv.ASV.cons.taxonomy "${ASVANALYSIS}"/final.asv.cons.taxonomy
+cp "${OUTDIR}"/*.asv.ASV.cons.tax.summary "${ASVANALYSIS}"/final.asv.cons.tax.summary
+cp "${OUTDIR}"/*.asv.ASV.lefse "${ASVANALYSIS}"/final.asv.lefse
+cp "${OUTDIR}"/*.asv.ASV.biom "${ASVANALYSIS}"/final.asv.biom
+
+# # For downstream phylogeny analysis
+# cp "${OUTDIR}"/*.phylip.dist "${PHYLOGENYANALYSIS}"/final.phylip.dist
+# cp "${OUTDIR}"/*.phylip.tre "${PHYLOGENYANALYSIS}"/final.phylip.tre
 
 # ###############
 # # Cleaning Up #
