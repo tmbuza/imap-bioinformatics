@@ -25,6 +25,10 @@ final: final
 finalotus: data/mothur/final/otu_analysis
 
 finalphylotype: data/mothur/final/phylotype_analysis
+
+finalasv: data/mothur/final/asv_analysis
+
+finalphylogeny: data/mothur/final/phylogeny_analysis
   
 # Group names of mock samples (e.g. Mock1_S1_L001_R1_001.fastq.gz = Mock1).
 mothurMock:
