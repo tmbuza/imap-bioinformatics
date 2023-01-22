@@ -1,4 +1,6 @@
 # Additional
+REFER
+library/*.*
 data/*
 dags/*
 images/*
@@ -6,7 +8,7 @@ figures/*
 report/*
 .snakemake
 *.logfile
-
+*log*
 *.Rproj
 # Byte-compiled / optimized / DLL files
 __pycache__/

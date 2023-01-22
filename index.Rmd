@@ -5,8 +5,11 @@ author: TMBuza
 date: |
   | ![](images/new_horizon.png)<br><br>
   | Updated on `r Sys.time()` <br><br>
-#csl: [library/apa-numeric-superscript.csl]
-#bibliography: library/references.bib
+csl: "library/apa-numeric-superscript.csl"
+bibliography: "library/references.bib"
+link-citations: true
+mainfont:
+biblio-style: apalike
 email_address: "tmbuza@complexdatainsights.com"
 github_repo: "https://github.com/tmbuza/imap-mothur"
 github_page: "https://tmbuza.github.io/imap-mothur/"
@@ -85,32 +88,6 @@ body{
   
 }
 ```
-
-# Quick Glimpse {-#glimpse}
-
-...Placeholder for cover image...
-
-<img src="images/gene_ontology.png" alt="Cover Image" width="100%" style="padding: 50px 0px 50px 0px; float: right;"/>
-
-We use snakemake [@Dadasnake2021] to maintain reproducibility and improvement of the bioinformatics analysis of microbiome data.  
-
-# Microbial Profiling Options
-##  Classification of Operational Taxonomic Units (OTUs)
-- OTUs are clusters with sequence similarity and are accepted as an analytical unit used in microbial profiling using 16S rRNA gene markers.
-
-##  Classification of Phylotype
-- A phylotype in microbiome research is a DNA sequence or group of sequences sharing more than an arbitrarily chosen level of similarity of a 16S rRNA gene marker.
-
-##  Classification of Amplicon Sequence Variant (ASV)
-- An ASV in microbiome research is any one of the inferred single DNA sequences recovered from a bioinformatics analysis of 16S rRNA marker genes.
-
-##  Classification of Microbiaal Phylogenies
-- Microbial phylogenies are estimated from gene sequences homologies and using models of mutation to infer most-likely evolutionary histories.
-
-
-<br><br><hr width="100%">
-
-
 
 ```{css echo = FALSE} 
 /* ############
@@ -254,22 +231,42 @@ body h3{
 
 }
 ```
+<br><br>
+
+# Microbial Profiling
+
+## Quick Glimpse
+- We use snakemake workflow engine [@Koster2021] to maintain reproducibility which is important in technical validation, regeneration of results and improvement of the microbiome bioinformatics analysis. 
+
+## Reviewed and improved snakemake workflows
+<ol>
+  <li>Mothur 16S v4 Analysis Pipeline [@mothursnakemake].</li>
+  <li></li>
+  <li></li>
+</ol>
 
 
+## Classification options
+### Operational Taxonomic Units (OTUs)
+- OTUs are clusters with sequence similarity and are accepted as an analytical unit used in microbial profiling using 16S rRNA gene markers.
 
-<br>
-<br>
-<br>
+### Phylotype
+- A phylotype in microbiome research is a DNA sequence or group of sequences sharing more than an arbitrarily chosen level of similarity of a 16S rRNA gene marker.
 
-# Mothur Microbiome Snakemake Workflow
-<br>
-<br>
-<!-- ![](dags/rulegraph.svg) -->
+### Amplicon Sequence Variant (ASV)
+- An ASV in microbiome research is any one of the inferred single DNA sequences recovered from a bioinformatics analysis of 16S rRNA marker genes.
+
+### Microbial Phylogenies
+- Microbial phylogenies are estimated from gene sequence homologies and the most-likely evolutionary histories are commonly inferred using models of mutation.
+
+
+<br><br>
+<hr width="50%">
+<br><br> 
+
+# Improved Mothur Snakemake Workflow
+
 <img src="dags/rulegraph.svg"/>
-
-
-## Reference links
-- [https://github.com/wclose/mothurPipeline](https://github.com/wclose/mothurPipeline)
 
 <br>
 <br>
@@ -289,9 +286,10 @@ body h3{
 </ol>
 
 
-<br><br><hr width="30%">
+<br>
+<hr width=50%>
 
-<div id="footer"><br>
+<div id="footer">
 Last updated on `r format(Sys.time(), '%B %d, %Y')`. <br><br>
 These workflows are continuously reviewed, integrated, tested and compiled by [Teresia Mrema-Buza](mailto:`r rmarkdown::metadata$email_address`).  
 Github_Repo: `r rmarkdown::metadata$github_repo`.  
@@ -301,6 +299,5 @@ Visit the [Complex Data Insights (CDI) website](`r rmarkdown::metadata$related_w
 
 <br>
 <br>
-<br>
 
-# References
+## References

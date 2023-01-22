@@ -1,3 +1,10 @@
+from snakemake.utils import min_version
+
+min_version("6.10.0")
+
+# Configuration file containing all user-specified settings
+configfile: "config/config.yaml"
+
 rule denoise_n_classify80:
     input:
         script="workflow/scripts/denoise_n_classify80.sh",

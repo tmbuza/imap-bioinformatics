@@ -10,10 +10,9 @@ OTUANALYSIS="${FINALDIR}"/otu_analysis/
 PHYLOTYPEANALYSIS="${FINALDIR}"/phylotype_analysis/
 ASVANALYSIS="${FINALDIR}"/asv_analysis/
 PHYLOGENYANALYSIS="${FINALDIR}"/phylogeny_analysis/
-
 ERRORDIR="${FINALDIR}"/error_analysis/
 
-echo PROGRESS: Formating file for downstream analysis
+echo PROGRESS: Formating final files for downstream analysis
 
 mkdir -p "${OUTDIR}" "${LOGS}" "${FINALDIR}" "${OTUANALYSIS}" "${PHYLOTYPEANALYSIS}" "${ASVANALYSIS}" "${PHYLOGENYANALYSIS}" "${ERRORDIR}"
 
@@ -54,13 +53,13 @@ cp "${OUTDIR}"/*.asv.ASV.cons.tax.summary "${ASVANALYSIS}"/final.asv.cons.tax.su
 cp "${OUTDIR}"/*.asv.ASV.lefse "${ASVANALYSIS}"/final.asv.lefse
 cp "${OUTDIR}"/*.asv.ASV.biom "${ASVANALYSIS}"/final.asv.biom
 
-# # For downstream phylogeny analysis
-# cp "${OUTDIR}"/*.phylip.dist "${PHYLOGENYANALYSIS}"/final.phylip.dist
-# cp "${OUTDIR}"/*.phylip.tre "${PHYLOGENYANALYSIS}"/final.phylip.tre
+# For downstream phylogeny analysis
+cp "${OUTDIR}"/*.phylip.dist "${PHYLOGENYANALYSIS}"/final.phylip.dist
+cp "${OUTDIR}"/*.phylip.tre "${PHYLOGENYANALYSIS}"/final.phylip.tre
 
-# ###############
-# # Cleaning Up #
-# ###############
+###############
+# Cleaning Up #
+###############
 
 # echo PROGRESS: Cleaning up working directory.
 

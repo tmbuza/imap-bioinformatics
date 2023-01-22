@@ -1,7 +1,15 @@
+from snakemake.utils import min_version
+
+min_version("6.10.0")
+
+# Configuration file containing all user-specified settings
+configfile: "config/config.yaml"
+
 rule make_contigs:
     input:
         script="workflow/scripts/make_contigs.sh",
-        files=rules.make_files.output.files
+        files="data/mothur/metadata/test.files",
+        # files=rules.make_files.output.files
     output:
         fasta="{outdir}/{dataset}.trim.contigs.good.unique.fasta",
         ctable="{outdir}/{dataset}.trim.contigs.good.count_table",

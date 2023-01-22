@@ -13,4 +13,4 @@ mkdir -p "${OUTDIR}"  "${LOGS}" "${METADIR}"
 mothur "#set.logfile(name=${LOGS}/make_files.logfile);
       make.file(type=fastq, inputdir="${SAMPLEDIR}", outputdir="${OUTDIR}", prefix=test);"
  
-cp ${OUTDIR}/test.files ${METADIR}/
+# cp ${OUTDIR}/test.files ${METADIR}/sample.files

@@ -17,12 +17,8 @@ mothur "#set.logfile(name=${LOGS}/classify_phylotype.logfile);
     
     phylotype(taxonomy=current);
 
-	set.logfile(name=${LOGS}/make_phylo_shared.logfile);
 	make.shared(list=current, count=current, label=1, inputdir=${OUTDIR}, outputdir=${OUTDIR});
 	classify.otu(list=current, count=current, taxonomy=current, label=1);
 
-	set.logfile(name=${LOGS}/lefse_n_biom.logfile);
-	set.current(shared=current, constaxonomy=current);
 	make.lefse(shared=current, constaxonomy=current);
-	make.biom(shared=current, constaxonomy=current);
-	get.current()"
+	make.biom(shared=current, constaxonomy=current);"

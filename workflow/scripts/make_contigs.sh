@@ -4,7 +4,7 @@
 SAMPLEDIR="data/mothur/raw"
 OUTDIR="data/mothur/process"
 LOGS="data/mothur/logs"
-FILES="test.files"
+FILES="data/mothur/metadata/test.files"
 
 
 ###################
@@ -17,14 +17,13 @@ echo PROGRESS: Assembling and Screening unique representative sequences.
 mkdir -p "${OUTDIR}" "${LOGS}"
 
 mothur "#set.logfile(name=${LOGS}/make_contigs.logfile);
-	set.current(file=${OUTDIR}/${FILES});
+	set.current(file=${FILES});
 	make.contigs(file=current, inputdir=${SAMPLEDIR}, outputdir=${OUTDIR});
 	
 	set.logfile(name=${LOGS}/screen_unique.logfile);
 	screen.seqs(fasta=current, group=current, maxambig=0, maxlength=275, maxhomop=8);
 	unique.seqs(count=current);
-	summary.seqs(fasta=current, count=current);
-	get.current()"
+	summary.seqs(fasta=current, count=current);"
 
 
 # 	set.logfile(name=${LOGS}/seq_align_precluster.logfile);

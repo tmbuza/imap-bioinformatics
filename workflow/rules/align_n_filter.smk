@@ -1,3 +1,11 @@
+from snakemake.utils import min_version
+
+min_version("6.10.0")
+
+# Configuration file containing all user-specified settings
+configfile: "config/config.yaml"
+
+
 rule align_n_filter:
     input:
         script="workflow/scripts/align_n_filter.sh",

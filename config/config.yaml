@@ -18,8 +18,6 @@ dataset: test
 
 files:
 
-finaldir: data/mothur/final
-
 final: final
 
 finalotus: data/mothur/final/otu_analysis
@@ -57,7 +55,7 @@ mothurBeta:
   - braycurtis
 
 # Minimum read threshold for subsampling. Review sample statistics from preprocessing step
-subthresh: 1000
+subthresh: 10
 
 # NOTE: Leave these settings as is.
 
@@ -72,7 +70,7 @@ sraNum:
 
 mothurGroups:
   - sample
-  - mock
+  # - mock
   - control
 
 

@@ -18,15 +18,11 @@ mkdir -p "${OUTDIR}"
 mothur "#set.logfile(name=${LOGS}/classify_otu97.logfile);
 	set.current(fasta=${OUTDIR}/${FASTA}, list=${OUTDIR}/${MCCLIST}, count=${OUTDIR}/${COUNT}, taxonomy=${OUTDIR}/${TAXONOMY});
 
-	set.logfile(name=${LOGS}/make_shared.logfile);
 	make.shared(list=current, count=current, label=0.03, inputdir=${OUTDIR}, outputdir=${OUTDIR});
 	classify.otu(list=current, count=current, taxonomy=current, label=0.03);
 
-	set.logfile(name=${LOGS}/get_repfasta_repcount.logfile);
-	get.oturep(fasta=current, count=current, list=current, label=0.03, method=abundance);
-
-	set.logfile(name=${LOGS}/lefse_n_biom.logfile);
-	set.current(shared=current, constaxonomy=current);
 	make.lefse(shared=current, constaxonomy=current);
 	make.biom(shared=current, constaxonomy=current);
-	get.current()"
+
+	set.logfile(name=${LOGS}/get_repfasta_repcount.logfile);
+	get.oturep(fasta=current, count=current, list=current, label=0.03, method=abundance);"

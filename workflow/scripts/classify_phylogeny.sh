@@ -3,17 +3,16 @@
 # classify_phylotype.sh
 
 DATASET="test"
-OUTDIR="data/mothur/final/phylogeny_analysis"
+OUTDIR="data/mothur/process"
 LOGS="data/mothur/logs"
 
-FASTA="data/mothur/final/otu_analysis/final.rep.fasta"
+FASTA="test.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.pick.fasta"
 
-echo PROGRESS: Generating phylip tree fro the rep fasta
+echo PROGRESS: Generating phylip tree from the final rep fasta
 mkdir -p "${OUTDIR}" 
 	
 mothur "#set.logfile(name=${LOGS}/classify_phylogeny.logfile);
-	dist.seqs(fasta=${FASTA}, output=lt, outputdir=${OUTDIR});
-    clearcut(phylip=current)"
+	set.current(fasta=${OUTDIR}/${FASTA});
 
-# data/mothur/final/final.rep.phylip.dist
-# data/mothur/final/final.rep.phylip.tre
+	dist.seqs(fasta=current, output=lt, inputdir=${OUTDIR}, outputdir=${OUTDIR});
+    clearcut(phylip=current)"
