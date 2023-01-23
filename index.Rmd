@@ -238,13 +238,15 @@ body h3{
 ## Quick Glimpse
 - We use snakemake workflow engine [@Koster2021] to maintain reproducibility which is important in technical validation, regeneration of results and improvement of the microbiome bioinformatics analysis. 
 
-## Reviewed and improved snakemake workflows
+## Primary references
 <ol>
   <li>Mothur 16S v4 Analysis Pipeline [@mothursnakemake].</li>
+  <li>Mothur-based SILVA reference files [@MothurSILVA].</li>
+  <li>Mothur-based RDP reference files [@MothurRDP]. Note: The RDP database is to classify 16S rRNA gene sequences to the genus level.</li>
+  <li>ZymoBIOMICS Microbial Community Standard (Cat # D6306)[@Zymo2023]. The ZymoBIOMICS Microbial Community DNA Standard is designed to assess bias, errors and other artifacts after the step of nucleic acid purification.</li>
   <li></li>
   <li></li>
 </ol>
-
 
 ## Classification options
 ### Operational Taxonomic Units (OTUs)

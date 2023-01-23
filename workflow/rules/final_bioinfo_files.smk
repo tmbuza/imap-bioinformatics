@@ -5,6 +5,7 @@ min_version("6.10.0")
 # Configuration file containing all user-specified settings
 configfile: "config/config.yaml"
 
+
 rule final_otu_files:
     input:
         script="workflow/scripts/final_bioinfo_files.sh",
@@ -66,3 +67,4 @@ rule final_phylogeny_files:
         "{finalphylogeny}/final.phylip.tre",
     shell:
         "bash  {input.script}"
+

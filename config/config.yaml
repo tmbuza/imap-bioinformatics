@@ -7,7 +7,7 @@ workdir: .
 
 rawdir: data/mothur/raw
 
-metadir: data/mothur/metadata
+metadatadir: data/mothur/metadata
 
 refsdir: data/mothur/references
 
@@ -27,6 +27,8 @@ finalphylotype: data/mothur/final/phylotype_analysis
 finalasv: data/mothur/final/asv_analysis
 
 finalphylogeny: data/mothur/final/phylogeny_analysis
+
+erroranalysis: data/mothur/final/error_analysis
   
 # Group names of mock samples (e.g. Mock1_S1_L001_R1_001.fastq.gz = Mock1).
 mothurMock:

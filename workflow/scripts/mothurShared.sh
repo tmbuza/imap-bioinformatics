@@ -23,7 +23,6 @@ TAXONOMY="data/mothur/references/trainset16_022016.pds.tax"
 
 # Other variables
 OUTDIR="data/mothur/process"
-ERRORDIR="data/mothur/process/error_analysis"
 LOGS="data/mothur/logs"
 
 # Other variables

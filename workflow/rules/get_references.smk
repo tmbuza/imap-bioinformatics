@@ -5,44 +5,25 @@ min_version("6.10.0")
 # Configuration file containing all user-specified settings
 configfile: "config/config.yaml"
 
-rule get_silva_alignements:
+
+rule get_references:
 	input:
-		script="workflow/scripts/mothur_silva.sh"
+		script="workflow/scripts/mothur_references.sh"
 	output:
 		silvaalign="data/mothur/references/silva.seed.align",
-		silvav4="data/mothur/references/silva.v4.align"
+		silvav4="data/mothur/references/silva.v4.align",
+		rdpfasta="data/mothur/references/trainset16_022016.pds.fasta",
+		rdptax="data/mothur/references/trainset16_022016.pds.tax"
 	shell:
 		"bash {input.script}"
 
 
-rule silva_classifier:
-	input:
-		script="workflow/scripts/silva_classifier.sh",
-		silvaalign=expand(rules.get_silva_alignements.output.silvaalign, refsdir=config["refsdir"]),
-		silvav4=expand(rules.get_silva_alignements.output.silvav4, refsdir=config["refsdir"]),
-	output:
-		seedfasta="data/mothur/references/silva.seed.ng.fasta",
-		v4fasta="data/mothur/references/silva.v4.ng.fasta"
-	shell:
-		"bash {input.script}"
-
-
-rule get_rdp_classifier:
-	input:
-		script="workflow/scripts/mothur_rdp.sh"
-	output:
-		rdpfasta="data/mothur/references/{rdp}.pds.fasta",
-		rdptax="data/mothur/references/{rdp}.pds.tax",
-	shell:
-		"bash {input.script}"
-
-
-
+# Downloading the Zymo mock sequence files and extracting v4 region for error estimation.
 rule get_zymo_mock:
 	input:
 		script="workflow/scripts/mothur_zymo_mock.sh",
-		silvav4=expand(rules.get_silva_alignements.output.silvav4, refsdir=config["refsdir"], silva="silva"),
+		silvav4=rules.get_references.output.silvav4,
 	output:
-		mockrefs="data/mothur/references/{zymo}.mock.16S.v4.fasta"
+		mockv4="data/mothur/references/zymo.mock.16S.v4.fasta"
 	shell:
 		"bash {input.script}"

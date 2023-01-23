@@ -9,7 +9,7 @@ configfile: "config/config.yaml"
 rule classify_phylogeny:
     input: 
         script="workflow/scripts/classify_phylogeny.sh",
-        fasta=expand(rules.denoise_n_classify80.output.fasta, outdir=config["outdir"], dataset=config["dataset"]),
+        fasta="data/mothur/process/test.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.pick.fasta",
     output: 
         phylipdist="{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.pick.phylip.dist",
         phyliptre="{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.pick.phylip.tre",

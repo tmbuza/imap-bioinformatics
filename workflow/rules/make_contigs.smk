@@ -8,7 +8,7 @@ configfile: "config/config.yaml"
 rule make_contigs:
     input:
         script="workflow/scripts/make_contigs.sh",
-        files="data/mothur/metadata/test.files",
+        files="data/mothur/process/test.files",
         # files=rules.make_files.output.files
     output:
         fasta="{outdir}/{dataset}.trim.contigs.good.unique.fasta",

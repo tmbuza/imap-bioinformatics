@@ -1,8 +1,8 @@
 # Additional
 REFER
-library/*.*
+library/*
 data/*
-dags/*
+# dags/*.
 images/*
 figures/*
 report/*

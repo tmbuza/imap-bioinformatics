@@ -3,7 +3,7 @@
 # makealign_n_filter_contigs.sh
 SILVAALIGN="silva.v4.align"
 
-DBREFSDIR="data/mothur/references"
+REFSDIR="data/mothur/references"
 
 OUTDIR="data/mothur/process"
 FASTA="test.trim.contigs.good.unique.fasta"
@@ -17,7 +17,7 @@ mkdir -p "${OUTDIR}"
 	
 mothur "#set.logfile(name=${LOGS}/align_n_filter.logfile);
 	set.current(fasta=${OUTDIR}/${FASTA}, count=${OUTDIR}/${COUNT});
-    align.seqs(fasta=current, reference=${DBREFSDIR}/${SILVAALIGN}, inputdir=${OUTDIR}, outputdir=${OUTDIR});
+    align.seqs(fasta=current, reference=${REFSDIR}/${SILVAALIGN}, inputdir=${OUTDIR}, outputdir=${OUTDIR});
 	summary.seqs(fasta=current, count=current);	
 	screen.seqs(fasta=current, count=current, maxhomop=8);
     filter.seqs(fasta=current, vertical=T, trump=.);
