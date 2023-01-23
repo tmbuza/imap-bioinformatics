@@ -1,9 +1,11 @@
 ---
 title: "Integrated Microbiome<br>Analysis Pipelines<br><br>"
-subtitle: "Fostering continuous improvement and integration<br><br>"
-author: TMBuza
+subtitle: |
+  | ![](images/new_horizon2.png)
+  | Reproducible Microbiome Data Analysis Snakemake Workflows<br><br>
+author: Teresia Mrema-Buza
 date: |
-  | ![](images/new_horizon.png)<br><br>
+  | We use the snakemake workflow engine [@Koster2021] to maintain reproducibility in technical validation, regeneration of results, and improvement of the microbiome bioinformatics analysis.  <br><br><br>
   | Updated on `r Sys.time()` <br><br>
 csl: "library/apa-numeric-superscript.csl"
 bibliography: "library/references.bib"
@@ -54,7 +56,7 @@ library(schtools)
 # CONTAINER CSS
 ############ */
 
-.author, .subtitle{
+.author{
   display: none;
 } 
 .main-container {
@@ -71,17 +73,17 @@ body{
 }
 
 #header {
-  background-color: #013011;
+  background-color: none;
   color: white;
+  /* line-height: 4; */
   font-family: "Montserrat", sans-serif;
   text-align: center;
   width: 100%;
-  padding: 5% 0% 0% 0%;
+  padding: 5%;
   text-transform: none;
   font-weight: bold;
   background-image: url("images/bkgd.png");
-  background-repeat: no-repeat, repeat;
-  background-color: none;
+  background-repeat: no-repeat;
   height: 100%; /* You must set a specified height */
   background-position: center; /* Center the image */
   background-size: cover; /* Resize the background image to cover the entire container */
@@ -105,9 +107,10 @@ body{
 #header h3{
   font-size: 2.5em;
   color: black;
+  text-transform: capitalize;
 } 
 #header img{
-width:80%;
+width:96%;
 }
 body h1{
   font-size: 2.5em;
@@ -173,6 +176,7 @@ hr {
 #glimpse hr {
   display: inline-block;
   margin: 0px;
+  text-align: left;
 }
 
 ```
@@ -233,47 +237,33 @@ body h3{
 ```
 <br><br>
 
-# Microbial Profiling
+# Mothur Snakemake Workflows
 
-## Quick Glimpse
-- We use snakemake workflow engine [@Koster2021] to maintain reproducibility which is important in technical validation, regeneration of results and improvement of the microbiome bioinformatics analysis. 
+## Microbial profiling options
 
-## Primary references
-<ol>
-  <li>Mothur 16S v4 Analysis Pipeline [@mothursnakemake].</li>
-  <li>Mothur-based SILVA reference files [@MothurSILVA].</li>
-  <li>Mothur-based RDP reference files [@MothurRDP]. Note: The RDP database is to classify 16S rRNA gene sequences to the genus level.</li>
-  <li>ZymoBIOMICS Microbial Community Standard (Cat # D6306)[@Zymo2023]. The ZymoBIOMICS Microbial Community DNA Standard is designed to assess bias, errors and other artifacts after the step of nucleic acid purification.</li>
-  <li></li>
-  <li></li>
-</ol>
+### 1. Operational Taxonomic Units (OTUs)
+- OTUs are clusters of similar sequences and are commonly accepted as analytical units in microbial profiling when using 16S rRNA gene markers.
 
-## Classification options
-### Operational Taxonomic Units (OTUs)
-- OTUs are clusters with sequence similarity and are accepted as an analytical unit used in microbial profiling using 16S rRNA gene markers.
-
-### Phylotype
+### 2. Phylotype
 - A phylotype in microbiome research is a DNA sequence or group of sequences sharing more than an arbitrarily chosen level of similarity of a 16S rRNA gene marker.
 
-### Amplicon Sequence Variant (ASV)
-- An ASV in microbiome research is any one of the inferred single DNA sequences recovered from a bioinformatics analysis of 16S rRNA marker genes.
+### 3. Amplicon Sequence Variant (ASV)
+- An ASV in microbiome research is any inferred single DNA sequences recovered from a bioinformatics analysis of 16S rRNA marker genes.
 
-### Microbial Phylogenies
-- Microbial phylogenies are estimated from gene sequence homologies and the most-likely evolutionary histories are commonly inferred using models of mutation.
+### 4. Microbial Phylogenies
+- Microbial phylogenies are from gene sequence homologies.  Models of mutation determine the most-likely evolutionary histories.
 
 
 <br><br>
-<hr width="50%">
-<br><br> 
 
-# Improved Mothur Snakemake Workflow
-
+## End-to-end snakemake workflow 
 <img src="dags/rulegraph.svg"/>
 
+
 <br>
 <br>
 
-# Example of common FAQs (in progress)
+## Example of common FAQs (in progress)
 <ol>
   <li>Mothur dist.seqs taking too long.</li>
   <ul>
@@ -287,19 +277,103 @@ body h3{
   </ul>
 </ol>
 
+<br>
+<br>
+
+## Useful tools in Mothur pipeline
+<ol>
+  <li>Mothur 16S v4 Analysis Pipeline [@mothursnakemake].</li>
+  <li>Mothur-based SILVA reference files [@MothurSILVA].</li>
+  <li>Mothur-based RDP reference files [@MothurRDP]. Note: The RDP database is to classify 16S rRNA gene sequences to the genus level.</li>
+  <li>ZymoBIOMICS Microbial Community Standard (Cat # D6306)[@Zymo2023]. The ZymoBIOMICS Microbial Community DNA Standard is designed to assess bias, errors and other artifacts after the step of nucleic acid purification.</li>
+  <li></li>
+  <li></li>
+</ol>
+
+<br>
+<br>
+
+# References
+::: {#refs}
+:::
+
+<br>
+<br>
+<hr width>
+
+# Appendix {-}
+## Extended Mothur workflow
+```{r mothur_snakemake_dag}
+library(DiagrammeR)
+library(DiagrammeRsvg)
+
+mothur_snakemake_dag <- grViz("
+digraph mothur_snakemake_dag {
+    graph[bgcolor=white, margin=0];
+    node[shape=box, style=rounded, fontname=sans, fontsize=10, penwidth=2];
+    edge[penwidth=2, color=grey];
+    
+        0[label = 'Mothur Bioinformatics Workflow', color = '0.13 0.6 0.85', style='oval'];
+        1[label = 'get_zymo_mock', color = '0.50 0.6 0.85', style='rounded'];
+        2[label = 'get_references', color = '0.30 0.6 0.85', style='rounded'];
+        3[label = 'final_otu_files', color = '0.57 0.6 0.85', style='rounded'];
+        4[label = 'classify_otu97', color = '0.23 0.6 0.85', style='rounded'];
+        5[label = 'cluster_otu97', color = '0.37 0.6 0.85', style='rounded'];
+        6[label = 'compute_seqdist003', color = '0.27 0.6 0.85', style='rounded'];
+        7[label = 'denoise_n_classify80', color = '0.07 0.6 0.85', style='rounded'];
+        8[label = 'align_n_filter', color = '0.43 0.6 0.85', style='rounded'];
+        9[label = 'make_contigs', color = '0.53 0.6 0.85', style='rounded'];
+        10[label = 'make_files', color = '0.17 0.6 0.85', style='rounded'];
+        11[label = 'final_phylotype_files', color = '0.03 0.6 0.85', style='rounded'];
+        12[label = 'classify_phylotype', color = '0.60 0.6 0.85', style='rounded'];
+        13[label = 'final_asv_files', color = '0.33 0.6 0.85', style='rounded'];
+        14[label = 'classify_asv', color = '0.63 0.6 0.85', style='rounded'];
+        15[label = 'final_phylogeny_files', color = '0.40 0.6 0.85', style='rounded'];
+        16[label = 'classify_phylogeny', color = '0.10 0.6 0.85', style='rounded'];
+        17[label = 'otutable_by_group', color = '0.47 0.6 0.85', style='rounded'];
+        18[label = 'subsample_otutable', color = '0.20 0.6 0.85', style='rounded'];
+        19[label = 'count_groups', color = '0.00 0.6 0.85', style='rounded'];
+        15 -> 0
+        17 -> 0
+        1 -> 0
+        11 -> 0
+        3 -> 0
+        18 -> 0
+        13 -> 0
+        2 -> 1
+        4 -> 3
+        5 -> 4
+        7 -> 4
+        6 -> 5
+        7 -> 5
+        7 -> 6
+        8 -> 7
+        2 -> 7
+        9 -> 8
+        2 -> 8
+        10 -> 9
+        12 -> 11
+        7 -> 12
+        14 -> 13
+        7 -> 14
+        16 -> 15
+        7 -> 16
+        3 -> 17
+        17 -> 18
+        19 -> 18
+        17 -> 19
+        }")
+
+mothur_snakemake_dag
+```
 
 <br>
 <hr width=50%>
 
 <div id="footer">
 Last updated on `r format(Sys.time(), '%B %d, %Y')`. <br><br>
-These workflows are continuously reviewed, integrated, tested and compiled by [Teresia Mrema-Buza](mailto:`r rmarkdown::metadata$email_address`).  
+These workflows are continuously reviewed, integrated, tested and compiled by [`r rmarkdown::metadata$author`](mailto:`r rmarkdown::metadata$email_address`).  
 Github_Repo: `r rmarkdown::metadata$github_repo`.  
 Github_Page (this document): `r rmarkdown::metadata$github_page`.  
 Visit the [Complex Data Insights (CDI) website](`r rmarkdown::metadata$related_website`) for more practical user guides (...in progress).  
 </div>
-
-<br>
-<br>
-
-## References
