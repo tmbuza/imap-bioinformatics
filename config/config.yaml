@@ -1,5 +1,11 @@
 # config.yaml
 
+# Path to sample sheet (TSV format, columns: sample, condition, ...)
+samples: config/samples.tsv
+
+# Path to sequencing unit sheet (TSV format, columns: sample, unit, fq1, fq2)
+units: config/units.tsv
+
 # Change these settings before running workflow.
 
 
@@ -11,7 +17,8 @@ metadatadir: data/mothur/metadata
 
 refsdir: data/mothur/references
 
-outdir: data/mothur/process
+# outdir: data/mothur/process
+outdir: data/qc/stats
 
 # Auto created from fastq files
 dataset: test

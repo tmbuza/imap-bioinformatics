@@ -2,6 +2,7 @@
 REFER
 library/*
 data/*
+results/*
 # dags/*.
 images/*
 figures/*

@@ -1,11 +1,10 @@
 ---
-title: "Integrated Microbiome<br>Analysis Pipelines<br><br>"
+title: "Microbiome Data Analysis Snakemake Workflows<br><br>"
 subtitle: |
-  | ![](images/new_horizon.png)
-  | Reproducible Microbiome Data Analysis Snakemake Workflows<br><br>
+  | Integrated Solutions for Better Results<br><br>
 author: Teresia Mrema-Buza
 date: |
-  | We use the snakemake workflow engine [@Koster2021] to maintain reproducibility in technical validation, regeneration of results, and improvement of the microbiome bioinformatics analysis.  <br><br><br>
+  | ![](images/new_horizon.png)<br><br>
   | Updated on `r Sys.time()` <br><br>
 csl: "library/apa-numeric-superscript.csl"
 bibliography: "library/references.bib"
@@ -20,6 +19,11 @@ description: |
   This guide provides integrated and highly curated solutions for achieving better results.
 ---
 
+<br>
+
+ >Note: We use the snakemake workflow engine [@Koster2021] to maintain reproducibility in technical validation, regeneration of results, and improvement of the microbiome bioinformatics analysis.
+
+<hr width=100%>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -56,8 +60,12 @@ library(schtools)
 # CONTAINER CSS
 ############ */
 
-.author{
+.author, .subtitle{
   display: none;
+} 
+
+.date{
+  color: yellow;
 } 
 .main-container {
   max-width: 80%;
@@ -101,27 +109,16 @@ body{
   color: black;
 }
 #header h2{
-  font-size: 3em;
+  font-size: 2.8em;
 }
 
 #header h3{
-  font-size: 2.5em;
+  font-size: 1.8em;
   color: black;
   text-transform: capitalize;
 } 
 #header img{
 width:96%;
-}
-body h1{
-  font-size: 2.5em;
-  text-transform: capitalize;
-}
-body h2{
-  font-size: 1.8em;
-}
-
-body h3{
-  font-size: 1.6em;
 }
 
 body {
@@ -130,7 +127,7 @@ body {
   font-family: "Montserrat", sans-serif;
 }
 body h1{
-  font-size: 2.5em;
+  font-size: 2.8em;
   text-transform: capitalize;
 }
 body h2{
@@ -194,7 +191,7 @@ hr {
   margin-right: auto;
   }
   #header h1{
-    font-size: 2.5em;
+    font-size: 3em;
     text-transform: capitalize;
     color: black;
   }
@@ -214,11 +211,11 @@ hr {
   margin-right: auto;
 } 
 body h1{
-  font-size: 2.0em;
+  font-size: 2.5em;
   text-transform: capitalize;
 }
 body h2{
-  font-size: 1.6em;
+  font-size: 1.8em;
 }
 
 body h3{
@@ -233,73 +230,21 @@ body h3{
 ```
 <br><br>
 
-# Mothur Snakemake Workflows
-
-## Microbial profiling options
-
-### 1. Operational Taxonomic Units (OTUs)
-- OTUs are clusters of similar sequences and are commonly accepted as analytical units in microbial profiling when using 16S rRNA gene markers.
-
-### 2. Phylotype
-- A phylotype in microbiome research is a DNA sequence or group of sequences sharing more than an arbitrarily chosen level of similarity of a 16S rRNA gene marker.
-
-### 3. Amplicon Sequence Variant (ASV)
-- An ASV in microbiome research is any inferred single DNA sequences recovered from a bioinformatics analysis of 16S rRNA marker genes.
-
-### 4. Microbial Phylogenies
-- Microbial phylogenies are from gene sequence homologies.  Models of mutation determine the most-likely evolutionary histories.
+# Improved Mothur Snakemake Workflows
+ 
+## imap-mothur
+- A workflow for microbial profiling using 16S rRNA gene markers.
+- We review existing workflows [@mothursnakemake] and create a more reproducible pipeline.
+- Each major step form a separate snakemake rule.
 
 
 <br><br>
 
-## End-to-end snakemake workflow 
+## Workflow framework
 <img src="dags/rulegraph.svg"/>
 
 
-<br>
-<br>
-
-## Example of common FAQs (in progress)
-<ol>
-  <li>Mothur dist.seqs taking too long.</li>
-  <ul>
-    <li>Length of the merged reads (merged reads over 300pb).</li>
-    <li>Not enough overlaping when merging the paired reads.</li>
-    <li>Use other pre-cluster algorithm like Deblur.</li>
-    <li>Too many uniques?</li>
-    <li>Not enough computer power?: Use HPC or Cluster.</li>
-    <li>Try to make contigs using maxee instead of deltaq or use phylogeny approach for downstream analysis, or use clister.split based on taxonomy.</li>
-    <li>do not forget to use controls.</li>
-  </ul>
-</ol>
-
-<br>
-<br>
-
-## Useful tools in Mothur pipeline
-<ol>
-  <li>Mothur 16S v4 Analysis Pipeline [@mothursnakemake].</li>
-  <li>Mothur-based SILVA reference files [@MothurSILVA].</li>
-  <li>Mothur-based RDP reference files [@MothurRDP]. Note: The RDP database is to classify 16S rRNA gene sequences to the genus level.</li>
-  <li>ZymoBIOMICS Microbial Community Standard (Cat # D6306)[@Zymo2023]. The ZymoBIOMICS Microbial Community DNA Standard is designed to assess bias, errors and other artifacts after the step of nucleic acid purification.</li>
-  <li></li>
-  <li></li>
-</ol>
-
-<br>
-<br>
-
-# References
-::: {#refs}
-:::
-
-<br>
-<br>
-<hr width>
-
-# Appendix {-}
-## Extended Mothur workflow
-```{r mothur_snakemake_dag}
+```{r mothur_snakemake_dag, eval=FALSE, include=FALSE}
 library(DiagrammeR)
 library(DiagrammeRsvg)
 
@@ -363,8 +308,53 @@ digraph mothur_snakemake_dag {
 mothur_snakemake_dag
 ```
 
+<br><br>
+
+## Microbial profiling classification options
+### 1. Operational Taxonomic Units (OTUs)
+- OTUs are clusters of similar sequences and are commonly accepted as analytical units in microbial profiling when using 16S rRNA gene markers.
+
+### 2. Phylotype
+- A phylotype in microbiome research is a DNA sequence or group of sequences sharing more than an arbitrarily chosen level of similarity of a 16S rRNA gene marker.
+
+### 3. Amplicon Sequence Variant (ASV)
+- An ASV in microbiome research is any inferred single DNA sequences recovered from a bioinformatics analysis of 16S rRNA marker genes.
+
+### 4. Microbial Phylogenies
+- Microbial phylogenies are from gene sequence homologies.  Models of mutation determine the most-likely evolutionary histories.
+
+<br><br><hr width=50%>
+
+# Appendix {-}
+## Reference Databases
+<ol>
+  <li>Mothur-based SILVA reference files [@MothurSILVA].</li>
+  <li>Mothur-based RDP reference files [@MothurRDP]. Note: The RDP database is to classify 16S rRNA gene sequences to the genus level.</li>
+  <li>ZymoBIOMICS Microbial Community Standard (Cat # D6306)[@Zymo2023]. The ZymoBIOMICS Microbial Community DNA Standard is designed to assess bias, errors and other artifacts after the step of nucleic acid purification.</li>
+</ol>
+
 <br>
-<hr width=50%>
+<br>
+
+## Troubleshooting (in progress)
+<ol>
+  <li>Mothur dist.seqs taking too long.</li>
+  <ul>
+    <li>Merged reads are too long, probably over 300pb.</li>
+    <li>Reads not overlaping when merging the paired reads.</li>
+    <li>Too many uniques representative sequences probably caused by lack of overlapping.</li>
+    <li>No enough computer power which suggest a use of HPC or Cluster.</li>
+  </ul>
+</ol>
+
+<br>
+<br>
+
+## References
+::: {#refs}
+:::
+
+<br><br><hr width=50%><br>
 
 <div id="footer">
 Last updated on `r format(Sys.time(), '%B %d, %Y')`. <br><br>
@@ -372,4 +362,4 @@ These workflows are continuously reviewed, integrated, tested and compiled by [`
 Github_Repo: `r rmarkdown::metadata$github_repo`.  
 Github_Page (this document): `r rmarkdown::metadata$github_page`.  
 Visit the [Complex Data Insights (CDI) website](`r rmarkdown::metadata$related_website`) for more practical user guides (...in progress).  
-</div>
+</div><br><br>

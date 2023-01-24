@@ -16,7 +16,12 @@ sraSamples = list(set(glob_wildcards(os.path.join('data/mothur/raw/', '{sample}_
 
 rule all:
     input:
-        "data/mothur/references/zymo.mock.16S.v4.fasta",
+        "results/qc/seqkit1_stats.txt",
+        "results/qc/fastqc1/F3D0_S188_L001_R1_001_fastqc.html",
+        "results/qc/multiqc1/multiqc.html",
+
+
+        # "data/mothur/references/zymo.mock.16S.v4.fasta",
         expand("{finalotus}/final.list", finalotus=config["finalotus"]),
         expand("{finalotus}/final.shared", finalotus=config["finalotus"]),
         expand("{finalotus}/final.steps", finalotus=config["finalotus"]),
@@ -68,7 +73,7 @@ rule all:
         # "report/report.html",
         # "index.html",
 
-        
+include: "rules/qc.smk"
 
 include: "rules/get_references.smk"
 include: "rules/make_files.smk"
@@ -90,13 +95,3 @@ include: "rules/subsample_otutable.smk"
 
 
 
-# rule github_page:
-#     input:
-#         rmd="index.Rmd",
-#         rulegraph="dags/rulegraph.svg",
-#     output:
-#         "index.html",
-#     shell:
-#         """
-#         R -e "library(rmarkdown); render('{input.rmd}')"
-#         """
