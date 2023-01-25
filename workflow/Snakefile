@@ -6,9 +6,9 @@ min_version("6.10.0")
 configfile: "config/config.yaml"
 
 # Function for aggregating list of raw sequencing files.
-mothurSamples = list(set(glob_wildcards(os.path.join('data/mothur/raw/', '{sample}_{readNum, R[12]}_001.fastq.gz')).sample))
+mothurSamples = list(set(glob_wildcards(os.path.join('data/mothur/reads/', '{sample}_{readNum, R[12]}_001.fastq.gz')).sample))
 
-sraSamples = list(set(glob_wildcards(os.path.join('data/mothur/raw/', '{sample}_{sraNum, [12]}.fastq.gz')).sample))
+sraSamples = list(set(glob_wildcards(os.path.join('data/mothur/reads/', '{sample}_{sraNum, [12]}.fastq.gz')).sample))
 
 # final_bioinfo_files.smk
 # FINAL FILES        
@@ -16,12 +16,14 @@ sraSamples = list(set(glob_wildcards(os.path.join('data/mothur/raw/', '{sample}_
 
 rule all:
     input:
-        "results/qc/seqkit1_stats.txt",
-        "results/qc/fastqc1/F3D0_S188_L001_R1_001_fastqc.html",
-        "results/qc/multiqc1/multiqc.html",
+        "data/metadata/metadata.csv",
+        "images/variables.png",
+        expand("results/qc/fastqc1/{mothurSamples}_{readNum}_fastqc.zip", mothurSamples = mothurSamples, readNum = config["readNum"]), 
+        expand("results/qc/fastqc1/{mothurSamples}_{readNum}_fastqc.html", mothurSamples = mothurSamples, readNum = config["readNum"]), 
+        "results/qc/multiqc1/multiqc_report.html",
+        "results/qc/seqkit1/seqkit_stats.txt",
 
-
-        # "data/mothur/references/zymo.mock.16S.v4.fasta",
+        
         expand("{finalotus}/final.list", finalotus=config["finalotus"]),
         expand("{finalotus}/final.shared", finalotus=config["finalotus"]),
         expand("{finalotus}/final.steps", finalotus=config["finalotus"]),
@@ -65,15 +67,18 @@ rule all:
         expand("{finalotus}/{group}.final.0.03.subsample.shared", finalotus=config["finalotus"], group=config["mothurGroups"]),
 
 
-        # # rules_dag.smk
-        # "dags/rulegraph.svg",
-        # "dags/rulegraph.png",
-        # "dags/dag.svg",
-        # "dags/dag.png",
-        # "report/report.html",
-        # "index.html",
+        # rules_dag.smk
+        "dags/rulegraph.svg",
+        "dags/rulegraph.png",
+        "dags/dag.svg",
+        "dags/dag.png",
+        "report/report.html",
+        "index.html",
+      
 
-include: "rules/qc.smk"
+include: "rules/explore_metadata.smk"
+include: "rules/stats.smk"
+include: "rules/fastqc_multiqc.smk"
 
 include: "rules/get_references.smk"
 include: "rules/make_files.smk"
@@ -89,9 +94,6 @@ include: "rules/otutable_by_group.smk"
 include: "rules/count_groups.smk"
 include: "rules/subsample_otutable.smk"
 
-# include: "rules/rules_dag.smk"
-# include: "rules/interactive_report.smk"
-# include: "rules/render_index.smk"
-
-
-
+include: "rules/rules_dag.smk"
+include: "rules/interactive_report.smk"
+include: "rules/render_index.smk"
