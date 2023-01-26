@@ -3,7 +3,7 @@
 source("workflow/scripts/common.R")
 library(tidyverse, suppressPackageStartupMessages())
 
-metadata <- read_delim("data/mothur/metadata/SraRunTable.txt", show_col_types = FALSE) %>%  
+metadata <- read_csv("data/mothur/metadata/SraRunTable10.csv", show_col_types = FALSE) %>%  
   rename_all(tolower) %>% 
   rename(sample_id = run) %>% 
   drop_na(lat_lon) %>% 
@@ -61,7 +61,7 @@ m <- metadata %>%
   addCircles(color="magenta", radius = log1p(metadata$longitude) * 10)
 
 ## save html to png
-saveWidget(m, "samplelocmap.html", selfcontained = FALSE)
-webshot("samplelocmap.html", file = "images/samplelocmap.png",
+saveWidget(m, "sample_gps.html", selfcontained = FALSE)
+webshot("sample_gps.html", file = "images/sample_gps.png",
         cliprect = "viewport")
 

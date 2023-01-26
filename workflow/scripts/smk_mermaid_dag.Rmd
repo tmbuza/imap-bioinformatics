@@ -1,0 +1,58 @@
+```{r mermaid_dag}
+library(DiagrammeR)
+library(DiagrammeRsvg)
+
+mermaid("graph TD
+
+0((Target Output))
+1[get_zymo_mock]
+2[get_references]
+3[final_otu_files]
+4[classify_otu97]
+5[cluster_otu97]
+6[compute_seqdist003]
+7{denoise_n_classify80}
+8[align_n_filter]
+9[make_contigs]
+10[make_files]
+11[final_phylotype_files]
+12[classify_phylotype]
+13[final_asv_files]
+14[classify_asv]
+15[final_phylogeny_files]
+16[classify_phylogeny]
+17[otutable_by_group]
+18[subsample_otutable]
+19[count_groups]
+15 --> 0
+17 --> 0
+1 --> 0
+11 --> 0
+3 --> 0
+18 --> 0
+13 --> 0
+2 --> 1
+4 --> 3
+5 --> 4
+7 --> 4
+6 --> 5
+7 --> 5
+7 --> 6
+8 --> 7
+2 --> 7
+9 --> 8
+2 --> 8
+10 --> 9
+12 --> 11
+7 --> 12
+14 --> 13
+7 --> 14
+16 --> 15
+7 --> 16
+3 --> 17
+17 --> 18
+19 --> 18
+17 --> 19
+
+")#, height = 1000, width = 500
+```

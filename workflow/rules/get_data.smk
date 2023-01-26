@@ -14,3 +14,14 @@ rule get_silva_alignements:
 		"envs/mothur.yaml"
 	shell:
 		"bash {input.script}"
+
+
+
+rule get_sra:
+    output:
+        "sra/{accession}_1.fastq",
+        "sra/{accession}_2.fastq",
+    log:
+        "logs/get-sra/{accession}.log",
+    wrapper:
+        "0.77.0/bio/sra-tools/fasterq-dump"

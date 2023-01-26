@@ -6,7 +6,7 @@ min_version("6.10.0")
 configfile: "config/config.yaml"
 
 
-rule otutable_by_group:
+rule split_by_group:
     input:
         script="workflow/scripts/otutable_by_group.sh",
         shared=expand("{finalotus}/final.shared", finalotus=config["finalotus"]),

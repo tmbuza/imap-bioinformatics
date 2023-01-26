@@ -16,69 +16,73 @@ sraSamples = list(set(glob_wildcards(os.path.join('data/mothur/reads/', '{sample
 
 rule all:
     input:
-        "data/metadata/metadata.csv",
+        # "data/metadata/metadata.csv",
         "images/variables.png",
+        "images/sample_gps.png",
+        "results/qc/seqkit1/seqkit_stats.txt",
+        "results/qc/multiqc1/multiqc_report.html",
         expand("results/qc/fastqc1/{mothurSamples}_{readNum}_fastqc.zip", mothurSamples = mothurSamples, readNum = config["readNum"]), 
         expand("results/qc/fastqc1/{mothurSamples}_{readNum}_fastqc.html", mothurSamples = mothurSamples, readNum = config["readNum"]), 
-        "results/qc/multiqc1/multiqc_report.html",
-        "results/qc/seqkit1/seqkit_stats.txt",
 
         
-        expand("{finalotus}/final.list", finalotus=config["finalotus"]),
+        # expand("{finalotus}/final.list", finalotus=config["finalotus"]),
         expand("{finalotus}/final.shared", finalotus=config["finalotus"]),
-        expand("{finalotus}/final.steps", finalotus=config["finalotus"]),
-        expand("{finalotus}/final.sensspec", finalotus=config["finalotus"]),
-        expand("{finalotus}/final.cons.taxonomy", finalotus=config["finalotus"]),
-        expand("{finalotus}/final.cons.tax.summary", finalotus=config["finalotus"]),
-        expand("{finalotus}/final.rep.fasta", finalotus=config["finalotus"]),
-        expand("{finalotus}/final.rep.count_table", finalotus=config["finalotus"]),
-        expand("{finalotus}/final.lefse", finalotus=config["finalotus"]),
-        expand("{finalotus}/final.biom", finalotus=config["finalotus"]),
+        # expand("{finalotus}/final.steps", finalotus=config["finalotus"]),
+        # expand("{finalotus}/final.sensspec", finalotus=config["finalotus"]),
+        # expand("{finalotus}/final.cons.taxonomy", finalotus=config["finalotus"]),
+        # expand("{finalotus}/final.cons.tax.summary", finalotus=config["finalotus"]),
+        # expand("{finalotus}/final.rep.fasta", finalotus=config["finalotus"]),
+        # expand("{finalotus}/final.rep.count_table", finalotus=config["finalotus"]),
+        # expand("{finalotus}/final.lefse", finalotus=config["finalotus"]),
+        # expand("{finalotus}/final.biom", finalotus=config["finalotus"]),
 
 # PHYLOTYPE ANALYSIS FILES
-        expand("{finalphylotype}/final.tx.list", finalphylotype=config["finalphylotype"]),
-        expand("{finalphylotype}/final.tx.rabund", finalphylotype=config["finalphylotype"]),
-        expand("{finalphylotype}/final.tx.sabund", finalphylotype=config["finalphylotype"]),
+        # expand("{finalphylotype}/final.tx.list", finalphylotype=config["finalphylotype"]),
+        # expand("{finalphylotype}/final.tx.rabund", finalphylotype=config["finalphylotype"]),
+        # expand("{finalphylotype}/final.tx.sabund", finalphylotype=config["finalphylotype"]),
         expand("{finalphylotype}/final.tx.shared", finalphylotype=config["finalphylotype"]),
-        expand("{finalphylotype}/final.tx.cons.taxonomy", finalphylotype=config["finalphylotype"]),
-        expand("{finalphylotype}/final.tx.cons.tax.summary", finalphylotype=config["finalphylotype"]),
-        expand("{finalphylotype}/final.tx.lefse", finalphylotype=config["finalphylotype"]),
-        expand("{finalphylotype}/final.tx.biom", finalphylotype=config["finalphylotype"]),
+        # expand("{finalphylotype}/final.tx.cons.taxonomy", finalphylotype=config["finalphylotype"]),
+        # expand("{finalphylotype}/final.tx.cons.tax.summary", finalphylotype=config["finalphylotype"]),
+        # expand("{finalphylotype}/final.tx.lefse", finalphylotype=config["finalphylotype"]),
+        # expand("{finalphylotype}/final.tx.biom", finalphylotype=config["finalphylotype"]),
 
 
 # ASV ANALYSIS FILES
-        expand("{finalasv}/final.asv.list", finalasv=config["finalasv"]),
+        # expand("{finalasv}/final.asv.list", finalasv=config["finalasv"]),
         expand("{finalasv}/final.asv.shared", finalasv=config["finalasv"]),
-        expand("{finalasv}/final.asv.cons.taxonomy", finalasv=config["finalasv"]),
-        expand("{finalasv}/final.asv.cons.tax.summary", finalasv=config["finalasv"]),
-        expand("{finalasv}/final.asv.lefse", finalasv=config["finalasv"]),
-        expand("{finalasv}/final.asv.biom", finalasv=config["finalasv"]),
+        # expand("{finalasv}/final.asv.cons.taxonomy", finalasv=config["finalasv"]),
+        # expand("{finalasv}/final.asv.cons.tax.summary", finalasv=config["finalasv"]),
+        # expand("{finalasv}/final.asv.lefse", finalasv=config["finalasv"]),
+        # expand("{finalasv}/final.asv.biom", finalasv=config["finalasv"]),
 
 
 # # # PHYLOGENY ANALYSIS FILES
-        expand("{finalphylogeny}/final.phylip.dist", finalphylogeny=config["finalphylogeny"]),
+        # expand("{finalphylogeny}/final.phylip.dist", finalphylogeny=config["finalphylogeny"]),
         expand("{finalphylogeny}/final.phylip.tre", finalphylogeny=config["finalphylogeny"]),
 
 # SPLITTING
         # split_otutable
-        expand("{finalotus}/{group}.final.shared", finalotus=config["finalotus"], group=config["mothurGroups"]),
+        # expand("{finalotus}/{group}.final.shared", finalotus=config["finalotus"], group=config["mothurGroups"]),
 
         # # subsample_otutable
         expand("{finalotus}/{group}.final.0.03.subsample.shared", finalotus=config["finalotus"], group=config["mothurGroups"]),
 
 
         # rules_dag.smk
-        "dags/rulegraph.svg",
-        "dags/rulegraph.png",
-        "dags/dag.svg",
-        "dags/dag.png",
+        # "dags/rulegraph.svg",
+        # "dags/rulegraph.png",
+        # "dags/dag.svg",
+        # "dags/dag.png",
         "report/report.html",
         "index.html",
       
 
+# include: "rules/common.smk"
 include: "rules/explore_metadata.smk"
-include: "rules/stats.smk"
-include: "rules/fastqc_multiqc.smk"
+include: "rules/qc.smk"
+
+# include: "rules/stats.smk"
+# include: "rules/fastqc_multiqc.smk"
 
 include: "rules/get_references.smk"
 include: "rules/make_files.smk"

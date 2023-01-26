@@ -6,7 +6,7 @@ min_version("6.10.0")
 configfile: "config/config.yaml"
 
 
-rule compute_seqdist003:
+rule classify_otu97:
     input:
         script="workflow/scripts/compute_seqdist003.sh",
         fasta=expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.pick.fasta", outdir=config["outdir"], dataset = config["dataset"]),
@@ -20,7 +20,7 @@ rule compute_seqdist003:
 rule cluster_otu97:
     input:
         script="workflow/scripts/cluster_otu97.sh",
-        dist=expand(rules.compute_seqdist003.output.dist, outdir=config["outdir"], dataset = config["dataset"]),
+        dist=expand(rules.classify_otu97.output.dist, outdir=config["outdir"], dataset = config["dataset"]),
         ctable=expand("{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.count_table", outdir=config["outdir"], dataset = config["dataset"]),
     output:
         mcclist="{outdir}/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.pick.opti_mcc.list",
@@ -31,7 +31,7 @@ rule cluster_otu97:
         "bash {input.script}"
 
 
-rule classify_otu97:
+rule assign_taxonomy:
     input:
         script="workflow/scripts/classify_otu97.sh",
         mcclist=expand(rules.cluster_otu97.output.mcclist, outdir=config["outdir"], dataset=config["dataset"]),
