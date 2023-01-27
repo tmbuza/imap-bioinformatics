@@ -1,175 +1,138 @@
-import glob
-
 import pandas as pd
-from snakemake.remote import FTP
 from snakemake.utils import validate
+from snakemake.utils import min_version
 
-ftp = FTP.RemoteProvider()
+min_version("5.18.0")
+
+
+report: "../report/workflow.rst"
+
+
+container: "continuumio/miniconda3:4.8.2"
+
+
+###### Config file and sample sheets #####
+configfile: "config/config.yaml"
+
 
 validate(config, schema="../schemas/config.schema.yaml")
 
-samples = (
-    pd.read_csv(config["samples"], sep="\t", dtype={"sample_name": str})
-    .set_index("sample_name", drop=False)
-    .sort_index()
-)
-
-
-def get_final_output():
-    final_output = expand(
-        "results/diffexp/{contrast}.diffexp.symbol.tsv",
-        contrast=config["diffexp"]["contrasts"],
-    )
-    final_output.append("results/deseq2/normcounts.symbol.tsv")
-    final_output.append("results/counts/all.symbol.tsv")
-    return final_output
-
-
+samples = pd.read_table(config["samples"]).set_index("sample", drop=False)
 validate(samples, schema="../schemas/samples.schema.yaml")
 
-units = (
-    pd.read_csv(config["units"], sep="\t", dtype={"sample_name": str, "unit_name": str})
-    .set_index(["sample_name", "unit_name"], drop=False)
-    .sort_index()
+units = pd.read_table(config["units"], dtype=str).set_index(
+    ["sample", "unit"], drop=False
 )
+units.index = units.index.set_levels(
+    [i.astype(str) for i in units.index.levels]
+)  # enforce str in index
 validate(units, schema="../schemas/units.schema.yaml")
 
 
-def get_cutadapt_input(wildcards):
-    unit = units.loc[wildcards.sample].loc[wildcards.unit]
+##### Wildcard constraints #####
+wildcard_constraints:
+    vartype="snvs|indels",
+    sample="|".join(samples.index),
+    unit="|".join(units["unit"]),
 
-    if pd.isna(unit["fq1"]):
-        # SRA sample (always paired-end for now)
-        accession = unit["sra"]
-        return expand("sra/{accession}_{read}.fastq", accession=accession, read=[1, 2])
 
-    if unit["fq1"].endswith("gz"):
-        ending = ".gz"
-    else:
-        ending = ""
+##### Helper functions #####
 
-    if pd.isna(unit["fq2"]):
-        # single end local sample
-        return "pipe/cutadapt/{S}/{U}.fq1.fastq{E}".format(
-            S=unit.sample_name, U=unit.unit_name, E=ending
-        )
-    else:
-        # paired end local sample
+# contigs in reference genome
+def get_contigs():
+    with checkpoints.genome_faidx.get().output[0].open() as fai:
+        return pd.read_table(fai, header=None, usecols=[0], squeeze=True, dtype=str)
+
+
+def get_fastq(wildcards):
+    """Get fastq files of given sample-unit."""
+    fastqs = units.loc[(wildcards.sample, wildcards.unit), ["fq1", "fq2"]].dropna()
+    if len(fastqs) == 2:
+        return {"r1": fastqs.fq1, "r2": fastqs.fq2}
+    return {"r1": fastqs.fq1}
+
+
+def is_single_end(sample, unit):
+    """Return True if sample-unit is single end."""
+    return pd.isnull(units.loc[(sample, unit), "fq2"])
+
+
+def get_read_group(wildcards):
+    """Denote sample name and platform in read group."""
+    return r"-R '@RG\tID:{sample}\tSM:{sample}\tPL:{platform}'".format(
+        sample=wildcards.sample,
+        platform=units.loc[(wildcards.sample, wildcards.unit), "platform"],
+    )
+
+
+def get_trimmed_reads(wildcards):
+    """Get trimmed reads of given sample-unit."""
+    if not is_single_end(**wildcards):
+        # paired-end sample
         return expand(
-            "pipe/cutadapt/{S}/{U}.{{read}}.fastq{E}".format(
-                S=unit.sample_name, U=unit.unit_name, E=ending
-            ),
-            read=["fq1", "fq2"],
+            "results/trimmed/{sample}-{unit}.{group}.fastq.gz",
+            group=[1, 2],
+            **wildcards
         )
+    # single end sample
+    return "results/trimmed/{sample}-{unit}.fastq.gz".format(**wildcards)
 
 
-def get_cutadapt_pipe_input(wildcards):
-    files = list(
-        sorted(glob.glob(units.loc[wildcards.sample].loc[wildcards.unit, wildcards.fq]))
+def get_sample_bams(wildcards):
+    """Get all aligned reads of given sample."""
+    return expand(
+        "results/recal/{sample}-{unit}.bam",
+        sample=wildcards.sample,
+        unit=units.loc[wildcards.sample].unit,
     )
-    assert len(files) > 0
-    return files
 
 
-def is_paired_end(sample):
-    sample_units = units.loc[sample]
-    fq2_null = sample_units["fq2"].isnull()
-    sra_null = sample_units["sra"].isnull()
-    paired = ~fq2_null | ~sra_null
-    all_paired = paired.all()
-    all_single = (~paired).all()
-    assert (
-        all_single or all_paired
-    ), "invalid units for sample {}, must be all paired end or all single end".format(
-        sample
+def get_regions_param(regions=config["processing"].get("restrict-regions"), default=""):
+    if regions:
+        params = "--intervals '{}' ".format(regions)
+        padding = config["processing"].get("region-padding")
+        if padding:
+            params += "--interval-padding {}".format(padding)
+        return params
+    return default
+
+
+def get_call_variants_params(wildcards, input):
+    return (
+        get_regions_param(
+            regions=input.regions, default="--intervals {}".format(wildcards.contig)
+        )
+        + config["params"]["gatk"]["HaplotypeCaller"]
     )
-    return all_paired
 
 
-def get_fq(wildcards):
-    if config["trimming"]["activate"]:
-        # activated trimming, use trimmed data
-        if is_paired_end(wildcards.sample):
-            # paired-end sample
-            return dict(
-                zip(
-                    ["fq1", "fq2"],
-                    expand(
-                        "results/trimmed/{sample}_{unit}_{group}.fastq.gz",
-                        group=["R1", "R2"],
-                        **wildcards,
-                    ),
-                )
-            )
-        # single end sample
-        return {"fq1": "trimmed/{sample}_{unit}_single.fastq.gz".format(**wildcards)}
-    else:
-        # no trimming, use raw reads
-        u = units.loc[(wildcards.sample, wildcards.unit), ["fq1", "fq2"]].dropna()
-        if pd.isna(u["fq1"]):
-            # SRA sample (always paired-end for now)
-            accession = u["sra"]
-            return dict(
-                zip(
-                    ["fq1", "fq2"],
-                    expand(
-                        "sra/{accession}_{group}.fastq",
-                        accession=accession,
-                        group=["R1", "R2"],
-                    ),
-                )
-            )
-        if not is_paired_end(wildcards.sample):
-            return {"fq1": f"{u.fq1}"}
+def get_recal_input(bai=False):
+    # case 1: no duplicate removal
+    f = "results/mapped/{sample}-{unit}.sorted.bam"
+    if config["processing"]["remove-duplicates"]:
+        # case 2: remove duplicates
+        f = "results/dedup/{sample}-{unit}.bam"
+    if bai:
+        if config["processing"].get("restrict-regions"):
+            # case 3: need an index because random access is required
+            f += ".bai"
+            return f
         else:
-            return {"fq1": f"{u.fq1}", "fq2": f"{u.fq2}"}
-
-
-def get_strandedness(units):
-    if "strandedness" in units.columns:
-        return units["strandedness"].tolist()
+            # case 4: no index needed
+            return []
     else:
-        strand_list = ["none"]
-        return strand_list * units.shape[0]
+        return f
 
 
-def get_deseq2_threads(wildcards=None):
-    # https://twitter.com/mikelove/status/918770188568363008
-    few_coeffs = False if wildcards is None else len(get_contrast(wildcards)) < 10
-    return 1 if len(samples) < 100 or few_coeffs else 6
+def get_snpeff_reference():
+    return "{}.{}".format(config["ref"]["build"], config["ref"]["snpeff_release"])
 
 
-def is_activated(xpath):
-    c = config
-    for entry in xpath.split("/"):
-        c = c.get(entry, {})
-    return bool(c.get("activate", False))
+def get_vartype_arg(wildcards):
+    return "--select-type-to-include {}".format(
+        "SNP" if wildcards.vartype == "snvs" else "INDEL"
+    )
 
 
-def get_bioc_species_name():
-    first_letter = config["ref"]["species"][0]
-    subspecies = config["ref"]["species"].split("_")[1]
-    return first_letter + subspecies
-
-
-def get_fastqs(wc):
-    if config["trimming"]["activate"]:
-        return expand(
-            "results/trimmed/{sample}/{unit}_{read}.fastq.gz",
-            unit=units.loc[wc.sample, "unit_name"],
-            sample=wc.sample,
-            read=wc.read,
-        )
-    unit = units.loc[wc.sample]
-    if all(pd.isna(unit["fq1"])):
-        # SRA sample (always paired-end for now)
-        accession = unit["sra"]
-        return expand(
-            "sra/{accession}_{read}.fastq", accession=accession, read=wc.read[-1]
-        )
-    fq = "fq{}".format(wc.read[-1])
-    return units.loc[wc.sample, fq].tolist()
-
-
-def get_contrast(wildcards):
-    return config["diffexp"]["contrasts"][wildcards.contrast]
+def get_filter(wildcards):
+    return {"snv-hard-filter": config["filtering"]["hard"][wildcards.vartype]}

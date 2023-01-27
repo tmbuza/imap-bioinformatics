@@ -153,7 +153,7 @@ hr {
 }
 
 .DiagrammeR {
-  background: white;
+  background: auto;
 }
 .DiagrammeR img{
   width: 100%;
@@ -161,10 +161,9 @@ hr {
   margin-left: auto;
   margin-right: auto;
   text-align: center;
-  max-width: 1200px
+  width: 1201.75px
 }
 ```
-
 
 
 ```{css echo = FALSE} 
@@ -256,6 +255,33 @@ library(schtools)
 
 > We envision to keep fostering on continuous integration and development of highly reproducible workflows.
 
+# General Framework
+```{r}
+library(DiagrammeR)
+library(DiagrammeRsvg)
+
+mermaid("graph TB
+
+subgraph  
+
+A[<b>MICROBIOME DATA ANALYSIS</b>] --> B{Basic Requirements}
+B --> C[Basic Software]
+B --> D[Sample Metadata]
+B --> E[Sequencing Data]
+B --> F[Reference Database]
+B --> J[Mapping Files]
+C --> G[Analysis & Visualization Tools]
+C --> H[Quality Control Tools]
+C --> I[Bioinformatics Pipelines]
+F --> K[Sequence Alignments]
+F --> L[Taxonomy Classifiers]
+
+end
+
+", width = 1201.75)
+
+
+```
 <hr width=100%><br><br>
 
 # IMAP-Mothur Snakemake workflow 
@@ -266,13 +292,18 @@ library(schtools)
 
 <br><br>
 
-## Workflow framework<br>
+## Current snakemake rule graph<br>
 <img src="dags/rulegraph.svg"/>
 
 <br><br>
+<br><br>
 
-```{r eval=FALSE, child='workflow/scripts/smk_mermaid_dag.Rmd', include=FALSE}
+## Current snakemake dag<br>
+<img src="dags/dag.svg"/>
 
+<br><br>
+
+```{r child='workflow/scripts/smk_mermaid_dag.Rmd'}
 ```
 
 <br><br>

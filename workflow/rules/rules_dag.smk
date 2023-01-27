@@ -5,7 +5,7 @@ min_version("6.10.0")
 # Configuration file containing all user-specified settings
 configfile: "config/config.yaml"
 
-rule get_dag:
+rule get_rulegraph:
 	output:
 		"dags/rulegraph.svg",
 		"dags/rulegraph.png",

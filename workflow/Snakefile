@@ -16,13 +16,14 @@ sraSamples = list(set(glob_wildcards(os.path.join('data/mothur/reads/', '{sample
 
 rule all:
     input:
-        # "data/metadata/metadata.csv",
+        "data/metadata/metadata.csv",
         "images/variables.png",
         "images/sample_gps.png",
-        "results/qc/seqkit1/seqkit_stats.txt",
-        "results/qc/multiqc1/multiqc_report.html",
-        expand("results/qc/fastqc1/{mothurSamples}_{readNum}_fastqc.zip", mothurSamples = mothurSamples, readNum = config["readNum"]), 
-        expand("results/qc/fastqc1/{mothurSamples}_{readNum}_fastqc.html", mothurSamples = mothurSamples, readNum = config["readNum"]), 
+
+        # "results/qc/seqkit1/seqkit_stats.txt",
+        # "results/qc/multiqc1/multiqc_report.html",
+        # expand("results/qc/fastqc1/{mothurSamples}_{readNum}_fastqc.zip", mothurSamples = mothurSamples, readNum = config["readNum"]), 
+        # expand("results/qc/fastqc1/{mothurSamples}_{readNum}_fastqc.html", mothurSamples = mothurSamples, readNum = config["readNum"]), 
 
         
         # expand("{finalotus}/final.list", finalotus=config["finalotus"]),
@@ -69,10 +70,10 @@ rule all:
 
 
         # rules_dag.smk
-        # "dags/rulegraph.svg",
-        # "dags/rulegraph.png",
-        # "dags/dag.svg",
-        # "dags/dag.png",
+        "dags/rulegraph.svg",
+        "dags/rulegraph.png",
+        "dags/dag.svg",
+        "dags/dag.png",
         "report/report.html",
         "index.html",
       
