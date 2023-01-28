@@ -151,18 +151,39 @@ hr {
 #appendix img{
   width: 75%;
 }
-
-.DiagrammeR {
-  background: auto;
-}
-.DiagrammeR img{
-  width: 100%;
+.DiagrammeR, .mermaid{
   display: block;
   margin-left: auto;
   margin-right: auto;
   text-align: center;
-  width: 1201.75px
 }
+.DiagrammeR rect, .mermaid rect{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+.DiagrammeR svg, .mermaid svg{
+
+
+.node text {
+font-family: 'trebuchet ms', verdana, arial;
+font-size: 14px;
+}
+.DiagrammeR .mermaid{
+position: absolute;
+text-align: center;
+max-width: 200px;
+padding: 2px;
+font-family: 'trebuchet ms', verdana, arial;
+font-size: 12px;
+background: #ffff00;
+border: 1px solid #aaaa33;
+border-radius: 2px;
+pointer-events: none;
+z-index: 100;
+}
+
 ```
 
 
@@ -215,7 +236,6 @@ body h3{
 
 ```
 
-
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
@@ -246,23 +266,26 @@ library(schtools)
 
 <br>
 
-## Quick glimpse {#glimpse}
-- We use the snakemake workflow engine [@Koster2021] to maintain reproducibility in technical validation, regeneration of results, and improvement of the microbiome bioinformatics analysis.
-- We review existing workflows to gain a better insights and regenerate contiguous but related rules.
-- Each major step form a separate executable snakemake rule.
+# Quick glimpse {#glimpse}
+- We use the snakemake workflow management system [@Koster2021; @Snakemake2023] for:
+  - Maintaining reproducibility in technical validation and regeneration of results
+  - Creating scalable data analysis scaled to server, grid or cloud environment seamlessly.
+  - Fostering sustainable improvement of the microbiome data analysis.
+- Reviewing existing workflows methodlogies [@Snakemake2023; @Mothursnakemake] helps in gaining a better insights for improving microbiome data analysis.
+- We break any complex workflows into small contiguous but related chunks where each major step form a separate executable snakemake rule.
 
 <br>
 
 > We envision to keep fostering on continuous integration and development of highly reproducible workflows.
 
-# General Framework
+# iMAP 1: Getting started workflow {#imap1}
 ```{r}
 library(DiagrammeR)
 library(DiagrammeRsvg)
 
-mermaid("graph TB
+mermaid("graph LR
 
-subgraph  
+subgraph iMAP 1: GETTING STARTED
 
 A[<b>MICROBIOME DATA ANALYSIS</b>] --> B{Basic Requirements}
 B --> C[Basic Software]
@@ -278,37 +301,159 @@ F --> L[Taxonomy Classifiers]
 
 end
 
-", width = 1201.75)
-
+")#, height = 800, width = 600)
 
 ```
+
 <hr width=100%><br><br>
 
-# IMAP-Mothur Snakemake workflow 
+# iMAP 2: Microbiome Bioinformatics {#imap2}
+
+![](dags/imap2.svg)
+
+```r
+digraph snakemake_dag {
+graph[bgcolor=white, margin=0];
+node[shape=box, style=rounded, fontname=sans,                 fontsize=10, penwidth=2];
+edge[penwidth=2, color=grey];
+  0[label = "all", color = "0.12 0.6 0.85", style="rounded"];
+  1[label = "count16SShared", color = "0.25 0.6 0.85", style="rounded"];
+  2[label = "split16SShared", color = "0.62 0.6 0.85", style="rounded"];
+  3[label = "make16SShared", color = "0.46 0.6 0.85", style="rounded"];
+  4[label = "make_mapping_file", color = "0.17 0.6 0.85", style="rounded"];
+  5[label = "get_read_data", color = "0.50 0.6 0.85", style="rounded"];
+  6[label = "get16SReferences", color = "0.00 0.6 0.85", style="rounded"];
+  7[label = "subsample16SShared", color = "0.04 0.6 0.85", style="rounded"];
+  8[label = "rarefy16SReads", color = "0.38 0.6 0.85", style="rounded"];
+  9[label = "calc16SAlphaDiversity", color = "0.42 0.6 0.85", style="rounded"];
+  10[label = "calc16SBetaDiversity", color = "0.29 0.6 0.85", style="rounded"];
+  11[label = "calc16SNMDS", color = "0.33 0.6 0.85", style="rounded"];
+  12[label = "calc16SPCoA", color = "0.54 0.6 0.85", style="rounded"];
+  13[label = "calc16SError", color = "0.08 0.6 0.85", style="rounded"];
+  14[label = "get16SMock", color = "0.21 0.6 0.85", style="rounded"];
+  7 -> 0
+  13 -> 0
+  10 -> 0
+  1 -> 0
+  11 -> 0
+  8 -> 0
+  9 -> 0
+  12 -> 0
+  2 -> 1
+  3 -> 2
+  6 -> 3
+  4 -> 3
+  5 -> 3
+  5 -> 4
+  2 -> 7
+  1 -> 7
+  2 -> 8
+  2 -> 9
+  1 -> 9
+  2 -> 10
+  1 -> 10
+  10 -> 11
+  10 -> 12
+  3 -> 13
+  14 -> 13
+  6 -> 14
+```
+
+```{r}
+library(DiagrammeR)
+library(DiagrammeRsvg)
+mermaid("graph LR
+subgraph
+
+0{IMAP 2}
+1[count16SShared]
+2[split16SShared]
+3[make16SShared]
+4[get16SReferences]
+5[subsample16SShared]
+6[calc16SError]
+7[get16SMock]
+1 --> 0
+6 --> 0
+5 --> 0
+2 --> 1
+3 --> 2
+4 --> 3
+1 --> 5
+2 --> 5
+3 --> 6
+7 --> 6
+4 --> 7
+end
+")
+```
+
+![](dags/detailed_imap2.svg)
+<img src="dags/imap2.svg">
+
+
 - A mothur-based workflow for microbial profiling using 16S rRNA gene markers.
 - Each major step forms a separate executable snakemake rule.
 - GitHub repo: https://github.com/tmbuza/imap-mothur
 
 
-<br><br>
+## Mothur Bioinformatics snakemake graph<br>
+```{r mothur}
+library(DiagrammeR)
+library(DiagrammeRsvg)
 
-## Current snakemake rule graph<br>
-<img src="dags/rulegraph.svg"/>
+mermaid("graph LR
 
-<br><br>
-<br><br>
+subgraph  iMAP 2: BIOINFORMATICS WORKFLOW
 
-## Current snakemake dag<br>
-<img src="dags/dag.svg"/>
+0{<center>BIOINFORMATICS OUTPUT</center>}
+1[count16SShared]
+2[split16SShared]
+3[make16SShared]
+4[get16SReferences]
+5[subsample16SShared]
+6[rarefy16SReads]
+7[calc16SAlphaDiversity]
+8[calc16SBetaDiversity]
+9[calc16SNMDS]
+10[calc16SPCoA]
+11[calc16SError]
+12[get16SMock]
 
-<br><br>
+9 --> 0
+11 --> 0
+5 --> 0
+6 --> 0
+1 --> 0
+8 --> 0
+10 --> 0
+7 --> 0
+2 --> 1
+3 --> 2
+4 --> 3
+1 --> 5
+2 --> 5
+2 --> 6
+1 --> 7
+2 --> 7
+1 --> 8
+2 --> 8
+8 --> 9
+8 --> 10
+3 --> 11
+12 --> 11
+4 --> 12
 
-```{r child='workflow/scripts/smk_mermaid_dag.Rmd'}
+
+end
+
+")#, height = 800, width = 600)
 ```
 
+
 <br><br>
 
-## Microbial profiling classification options
+## 16S classification options
 ### 1. Operational Taxonomic Units (OTUs)
 - OTUs are clusters of similar sequences and are commonly accepted as analytical units in microbial profiling when using 16S rRNA gene markers.
 
@@ -317,16 +462,29 @@ end
 
 ### 3. Amplicon Sequence Variant (ASV)
 - An ASV in microbiome research is any inferred single DNA sequences recovered from a bioinformatics analysis of 16S rRNA marker genes.
+- ASV is typically really a cluster of sequences that are one or two bases apart from each other.
 
 ### 4. Microbial Phylogenies
 - Microbial phylogenies are from gene sequence homologies.  Models of mutation determine the most-likely evolutionary histories.
 
 <br><br><hr width=50%>
 
+# iMAP 3: Data tidying & transformation {#imap3}
+
+<br><br><hr width=50%>
+
+# iMAP 4 : Data analysis & visualization {#imap4}
+
+<br><br><hr width=50%>
+
+# iMAP 5 : Microbiome Machine Learning {#imap5}
+
+<br><br><hr width=50%>
+
 # Appendix {-}
 ## Reference Databases
 <ol>
-  <li>Mothur-based SILVA reference files [@MothurSILVA].</li>
+  <li>Mothur-based SILVA reference files [@MothurSILVA]</li>.
   <li>Mothur-based RDP reference files [@MothurRDP]. Note: The RDP database is to classify 16S rRNA gene sequences to the genus level.</li>
   <li>ZymoBIOMICS Microbial Community Standard (Cat # D6306)[@Zymo2023]. The ZymoBIOMICS Microbial Community DNA Standard is designed to assess bias, errors and other artifacts after the step of nucleic acid purification.</li>
 </ol>
@@ -334,15 +492,33 @@ end
 <br>
 <br>
 
-## Sample location (demo)
+## Mermaid template
 
-<img src="images/sample_gps.png"/>
+```{r eval=FALSE, include=FALSE}
+library(DiagrammeR)
+library(DiagrammeRsvg)
+mermaid("graph LR
 
-<br>
-<br>
+subgraph A: Title 1
+
+0[Start Here] --> 1[Node 1]
+0 --> 2[Node 2]
+
+end
+
+subgraph B: Title 2
+0 --> 3[Node 3]
+3 --> 4[Node 4]
+end
+
+")
+```
+
 
 ## Troubleshooting (in progress)
 <ol>
+  <li>Are chimeras removed by default in newer versions?</li>
+    <ul>Yes. Chimeras are removed by default. You can still run the remove.seqs command without error, but it is not necessary. Remove chimera sequence explained [here](https://forum.mothur.org/t/chimera-vsearch-removes-groups-and-generates-empty-files/21342/4)</ul>.
   <li>Mothur dist.seqs taking too long.</li>
   <ul>
     <li>Merged reads are too long, probably over 300pb.</li>

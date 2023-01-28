@@ -9,10 +9,11 @@ mkdir -p dags
 # snakemake -F --dag  targets | dot -Tsvg > dags/dag.svg
 # snakemake -F --dag  targets | dot -Tpng > dags/dag.png
 
-snakemake -F --rulegraph  all | dot -Tsvg > dags/rulegraph.svg
-snakemake -F --rulegraph  all | dot -Tpng > dags/rulegraph.png
-snakemake -F --dag  all | dot -Tsvg > dags/dag.svg
-snakemake -F --dag  all | dot -Tpng > dags/dag.png
+snakemake -F --rulegraph | dot -Tsvg > dags/imap2.svg
+snakemake -F --rulegraph | dot -Tpng > dags/rulegraph.svg
+snakemake -F --rulegraph | dot -Tpng > dags/rulegraph.png
+snakemake -F --dag | dot -Tsvg > dags/dag.svg
+snakemake -F --dag | dot -Tpng > dags/dag.png
 
 # snakemake -F --rulegraph  Output_Files | dot -Tsvg > dags/rulegraph.svg
 # snakemake -F --rulegraph  Output_Files | dot -Tpng > dags/rulegraph.png
