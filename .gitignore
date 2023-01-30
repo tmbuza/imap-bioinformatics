@@ -1,4 +1,6 @@
 # Additional
+code
+The10BeatitudesInScripture.Rmd
 *metamap*
 *temp*
 *jquery*
@@ -8,6 +10,7 @@
 REFER
 library/*
 data/*
+dags/dag.*
 results/*
 # dags/*.
 images/*

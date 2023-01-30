@@ -9,39 +9,14 @@ units: config/units.tsv
 # Change these settings before running workflow.
 
 
-workdir: .
-
-rawdir: data/mothur/raw
-
-metadatadir: data/mothur/metadata
-
-refsdir: data/mothur/references
-
-# outdir: data/mothur/process
-outdir: data/qc/stats
-
 # Auto created from fastq files
 dataset: test
-
-files:
-
-final: final
-
-finalotus: data/mothur/final/otu_analysis
-
-finalphylotype: data/mothur/final/phylotype_analysis
-
-finalasv: data/mothur/final/asv_analysis
-
-finalphylogeny: data/mothur/final/phylogeny_analysis
-
-erroranalysis: data/mothur/final/error_analysis
   
 # Group names of mock samples (e.g. Mock1_S1_L001_R1_001.fastq.gz = Mock1).
 mothurMock:
   - Mock1
   - Mock2
-  - Mock3
+  # - Mock3
 
 # Group names of control samples (e.g. Water1_S2_L001_R1_001.fastq.gz = Water1).
 mothurControl:
@@ -64,7 +39,7 @@ mothurBeta:
   - braycurtis
 
 # Minimum read threshold for subsampling. Review sample statistics from preprocessing step
-subthresh: 10
+subthresh: 100
 
 # NOTE: Leave these settings as is.
 
@@ -79,60 +54,9 @@ sraNum:
 
 mothurGroups:
   - sample
-  # - mock
+  - mock
   - control
 
 
 # Random seed
 seed: 110912
-
-
-ref:
-  # Ensembl species name
-  species: homo_sapiens
-  # Ensembl release (make sure to take one where snpeff data is available, check 'snpEff databases' output)
-  release: 100
-  # Genome build
-  build: GRCh38
-
-trimming:
-  activate: False
-
-pca:
-  activate: True
-  labels:
-    # columns of sample sheet to use for PCA
-    - condition
-
-diffexp:
-  # contrasts for the deseq2 results method
-  contrasts:
-    A-vs-B:
-      - A
-      - B
-  model: ~condition
-
-params:
-  cutadapt-pe: ""
-  cutadapt-se: ""
-  star: "--outSAMtype BAM Unsorted"
-# # More paraametersor reference
-#   dataset: stability
-#   workdir: data
-#   reference: silva.bacteria/silva.bacteria
-#   trainset: trainset9_032012.pds.fasta
-#   taxonomy: trainset9_032012.pds.tax
-#   maxambig: 0
-#   maxlength: 275
-#   start: 11894
-#   end: 25319
-#   keepdots: F
-#   maxhomop: 8
-#   vertical: T
-#   trump: .
-#   diff: 2
-#   dereplicate: t
-#   cutoff: 80
-#   taxon: Chloroplast-Mitochondria-unknown-Archaea-Eukaryota
-#   group: Mock
-#   dist_cutoff: 0.20

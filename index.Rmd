@@ -119,15 +119,6 @@ blockquote {
     font-size: 16px;
     border-left: 5px solid #eee;
 }
-#glimpse{
-  text-align: left;
-  background-color: black;
-  color: rgb(127, 202, 106);
-}
-
-#glimpse h1{
-  text-transform: none;
-}
 
 a{
   color: #6bb7f5;
@@ -141,11 +132,6 @@ hr {
   display: inline-block;
   text-align: left;
   margin: 0px;
-}
-#glimpse hr {
-  display: inline-block;
-  margin: 0px;
-  text-align: left;
 }
 
 #appendix img{
@@ -271,19 +257,22 @@ library(schtools)
   - Maintaining reproducibility in technical validation and regeneration of results
   - Creating scalable data analysis scaled to server, grid or cloud environment seamlessly.
   - Fostering sustainable improvement of the microbiome data analysis.
-- Reviewing existing workflows methodlogies [@Snakemake2023; @Mothursnakemake] helps in gaining a better insights for improving microbiome data analysis.
-- We break any complex workflows into small contiguous but related chunks where each major step form a separate executable snakemake rule.
+/* - Reviewing existing workflows methodlogies [@Snakemake2023; @Mothursnakemake] helps in gaining a better insights for improving microbiome data analysis.
+- We break any complex workflows into small contiguous but related chunks where each major step form a separate executable snakemake rule. */
 
 <br>
 
 > We envision to keep fostering on continuous integration and development of highly reproducible workflows.
 
 # iMAP 1: Getting started workflow {#imap1}
-```{r}
+
+...In Progress...
+
+```{r eval=FALSE, include=FALSE}
 library(DiagrammeR)
 library(DiagrammeRsvg)
 
-mermaid("graph LR
+mermaid("graph TB
 
 subgraph iMAP 1: GETTING STARTED
 
@@ -308,164 +297,51 @@ end
 <hr width=100%><br><br>
 
 # iMAP 2: Microbiome Bioinformatics {#imap2}
+## Root directory
 
-![](dags/imap2.svg)
-
-```r
-digraph snakemake_dag {
-graph[bgcolor=white, margin=0];
-node[shape=box, style=rounded, fontname=sans,                 fontsize=10, penwidth=2];
-edge[penwidth=2, color=grey];
-  0[label = "all", color = "0.12 0.6 0.85", style="rounded"];
-  1[label = "count16SShared", color = "0.25 0.6 0.85", style="rounded"];
-  2[label = "split16SShared", color = "0.62 0.6 0.85", style="rounded"];
-  3[label = "make16SShared", color = "0.46 0.6 0.85", style="rounded"];
-  4[label = "make_mapping_file", color = "0.17 0.6 0.85", style="rounded"];
-  5[label = "get_read_data", color = "0.50 0.6 0.85", style="rounded"];
-  6[label = "get16SReferences", color = "0.00 0.6 0.85", style="rounded"];
-  7[label = "subsample16SShared", color = "0.04 0.6 0.85", style="rounded"];
-  8[label = "rarefy16SReads", color = "0.38 0.6 0.85", style="rounded"];
-  9[label = "calc16SAlphaDiversity", color = "0.42 0.6 0.85", style="rounded"];
-  10[label = "calc16SBetaDiversity", color = "0.29 0.6 0.85", style="rounded"];
-  11[label = "calc16SNMDS", color = "0.33 0.6 0.85", style="rounded"];
-  12[label = "calc16SPCoA", color = "0.54 0.6 0.85", style="rounded"];
-  13[label = "calc16SError", color = "0.08 0.6 0.85", style="rounded"];
-  14[label = "get16SMock", color = "0.21 0.6 0.85", style="rounded"];
-  7 -> 0
-  13 -> 0
-  10 -> 0
-  1 -> 0
-  11 -> 0
-  8 -> 0
-  9 -> 0
-  12 -> 0
-  2 -> 1
-  3 -> 2
-  6 -> 3
-  4 -> 3
-  5 -> 3
-  5 -> 4
-  2 -> 7
-  1 -> 7
-  2 -> 8
-  2 -> 9
-  1 -> 9
-  2 -> 10
-  1 -> 10
-  10 -> 11
-  10 -> 12
-  3 -> 13
-  14 -> 13
-  6 -> 14
+```{bash}
+cat project_tree.txt
 ```
 
-```{r}
-library(DiagrammeR)
-library(DiagrammeRsvg)
-mermaid("graph LR
-subgraph
+<br><br>
 
-0{IMAP 2}
-1[count16SShared]
-2[split16SShared]
-3[make16SShared]
-4[get16SReferences]
-5[subsample16SShared]
-6[calc16SError]
-7[get16SMock]
-1 --> 0
-6 --> 0
-5 --> 0
-2 --> 1
-3 --> 2
-4 --> 3
-1 --> 5
-2 --> 5
-3 --> 6
-7 --> 6
-4 --> 7
-end
-")
-```
+## Snakemake workflow
+![](dags/rulegraph.svg)
 
-![](dags/detailed_imap2.svg)
-<img src="dags/imap2.svg">
-
-
-- A mothur-based workflow for microbial profiling using 16S rRNA gene markers.
-- Each major step forms a separate executable snakemake rule.
-- GitHub repo: https://github.com/tmbuza/imap-mothur
-
-
-## Mothur Bioinformatics snakemake graph<br>
-```{r mothur}
-library(DiagrammeR)
-library(DiagrammeRsvg)
-
-mermaid("graph LR
-
-subgraph  iMAP 2: BIOINFORMATICS WORKFLOW
-
-0{<center>BIOINFORMATICS OUTPUT</center>}
-1[count16SShared]
-2[split16SShared]
-3[make16SShared]
-4[get16SReferences]
-5[subsample16SShared]
-6[rarefy16SReads]
-7[calc16SAlphaDiversity]
-8[calc16SBetaDiversity]
-9[calc16SNMDS]
-10[calc16SPCoA]
-11[calc16SError]
-12[get16SMock]
-
-9 --> 0
-11 --> 0
-5 --> 0
-6 --> 0
-1 --> 0
-8 --> 0
-10 --> 0
-7 --> 0
-2 --> 1
-3 --> 2
-4 --> 3
-1 --> 5
-2 --> 5
-2 --> 6
-1 --> 7
-2 --> 7
-1 --> 8
-2 --> 8
-8 --> 9
-8 --> 10
-3 --> 11
-12 --> 11
-4 --> 12
-
-
-end
-
-")#, height = 800, width = 600)
-```
-
+>Note: Some snakemake rules available in existing workflows [@Mothursnakemake] are integrated but with slight modification.
 
 <br><br>
 
 ## 16S classification options
-### 1. Operational Taxonomic Units (OTUs)
-- OTUs are clusters of similar sequences and are commonly accepted as analytical units in microbial profiling when using 16S rRNA gene markers.
+### Classify OTUs
+- OTUs (Operational Taxonomic Units (OTUs)) are clusters of similar sequences and are commonly accepted as analytical units in microbial profiling when using 16S rRNA gene markers.
 
-### 2. Phylotype
+### Classify Phylotypes
 - A phylotype in microbiome research is a DNA sequence or group of sequences sharing more than an arbitrarily chosen level of similarity of a 16S rRNA gene marker.
 
-### 3. Amplicon Sequence Variant (ASV)
-- An ASV in microbiome research is any inferred single DNA sequences recovered from a bioinformatics analysis of 16S rRNA marker genes.
+### Classify ASVs
+- ASVs Amplicon Sequence Variants (ASVs)in microbiome research is any inferred single DNA sequences recovered from a bioinformatics analysis of 16S rRNA marker genes.
 - ASV is typically really a cluster of sequences that are one or two bases apart from each other.
 
-### 4. Microbial Phylogenies
+### Classify Phylogenies
 - Microbial phylogenies are from gene sequence homologies.  Models of mutation determine the most-likely evolutionary histories.
+
+<br><br>
+
+## Mothur Preliminary Analysis
+The preliminary analysis (`alpha_beta_diversity rule`) is part of the bioinformatics analysis. It includes:
+
+- Creating reads count for each group.
+- Subsampling for downstream analysis.
+- Rarefaction.
+- Computing Alpha diversity metrics.
+- Computing Beta diversity metrics.
+- Getting sample distances.
+- Constructing sample phylip tree.
+- Generating ordination matrices including PCoA and NMDS.
+
+
+
 
 <br><br><hr width=50%>
 
@@ -492,9 +368,10 @@ end
 <br>
 <br>
 
-## Mermaid template
 
-```{r eval=FALSE, include=FALSE}
+## Mermaid workflow template
+```{r}
+
 library(DiagrammeR)
 library(DiagrammeRsvg)
 mermaid("graph LR
@@ -515,6 +392,53 @@ end
 ```
 
 
+
+```{r eval=FALSE, include=FALSE}
+## Machine Learning
+library(DiagrammeR)
+library(DiagrammeRsvg)
+library(magrittr)
+library(rsvg)
+graph <- DiagrammeR::grViz("
+digraph {
+graph [layout = dot, rankdir = TD]
+# define the global styles of the nodes. We can override these in box if we wish
+node [shape = rectangle, style = filled, fillcolor = white]
+A [label = 'Clean Data', shape = folder, fillcolor = grey]
+B [label = 'Training \n Set', shape = folder, fillcolor = grey]
+C [label = 'Testing \n Set', shape = folder, fillcolor = grey]
+D [label = 'Model \nTraining Subset\n(X-Train)']
+E [label = 'Validation Subset\n(y_Train)']
+F [label = 'Better Feature \nSelection']
+G [label = 'Retrain \nModel']
+H [label = 'Best Feature \nSelection']
+I [label = 'Validated \nFeatures']
+J [label = 'Best Performing \nModel', shape = rectangle]
+K [label = 'Predict \nTest Set Labels', shape = rectangle]
+L [label = 'Compare Known \nwith Predicted', shape = rectangle]
+M [label = 'Cross \nValidation', shape = rectangle]
+N [label = 'Model \nImprovement', shape = rectangle]
+# edge definitions with the node IDs
+{A}  -> B
+{A}  -> C
+{B}  -> D
+{B}  -> E
+{D}  -> F
+{F}  -> G
+{G}  -> D
+{G}  -> H
+{H}  -> E
+{E}  -> I
+{I}  -> J
+{J}  -> C
+{C}  -> K
+{K}  -> L
+{L}  -> M
+{M}  -> N
+}", height = 1000, width = 600)
+### Visualize the graph object
+graph
+```
 ## Troubleshooting (in progress)
 <ol>
   <li>Are chimeras removed by default in newer versions?</li>
