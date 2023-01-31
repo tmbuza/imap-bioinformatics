@@ -10,7 +10,8 @@ The10BeatitudesInScripture.Rmd
 REFER
 library/*
 data/*
-dags/dag.*
+dags/dag.svg
+dags/dag.png
 results/*
 # dags/*.
 images/*

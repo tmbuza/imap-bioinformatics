@@ -41,8 +41,19 @@ rule all:
 		# "data/mothur/process/sample.final.braycurtis.0.03.lt.ave.nmds.axes",
 		"project_tree.txt",
 		"dags/rulegraph.svg",
-		# "report.html",
+		"dags/rulegraph.png",
+		"dags/dag.svg",
+		"dags/dag.png",
+		"report.html",
 		"index.html"
+
+
+# Get directory tree
+rule get_project_tree_txt:
+	output:
+		tree="project_tree.txt"
+	shell:
+		"tree -d . >{output}"
 
 
 rule get_rulegraph:
@@ -70,6 +81,7 @@ rule github_page_index:
         script="workflow/scripts/render.R",
         rmd="index.Rmd",
         rulegraph="dags/rulegraph.svg",
+		
     output:
         doc="index.html",
     shell:
@@ -87,12 +99,6 @@ rule getReadData:
 	shell:
 		"bash {input.script}"
 
-# Get directory tree
-rule get_project_tree_txt:
-	output:
-		tree="project_tree.txt"
-	shell:
-		"tree -d . >{output}"
 
 # Downloading and formatting SILVA and RDP reference databases. The v4 region is extracted from 
 # SILVA database for use as reference alignment.
