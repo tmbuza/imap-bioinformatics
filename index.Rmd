@@ -6,7 +6,7 @@ title:  |
 date: |
   |  <br>Updated on `r Sys.Date()` <br>
 subtitle: |
-  | Microbiome Bioinformatics Analysis with Snakemake<br>
+  | Microbiome Bioinformatics Analysis with Snakemake
 author: Teresia Mrema-Buza
 
 csl: "library/apa-numeric-superscript.csl"
@@ -15,8 +15,8 @@ link-citations: true
 mainfont:
 biblio-style: apalike
 email_address: "tmbuza@complexdatainsights.com"
-github_repo: "https://github.com/tmbuza/imap-requirements"
-github_page: "https://tmbuza.github.io/imap-requirements/"
+github_repo: "https://github.com/tmbuza/imap-bioinformatics"
+github_page: "https://tmbuza.github.io/imap-bioinformatics"
 related_website: "https://complexdatainsights.com"
 description: |
   This repo provides integrated and highly curated solutions for reproducible microbiome data analysis.
@@ -96,6 +96,7 @@ body{
 } 
 #header h2{
   font-size: 2.8em;
+  color: blue;
 }
 #header h3{
   font-size: 1.8em;
@@ -272,6 +273,9 @@ library(schtools)
 
 <div id="title">
 # Bioinformatics Analysis
+
+GitHub Repo: https://github.com/tmbuza/imap-bioinformatics
+
 </div>
 
 ## Quick glimpse
