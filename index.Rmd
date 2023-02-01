@@ -1,5 +1,5 @@
 ---
-title:  "<big>IMAP-PART 2</big><br>Bioinformatics Analysis & Microbial Profiling<br><br>"
+title:  "<big><u>IMAP-PART 2</u></big><br><br>Bioinformatics Analysis & Microbial Profiling<br><br>"
 subtitle: |
   | ![](../images/cicd.png)<br>
   | Integrated Microbiome Analysis Pipelines (IMAP) with Snakemake & GitHub Actions<br><br>
