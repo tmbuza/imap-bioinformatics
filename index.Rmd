@@ -2,7 +2,7 @@
 title:  "<big>IMAP-PART 2</big><br>Bioinformatics Analysis & Microbial Profiling<br><br>"
 subtitle: |
   | ![](../images/cicd.png)<br>
-  | Integrated Microbiome Analysis Pipelines (IMAP) with Snakemake<br><br>
+  | Integrated Microbiome Analysis Pipelines (IMAP) with Snakemake & GitHub Actions<br><br>
 date: |
   |  Updated on `r Sys.Date()` <br>
 author: Teresia Mrema-Buza
@@ -25,8 +25,6 @@ description: |
 <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
 <link rel="preconnect" href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
 
-
-
 ```{css echo = FALSE}
 /* #######################################*/
 /* #######################################*/
@@ -43,19 +41,19 @@ description: |
   margin-right: auto;
 }
 #header .title big {
-  font-size: 2em;
+  font-size: 1.5em;
   text-transform: capitalize;
   color: black;
   font-family: "Anton", sans-serif;
 } 
 #header h1{
-  font-size: 3em;
+  font-size: 2.5em;
   text-transform: capitalize;
   color: #1a1a1a;
   font-family: "Anton", sans-serif;
 }
 #header .subtitle{
-  font-size: 1.8em;
+  font-size: 1.5em;
   text-transform: capitalize;
   color: #004400;
   font-family: "Anton", sans-serif;
@@ -67,7 +65,7 @@ description: |
 
 .date{
   color: #004400;
-  font-family: "Montserrat", sans-serif;
+  font-family: "Anton", sans-serif;
   font-weight: normal:
 }
 #header {
@@ -88,12 +86,9 @@ description: |
 }
 
 body h1{
-  font-size: 3.5em;
+  font-size: 2.5em;
   text-transform: capitalize;
 font-family: "Anton", sans-serif;
-}
-#header h2{
-  font-size: 2.8em;
 }
 #header h3{
   font-size: 1.8em;
@@ -141,6 +136,7 @@ hr {
   color: #AAAAAA;
 }
 
+
 #appendix img{
   width: 75%;
 }
@@ -187,13 +183,11 @@ z-index: 100;
   margin-right: auto;
   }
   #header h1{
-    font-size: 2.5em;
+    font-size: 2em;
     text-transform: capitalize;
     color: #1a1a1a;
     font-family: "Anton", sans-serif;
-  }
-
-   body {
+  body {
     font-size: 12px;
     width: 100%; 
   } 
