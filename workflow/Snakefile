@@ -40,10 +40,10 @@ rule all:
 		# "data/mothur/process/sample.final.braycurtis.0.03.lt.ave.nmds.stress",
 		# "data/mothur/process/sample.final.braycurtis.0.03.lt.ave.nmds.axes",
 		"project_tree.txt",
-		"dags/rulegraph.svg",
-		"dags/rulegraph.png",
-		"dags/dag.svg",
-		"dags/dag.png",
+		# "dags/rulegraph.svg",
+		# "dags/rulegraph.png",
+		# "dags/dag.svg",
+		# "dags/dag.png",
 		"report.html",
 		"index.html"
 
@@ -66,14 +66,11 @@ rule get_rulegraph:
 		"bash workflow/scripts/rules_dag.sh"
 
 rule interactive_report:
-	input:
 	output:
 		"report.html",
 	shell:
 		"""
-		snakemake -c3 --report report.zip
-		unzip report.zip
-		rm report.zip
+		snakemake --report report.html
 		"""
 
 rule github_page_index:

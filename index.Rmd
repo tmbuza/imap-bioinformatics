@@ -1,35 +1,53 @@
 ---
-title: "Microbiome Data Analysis Snakemake Workflows<br><br>"
-subtitle: |
-  | Integrated Solutions for Better Results<br><br>
-author: Teresia Mrema-Buza
+title:  |
+  | IMAP<br>Integrated Microbiome Analysis Pipelines<br>
+  | ![](../images/cicd.png)
+  | <u>IMAP-PART 2</u>
 date: |
-  | ![](images/new_horizon.png)<br><br>
-  | Updated on `r Sys.time()` <br><br>
+  |  <br>Updated on `r Sys.Date()` <br>
+subtitle: |
+  | Microbiome Bioinformatics Analysis with Snakemake<br>
+author: Teresia Mrema-Buza
+
 csl: "library/apa-numeric-superscript.csl"
 bibliography: "library/references.bib"
 link-citations: true
 mainfont:
 biblio-style: apalike
 email_address: "tmbuza@complexdatainsights.com"
-github_repo: "https://github.com/tmbuza/imap-mothur"
-github_page: "https://tmbuza.github.io/imap-mothur/"
+github_repo: "https://github.com/tmbuza/imap-requirements"
+github_page: "https://tmbuza.github.io/imap-requirements/"
 related_website: "https://complexdatainsights.com"
 description: |
   This repo provides integrated and highly curated solutions for reproducible microbiome data analysis.
 ---
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+
+
 
 ```{css echo = FALSE}
 /* ############
 # CONTAINER CSS
 ############ */
 
-.author, .subtitle{
+.subtitle{
+  color: lightblue;
+  font-family: "Montserrat", sans-serif;
+  font-size: normal:
+} 
+
+.author{
   display: none;
 } 
 
 .date{
-  color: yellow;
+  color: lightblue;
+  font-family: "Anton", sans-serif;
+  font-weight: normal:
 } 
 .main-container {
   max-width: 80%;
@@ -46,44 +64,51 @@ body{
 
 #header {
   background-color: none;
-  color: white;
-  /* line-height: 4; */
+  color: black;
   font-family: "Montserrat", sans-serif;
   text-align: center;
   width: 100%;
   padding: 5%;
   text-transform: none;
   font-weight: bold;
-  background-image: url("images/bkgd.png");
+  /* background-image: url("../images/bkgd1.png"); */
+  background-image: url("../images/bkgd2.png");
   background-repeat: no-repeat;
   height: 100%; /* You must set a specified height */
   background-position: center; /* Center the image */
   background-size: cover; /* Resize the background image to cover the entire container */
-  
 }
-```
 
-```{css echo = FALSE} 
-/* ############
-# BODY CSS
-############ */
 #header h1{
   font-size: 4em;
   text-transform: capitalize;
   color: black;
-}
+  background: none;
+  font-family: "Anton", sans-serif;
+} 
+
+#title h1, body h1{
+  font-size: 3.5em;
+  text-transform: capitalize;
+  color: white;
+  background: none;
+  font-family: "Anton", sans-serif;
+} 
 #header h2{
   font-size: 2.8em;
 }
-
 #header h3{
   font-size: 1.8em;
   color: black;
   text-transform: capitalize;
 } 
 #header img{
-width:96%;
+width:75%;
 }
+
+/* ############
+# BODY CSS
+############ */
 
 body {
   background-color: F5F5F5;
@@ -130,8 +155,8 @@ a{
 }
 hr {
   display: inline-block;
-  text-align: left;
   margin: 0px;
+  color: grey;
 }
 
 #appendix img{
@@ -149,9 +174,6 @@ hr {
   margin-right: auto;
   text-align: center;
 }
-.DiagrammeR svg, .mermaid svg{
-
-
 .node text {
 font-family: 'trebuchet ms', verdana, arial;
 font-size: 14px;
@@ -222,12 +244,8 @@ body h3{
 
 ```
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
-
-
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
+source("workflow/scripts/common.R")
 knitr::opts_chunk$set(
   echo = FALSE,
   message = FALSE,
@@ -252,67 +270,50 @@ library(schtools)
 
 <br>
 
-# Quick glimpse {#glimpse}
+<div id="title">
+# Bioinformatics Analysis
+</div>
+
+## Quick glimpse
 - We use the snakemake workflow management system [@Koster2021; @Snakemake2023] for:
   - Maintaining reproducibility in technical validation and regeneration of results
   - Creating scalable data analysis scaled to server, grid or cloud environment seamlessly.
   - Fostering sustainable improvement of the microbiome data analysis.
-/* - Reviewing existing workflows methodlogies [@Snakemake2023; @Mothursnakemake] helps in gaining a better insights for improving microbiome data analysis.
-- We break any complex workflows into small contiguous but related chunks where each major step form a separate executable snakemake rule. */
+- Reviewing existing workflows methodlogies [@Snakemake2023; @Mothursnakemake] helps in gaining a better insights for improving microbiome data analysis.
+- We break any complex workflows into small contiguous but related chunks where each major step form a separate executable snakemake rule.
 
 <br>
 
 > We envision to keep fostering on continuous integration and development of highly reproducible workflows.
 
-# iMAP 1: Getting started workflow {#imap1}
 
-...In Progress...
+## Snakemake rulegraph
+<img src="dags/rulegraph.svg">
 
-```{r eval=FALSE, include=FALSE}
-library(DiagrammeR)
-library(DiagrammeRsvg)
+<br><br>
 
-mermaid("graph TB
-
-subgraph iMAP 1: GETTING STARTED
-
-A[<b>MICROBIOME DATA ANALYSIS</b>] --> B{Basic Requirements}
-B --> C[Basic Software]
-B --> D[Sample Metadata]
-B --> E[Sequencing Data]
-B --> F[Reference Database]
-B --> J[Mapping Files]
-C --> G[Analysis & Visualization Tools]
-C --> H[Quality Control Tools]
-C --> I[Bioinformatics Pipelines]
-F --> K[Sequence Alignments]
-F --> L[Taxonomy Classifiers]
-
-end
-
-")#, height = 800, width = 600)
-
-```
-
-<hr width=100%><br><br>
-
-# iMAP 2: Microbiome Bioinformatics {#imap2}
-## Root directory
-
+## Project directories
 ```{bash}
 cat project_tree.txt
 ```
 
+<br><hr width=100%><br>
+
+
+# Preprocessing 16S Reads
+- At this point we are aware of the preprocessing and bioinformatics tools needed to getting started with microbiome data analysis. 
+- We assume that the tools are already installed. Now it is time to use them to:
+  - Get simple statistics.
+  - Check the quality of the reads.
+  - Create summary report of quality metrics.
+  - Trim poor read at a user-specified cutoff.
+  - Remove contaminants.
+
 <br><br>
 
-## Snakemake workflow
-![](dags/rulegraph.svg)
+# Microbial Profiling Using 16S 
 
->Note: Some snakemake rules available in existing workflows [@Mothursnakemake] are integrated but with slight modification.
-
-<br><br>
-
-## 16S classification options
+## Read classification options (mothur)
 ### Classify OTUs
 - OTUs (Operational Taxonomic Units (OTUs)) are clusters of similar sequences and are commonly accepted as analytical units in microbial profiling when using 16S rRNA gene markers.
 
@@ -328,7 +329,7 @@ cat project_tree.txt
 
 <br><br>
 
-## Mothur Preliminary Analysis
+## Mothur preliminary analysis
 The preliminary analysis (`alpha_beta_diversity rule`) is part of the bioinformatics analysis. It includes:
 
 - Creating reads count for each group.
@@ -341,21 +342,7 @@ The preliminary analysis (`alpha_beta_diversity rule`) is part of the bioinforma
 - Generating ordination matrices including PCoA and NMDS.
 
 
-
-
-<br><br><hr width=50%>
-
-# iMAP 3: Data tidying & transformation {#imap3}
-
-<br><br><hr width=50%>
-
-# iMAP 4 : Data analysis & visualization {#imap4}
-
-<br><br><hr width=50%>
-
-# iMAP 5 : Microbiome Machine Learning {#imap5}
-
-<br><br><hr width=50%>
+<br><hr width=100%><br>
 
 # Appendix {-}
 ## Reference Databases
@@ -369,26 +356,26 @@ The preliminary analysis (`alpha_beta_diversity rule`) is part of the bioinforma
 <br>
 
 
-## Mermaid workflow template
+
 ```{r}
+## Mermaid workflow template
+# library(DiagrammeR)
+# library(DiagrammeRsvg)
+# mermaid("graph LR
 
-library(DiagrammeR)
-library(DiagrammeRsvg)
-mermaid("graph LR
+# subgraph A: Title 1
 
-subgraph A: Title 1
+# 0[Start Here] --> 1[Node 1]
+# 0 --> 2[Node 2]
 
-0[Start Here] --> 1[Node 1]
-0 --> 2[Node 2]
+# end
 
-end
+# subgraph B: Title 2
+# 0 --> 3[Node 3]
+# 3 --> 4[Node 4]
+# end
 
-subgraph B: Title 2
-0 --> 3[Node 3]
-3 --> 4[Node 4]
-end
-
-")
+# ")
 ```
 
 
@@ -459,7 +446,7 @@ graph
 ::: {#refs}
 :::
 
-<br><br><hr width=50%><br>
+<br><br><hr width=40%><br>
 
 <div id="footer">
 Last updated on `r format(Sys.time(), '%B %d, %Y')`. <br><br>
