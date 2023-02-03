@@ -10,6 +10,15 @@
 # Configuration file containing all user-specified settings
 configfile: "config/config.yaml"
 
+import os
+import csv
+import pandas as pd
+
+# Get the SRA Run accessions
+ACC_LIST=pd.read_csv('config/SraRunTable.csv')
+ACCESSIONS=ACC_LIST['Run'].tolist() # Specify the column containing the accession, in this demo is Run
+OUTDIR="data/mothur/reads" 
+
 # Function for aggregating list of raw sequencing files.
 mothurSamples = list(set(glob_wildcards(os.path.join('data/mothur/raw/', '{sample}_{readNum, R[12]}_001.fastq.gz')).sample))
 
@@ -48,6 +57,17 @@ rule all:
 		"index.html"
 
 
+# Dowload the SRA RUN reads
+rule download_sra_reads: 
+    output:
+        "{outdir}/{accession}_1.fastq",
+        "{outdir}/{accession}_2.fastq"
+    params:
+        download_folder=OUTDIR,
+    threads: 1
+    shell:
+        "fasterq-dump {wildcards.accession} -O {params.download_folder} --threads {threads}"
+  
 # Get directory tree
 rule get_project_tree_txt:
 	output:
@@ -129,8 +149,8 @@ rule get16SMock:
 rule makeMappingFile:
 	input:
 		script="workflow/scripts/makeFile.sh",
-		reads=expand(rules.getReadData.output,
-			mothurSamples = mothurSamples, readNum = config["readNum"]),
+		reads=expand(rules.getReadData.output, mothurSamples = mothurSamples, readNum = config["readNum"]),
+		sra=expand(rules.download_sra_reads.output, outdir=OUTDIR, accession=ACCESSIONS),
 	output:
 		files="data/mothur/process/test.files",
 	conda:
@@ -145,6 +165,7 @@ rule make16SShared:
 		files=rules.makeMappingFile.output,
 		refs=rules.get16SReferences.output,
 		reads=expand(rules.getReadData.output, mothurSamples = mothurSamples, readNum = config["readNum"]),
+		sra=expand(rules.download_sra_reads.output, outdir=OUTDIR, accession=ACCESSIONS),
 	output:
 		shared="data/mothur/process/final.shared",
 		taxonomy="data/mothur/process/final.taxonomy",

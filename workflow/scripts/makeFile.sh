@@ -11,4 +11,5 @@ echo PROGRESS: Making mothur-based sample mapping file.
 
 mkdir -p "${OUTDIR}"  "${LOGS}"
 mothur "#set.logfile(name=${LOGS}/makeMiles.logfile);
-      make.file(type=gz, inputdir="${SAMPLEDIR}", outputdir="${OUTDIR}", prefix=test);"
+      make.file(type=gz, inputdir="${SAMPLEDIR}", outputdir="${OUTDIR}", prefix=sra);"
+      # make.file(type=gz, inputdir="${SAMPLEDIR}", outputdir="${OUTDIR}", prefix=test);"
