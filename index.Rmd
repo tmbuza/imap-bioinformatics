@@ -7,7 +7,7 @@ date: |
   |  Updated on `r Sys.Date()` <br>
 author: Teresia Mrema-Buza
 
-csl: "library/apa-numeric-superscript.csl"
+csl: "library/apa.csl"
 bibliography: "library/references.bib"
 link-citations: true
 mainfont:
@@ -19,6 +19,7 @@ related_website: "https://complexdatainsights.com"
 description: |
   This repo provides integrated and highly curated solutions for reproducible microbiome data analysis.
 ---
+<h4>Github_Repo: `r rmarkdown::metadata$github_repo`. </h4> 
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -247,14 +248,8 @@ library(schtools)
 
 <br><hr><br>
 
-<div id="title">
-# Bioinformatics Analysis
+# General Overview
 
-GitHub Repo: https://github.com/tmbuza/imap-bioinformatics
-
-</div>
-
-## Quick glimpse
 - We use the snakemake workflow management system [@Koster2021; @Snakemake2023] for:
   - Maintaining reproducibility in technical validation and regeneration of results
   - Creating scalable data analysis scaled to server, grid or cloud environment seamlessly.
