@@ -1,228 +1,38 @@
 ---
-title:  "<big><u>IMAP-PART 2</u></big><br><br>Bioinformatics Analysis & Microbial Profiling<br><br>"
+title:  "<big><u>IMAP-PART2</u></big><br><br>Bioinformatics Analysis of Microbiome Data<br><br>"
 subtitle: |
-  | ![](../images/cicd.png)<br>
-  | Integrated Microbiome Analysis Pipelines (IMAP) with Snakemake & GitHub Actions<br><br>
+  | ![](images/bioinformatics.png)<br>
+  | Integrated Microbiome Analysis Pipelines<br>( IMAP-PART2 ) <br><br><small>[Latest GitHub-Repo](https://github.com/tmbuza/imap-bioinformatics/)</small>
 date: |
-  |  Updated on `r Sys.Date()` <br>
+  |  Updated on `r Sys.Date()`
 author: Teresia Mrema-Buza
-
+output: 
+  html_document: 
+    css: css/styles.css
 csl: "library/apa.csl"
-bibliography: "library/references.bib"
+bibliography:
+- library/references.bib
+- library/imap.bib
 link-citations: true
 mainfont:
 biblio-style: apalike
 email_address: "tmbuza@complexdatainsights.com"
 github_repo: "https://github.com/tmbuza/imap-bioinformatics"
-github_page: "https://tmbuza.github.io/imap-bioinformatics/"
 related_website: "https://complexdatainsights.com"
 description: |
-  This repo provides integrated and highly curated solutions for reproducible microbiome data analysis.
+  This repo provides integrated and highly curated solutions for reproducible research.
 ---
-<h4>Github_Repo: `r rmarkdown::metadata$github_repo`. </h4> 
+> We continuously review and integrate the old iMAP [@TMBuza2019] with Snakemake and GitHub actions to facilitate reproducible microbiome data analysis!
+
+<br><hr width=100%><br>
+
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
 <link rel="preconnect" href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
 
-```{css echo = FALSE}
-/* #######################################*/
-/* #######################################*/
- body{
-  font-size: 14px;
-  text-align: left;
-}
-.main-container {
-  max-width: 80%;
-  background-color: black;
-  color: white;
-  padding: 3% 3% 3% 3%;
-  margin-left: auto;
-  margin-right: auto;
-}
-#header .title big {
-  font-size: 1.5em;
-  text-transform: capitalize;
-  color: black;
-  font-family: "Anton", sans-serif;
-} 
-#header h1{
-  font-size: 2.5em;
-  text-transform: capitalize;
-  color: #1a1a1a;
-  font-family: "Anton", sans-serif;
-}
-#header .subtitle{
-  font-size: 1.5em;
-  text-transform: capitalize;
-  color: #004400;
-  font-family: "Anton", sans-serif;
-} 
-
-.author{
-  display: none;
-} 
-
-.date{
-  color: #004400;
-  font-family: "Anton", sans-serif;
-  font-weight: normal:
-}
-#header {
-  background-color: none;
-  color: black;
-  font-family: "Montserrat", sans-serif;
-  text-align: center;
-  width: 100%;
-  padding: 5%;
-  text-transform: none;
-  font-weight: bold;
-  background-image: url("../images/bkgd1.png");
-  /* background-image: url("../images/bkgd2.png"); */
-  background-repeat: no-repeat;
-  height: 100%; /* You must set a specified height */
-  background-position: center; /* Center the image */
-  background-size: cover; /* Resize the background image to cover the entire container */
-}
-
-body h1{
-  font-size: 2.5em;
-  text-transform: capitalize;
-font-family: "Anton", sans-serif;
-}
-#header h3{
-  font-size: 1.8em;
-  color: black;
-  text-transform: capitalize;
-} 
-#header img{
-width:75%;
-}
-
-/* ############
-# BODY CSS
-############ */
-
-table tbody tr td {
-  font-size: 14px;
-  text-transform: capitalize;
-}
-body img{
-  width: 100%;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  padding: 20px, 50px, 20px, 50px;
-}
-blockquote {
-    padding: 10px 20px;
-    margin: 0 0 20px;
-    font-size: 16px;
-    border-left: 5px solid #eee;
-}
-
-a{
-  color: #6bb7f5;
-}
-#tablefield {
-  max-width: 80%;
-  margin-left: auto;
-  margin-right: auto;
-}
-hr {
-  display: inline-block;
-  text-align: left;
-  margin: 0px;
-  color: #AAAAAA;
-}
-
-
-#appendix img{
-  width: 75%;
-}
-.DiagrammeR, .mermaid{
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  text-align: center;
-}
-.DiagrammeR rect, .mermaid rect{
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  text-align: center;
-}
-.DiagrammeR svg, .mermaid svg{
-
-
-.node text {
-font-family: 'trebuchet ms', verdana, arial;
-font-size: 14px;
-}
-.DiagrammeR .mermaid{
-position: absolute;
-text-align: center;
-max-width: 200px;
-padding: 2px;
-font-family: 'trebuchet ms', verdana, arial;
-font-size: 12px;
-background: #ffff00;
-border: 1px solid #aaaa33;
-border-radius: 2px;
-pointer-events: none;
-z-index: 100;
-}
-
-/* #######################################*/
-/* #######################################*/
-@media only screen and (max-width: 768px) {
-  .main-container {
-  max-width: 100%;
-  padding: 1% 1% 1% 1%;
-  margin-left: auto;
-  margin-right: auto;
-  }
-  #header h1{
-    font-size: 2em;
-    text-transform: capitalize;
-    color: #1a1a1a;
-    font-family: "Anton", sans-serif;
-  body {
-    font-size: 12px;
-    width: 100%; 
-  } 
-  #footer {
-    text-align: left;
-    font-size: 1.1em;
-  } 
-
-  #tablefield {
-  width: 100%;
-  margin-left: auto;
-  margin-right: auto;
-} 
-body h1{
-  font-size: 2.5em;
-  text-transform: capitalize;
-  font-family: "Anton", sans-serif;
-}
-body h2{
-  font-size: 1.8em;
-}
-
-body h3{
-  font-size: 1.6em;
-}
-
-#tablefield h2{
-  font-size: 1.6em;
-}
-}
-```
-
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
-source("workflow/scripts/common.R")
 knitr::opts_chunk$set(
   echo = FALSE,
   message = FALSE,
@@ -240,13 +50,10 @@ knitr::opts_chunk$set(
 )
 
 library(tidyverse, suppressPackageStartupMessages())
-library(mikropml)
 library(schtools)
 
 ```
-
-
-<br><hr><br>
+<br><br>
 
 # General Overview
 
@@ -332,28 +139,6 @@ The preliminary analysis (`alpha_beta_diversity rule`) is part of the bioinforma
 
 
 
-```{r}
-## Mermaid workflow template
-# library(DiagrammeR)
-# library(DiagrammeRsvg)
-# mermaid("graph LR
-
-# subgraph A: Title 1
-
-# 0[Start Here] --> 1[Node 1]
-# 0 --> 2[Node 2]
-
-# end
-
-# subgraph B: Title 2
-# 0 --> 3[Node 3]
-# 3 --> 4[Node 4]
-# end
-
-# ")
-```
-
-
 
 ```{r eval=FALSE, include=FALSE}
 ## Machine Learning
@@ -414,19 +199,17 @@ graph
   </ul>
 </ol>
 
-<br>
-<br>
+<br><br><hr width=50%><br>
 
 ## References
 ::: {#refs}
 :::
 
-<br><br><hr width=40%><br>
+<br><br><hr width=100%><br>
 
 <div id="footer">
 Last updated on `r format(Sys.time(), '%B %d, %Y')`. <br><br>
-These workflows are continuously reviewed, integrated, tested and compiled by [`r rmarkdown::metadata$author`](mailto:`r rmarkdown::metadata$email_address`).  
+The snakemake workflow mentioned in this report is continuously being reviewed, integrated, tested and compiled by [`r rmarkdown::metadata$author`](mailto:`r rmarkdown::metadata$email_address`).  
 Github_Repo: `r rmarkdown::metadata$github_repo`.  
-Github_Page (this document): `r rmarkdown::metadata$github_page`.  
-Visit the [Complex Data Insights (CDI) website](`r rmarkdown::metadata$related_website`) for more practical user guides (...in progress).  
+
 </div><br><br>
