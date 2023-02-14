@@ -25,14 +25,14 @@ mothurSamples = list(set(glob_wildcards(os.path.join('data/mothur/raw/', '{sampl
 # Master rule for controlling workflow.
 rule all:
 	input:
-		# "data/mothur/process/error_analysis/errorinput.pick.error.summary",
-		# "data/mothur/process/final.shared",
-		# "data/mothur/process/sample.final.shared",
-		# "data/mothur/process/error_analysis/errorinput.fasta",
-		# "data/mothur/process/error_analysis/errorinput.count_table",
+		"data/mothur/process/error_analysis/errorinput.pick.error.summary",
+		"data/mothur/process/final.shared",
+		"data/mothur/process/sample.final.shared",
+		"data/mothur/process/error_analysis/errorinput.fasta",
+		"data/mothur/process/error_analysis/errorinput.count_table",
 		# "data/mothur/process/sample.final.count.summary",
-		# "data/mothur/process/sample.final.0.03.subsample.shared",
-		# "data/mothur/process/sample.final.groups.rarefaction",
+		"data/mothur/process/sample.final.0.03.subsample.shared",
+		"data/mothur/process/sample.final.groups.rarefaction",
 		# "data/mothur/process/sample.final.sharedsobs.0.03.lt.dist",
 		# "data/mothur/process/sample.final.thetayc.0.03.lt.dist",
 		# "data/mothur/process/sample.final.braycurtis.0.03.lt.dist",
@@ -48,10 +48,10 @@ rule all:
 		# "data/mothur/process/sample.final.braycurtis.0.03.lt.ave.nmds.iters",
 		# "data/mothur/process/sample.final.braycurtis.0.03.lt.ave.nmds.stress",
 		# "data/mothur/process/sample.final.braycurtis.0.03.lt.ave.nmds.axes",
-		# "project_tree.txt",
+		"project_tree.txt",
 		# "dags/rulegraph.svg",
 		# "dags/rulegraph.png",
-		# "report.html",
+		"report.html",
 		"index.html"
 
 

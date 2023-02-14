@@ -5,5 +5,3 @@ channels:
 dependencies:
   - tqdm =4.64.1
   - pysradb =0.6.0
-
-  pysradb metadata SRP151593 --detailedstudy_accession experiment_accession experiment_title
