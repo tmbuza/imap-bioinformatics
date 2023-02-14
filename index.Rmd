@@ -26,7 +26,6 @@ description: |
 
 <br><hr width=100%><br>
 
-
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
@@ -76,7 +75,7 @@ library(schtools)
 
 ## Project directories
 ```{bash}
-cat project_tree.txt
+cat images/project_tree.txt
 ```
 
 <br><hr width=100%><br>
