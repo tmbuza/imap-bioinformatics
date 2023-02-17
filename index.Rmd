@@ -22,9 +22,6 @@ related_website: "https://complexdatainsights.com"
 description: |
   This repo provides integrated and highly curated solutions for reproducible research.
 ---
-> We continuously review and integrate the old iMAP [@TMBuza2019] with Snakemake and GitHub actions to facilitate reproducible microbiome data analysis!
-
-<br><hr width=100%><br>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -52,7 +49,13 @@ library(tidyverse, suppressPackageStartupMessages())
 library(schtools)
 
 ```
-<br><br>
+
+<div id="inprogress"><h2> - - - Work In Progress! - - - </h2> </div>
+
+> We continuously review and integrate the old iMAP [@TMBuza2019] with Snakemake and GitHub actions to facilitate reproducible microbiome data analysis!
+
+<br><hr width=100%><br>
+
 
 # General Overview
 
@@ -100,25 +103,25 @@ library(schtools)
 
 <br><br>
 
-# Microbial Profiling Using 16S 
+# Microbial Profiling Using Mothur
+There are four methods that can be used to profile microbial communities present in a sample. Here we briefly decribe each method:
 
-## Read classification options (mothur)
-### Classify OTUs
+## 1.Classify OTUs
 - OTUs (Operational Taxonomic Units (OTUs)) are clusters of similar sequences and are commonly accepted as analytical units in microbial profiling when using 16S rRNA gene markers.
 
-### Classify Phylotypes
+## 2. Classify Phylotypes
 - A phylotype in microbiome research is a DNA sequence or group of sequences sharing more than an arbitrarily chosen level of similarity of a 16S rRNA gene marker.
 
-### Classify ASVs
+## 3. Classify ASVs
 - ASVs Amplicon Sequence Variants (ASVs)in microbiome research is any inferred single DNA sequences recovered from a bioinformatics analysis of 16S rRNA marker genes.
 - ASV is typically really a cluster of sequences that are one or two bases apart from each other.
 
-### Classify Phylogenies
+## 4. Classify Phylogenies
 - Microbial phylogenies are from gene sequence homologies.  Models of mutation determine the most-likely evolutionary histories.
 
 <br><br>
 
-## Mothur preliminary analysis
+# Mothur preliminary analysis
 The preliminary analysis (`alpha_beta_diversity rule`) is part of the bioinformatics analysis. It includes:
 
 - Creating reads count for each group.
@@ -130,72 +133,24 @@ The preliminary analysis (`alpha_beta_diversity rule`) is part of the bioinforma
 - Constructing sample phylip tree.
 - Generating ordination matrices including PCoA and NMDS.
 
+> The output of the preliminary analysis can be explore further (see [IMAP-PART3](https://tmbuza.github.io/imap-data-transformation)) to get full insights into the microbiome data generated in this analysis.
 
 <br><hr width=100%><br>
 
 # Appendix {-}
-## Reference Databases
+
+## Mothur reference databases
 <ol>
-  <li>Mothur-based SILVA reference files [@MothurSILVA]</li>.
+  <li>Mothur-based SILVA reference files [@MothurSILVA].</li>
   <li>Mothur-based RDP reference files [@MothurRDP]. Note: The RDP database is to classify 16S rRNA gene sequences to the genus level.</li>
   <li>ZymoBIOMICS Microbial Community Standard (Cat # D6306)[@Zymo2023]. The ZymoBIOMICS Microbial Community DNA Standard is designed to assess bias, errors and other artifacts after the step of nucleic acid purification.</li>
 </ol>
 
-<br>
-<br>
+<br><br>
 
-
-
-
-```{r eval=FALSE, include=FALSE}
-## Machine Learning
-library(DiagrammeR)
-library(DiagrammeRsvg)
-library(magrittr)
-library(rsvg)
-graph <- DiagrammeR::grViz("
-digraph {
-graph [layout = dot, rankdir = TD]
-# define the global styles of the nodes. We can override these in box if we wish
-node [shape = rectangle, style = filled, fillcolor = white]
-A [label = 'Clean Data', shape = folder, fillcolor = grey]
-B [label = 'Training \n Set', shape = folder, fillcolor = grey]
-C [label = 'Testing \n Set', shape = folder, fillcolor = grey]
-D [label = 'Model \nTraining Subset\n(X-Train)']
-E [label = 'Validation Subset\n(y_Train)']
-F [label = 'Better Feature \nSelection']
-G [label = 'Retrain \nModel']
-H [label = 'Best Feature \nSelection']
-I [label = 'Validated \nFeatures']
-J [label = 'Best Performing \nModel', shape = rectangle]
-K [label = 'Predict \nTest Set Labels', shape = rectangle]
-L [label = 'Compare Known \nwith Predicted', shape = rectangle]
-M [label = 'Cross \nValidation', shape = rectangle]
-N [label = 'Model \nImprovement', shape = rectangle]
-# edge definitions with the node IDs
-{A}  -> B
-{A}  -> C
-{B}  -> D
-{B}  -> E
-{D}  -> F
-{F}  -> G
-{G}  -> D
-{G}  -> H
-{H}  -> E
-{E}  -> I
-{I}  -> J
-{J}  -> C
-{C}  -> K
-{K}  -> L
-{L}  -> M
-{M}  -> N
-}", height = 1000, width = 600)
-### Visualize the graph object
-graph
-```
 ## Troubleshooting (in progress)
 <ol>
-  <li>Are chimeras removed by default in newer versions?</li>
+  <li>Are chimeras removed by default in newer versions on mothur?</li>
     <ul>Yes. Chimeras are removed by default. You can still run the remove.seqs command without error, but it is not necessary. Remove chimera sequence explained [here](https://forum.mothur.org/t/chimera-vsearch-removes-groups-and-generates-empty-files/21342/4)</ul>.
   <li>Mothur dist.seqs taking too long.</li>
   <ul>
