@@ -57,29 +57,37 @@ library(schtools)
 # General Overview
 
 - We use the snakemake workflow management system [@Koster2021; @Snakemake2023] for:
-  - Maintaining reproducibility in technical validation and regeneration of results
-  - Creating scalable data analysis scaled to server, grid or cloud environment seamlessly.
+  - Maintaining reproducibility in technical validation and regeneration of results.
+  - Creating scalable data analysis scaled to server, grid or cloud environment.
   - Fostering sustainable improvement of the microbiome data analysis.
-- Reviewing existing workflows methodlogies [@Snakemake2023; @Mothursnakemake] helps in gaining a better insights for improving microbiome data analysis.
+- We also review existing workflows [@Snakemake2023; @Mothursnakemake] to help in gaining a better insights for improving microbiome data analysis.
 - We break any complex workflows into small contiguous but related chunks where each major step form a separate executable snakemake rule.
 
 <br>
 
 > We envision to keep fostering on continuous integration and development of highly reproducible workflows.
 
+<!-- ![](images/cicd.png) -->
+<img src="images/cicd.png">
 
-## Snakemake rulegraph
-<img src="dags/rulegraph.svg">
+<br>
+
+## Snakemake rule-graph
+- Typically the snakemake workflow is defined by specifying rules.
+- The rule-graph graphically shows the input-output files. 
+- The snakemake is capable of automatically determining the dependencies between the rules and creates a dot-like DAG (Directed Acyclic Graph).
+
+<br><br>
+<img src="dags/rulegraph.svg">IMAP-PART2: Bioinformatics Snakemake DAG
 
 <br><br>
 
-## Project directories
-```{bash}
-cat images/project_tree.txt
-```
+## Screenshot of interactive snakemake report {#smkreport}
+> The snakemake html report can be viewed using any compartible browser, such as chrome to explore more on the workflow and the associated statistics. You will be able to close the left bar to get a better view of the dispaly.
+
+<img src="images/smkreport/screenshot.png">
 
 <br><hr width=100%><br>
-
 
 # Preprocessing 16S Reads
 - At this point we are aware of the preprocessing and bioinformatics tools needed to getting started with microbiome data analysis. 

@@ -13,7 +13,7 @@ rule all:
         "config/units.tsv",	
 
 		# Make sample mapping file
-		"data/mothur/process/test.files",
+		# "data/mothur/process/test.files",
 		
 		# Create shared, lefse and biom files
 		"data/mothur/process/final.shared",
@@ -60,8 +60,16 @@ rule all:
 		# Interactive and static snakemake HTML report 
 		"report.html", #Generate the report.html manually first by running `snakemake --report report.html` on CLI.
 		"images/smkreport/screenshot.png", #Generate the report.html manually first by running `snakemake --report report.html` on CLI.
+		
+		# Resources for downstream analysis
+		"resources/final.shared",
+		"resources/final.taxonomy",
+		"resources/metadata.csv",
 
+######################
 # Individual task rules
+######################
+
 rule get_bioinfo_resources:
 	output:
 		metadata="data/metadata/metadata.csv",
@@ -70,7 +78,7 @@ rule get_bioinfo_resources:
 		bash workflow/scripts/import_bioinfo_resources.sh
 		"""
 		
-rule samples_units_files:
+rule samples_units_metadata:
     input:
         "data/metadata/metadata.csv"
     output:
@@ -190,12 +198,21 @@ rule alpha_beta_diversity:
 		"bash {input.script} {input.shared}"
 
 
-# Get smk html report
-rule snakemake_html_report:
+rule get_final_files:
+	input:
+	
 	output:
-		"images/smkreport/screenshot.png"
+		metadata="resources/metadata.csv",		
+		samples="resources/samples.tsv",
+		shared="resources/final.shared",
+		sampleshared="resources/sample.final.shared",
+		taxonomy="resources/final.taxonomy",
+		lefse="resources/final.lefse",
+		biom="resources/final.biom",
 	shell:
-		"bash workflow/scripts/smk_html_report.sh"
+		"""
+		bash workflow/scripts/get_final_files.sh
+		"""
 
 # # Get directory tree
 # rule get_project_tree:
@@ -236,3 +253,10 @@ rule github_summary_website:
         """
         R -e "library(rmarkdown); render('{input.rmd}')"
         """
+
+# Get smk html report
+rule snakemake_html_report:
+	output:
+		"images/smkreport/screenshot.png"
+	shell:
+		"bash workflow/scripts/smk_html_report.sh"

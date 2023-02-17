@@ -1,6 +1,9 @@
 # Additional
+.vscode
+.DS_store
+Rplot.pdf
+fasterq*
 code
-The10BeatitudesInScripture.Rmd
 *metamap*
 *temp*
 *jquery*
@@ -8,11 +11,13 @@ The10BeatitudesInScripture.Rmd
 *samplelocmap*
 *leaflet*
 REFER
-library/*
 data/*
 dags/dag.svg
 dags/dag.png
+resources/*
 results/*
+current_files.summary
+
 # dags/*.
 images/*
 figures/*

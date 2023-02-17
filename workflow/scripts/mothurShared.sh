@@ -3,7 +3,8 @@
 # Set the variables to be used in this script
 # SAMPLEDIR="data/reads"
 SAMPLEDIR="data/test"
-OUTDIR=data/mothur/process
+OUTDIR="data/mothur/process"
+RESOURSES="data/resources"
 
 ERRORDIR=${OUTDIR}/error_analysis
 LOGS="data/mothur/logs"
@@ -12,7 +13,7 @@ SILVAALIGN="data/references/silva.v4.align"
 CLASSIFIER="data/references/trainset16_022016.pds.fasta"
 TAXONOMY="data/references/trainset16_022016.pds.tax"
 
-mkdir -p "${OUTDIR}" "${LOGS}" "${ERRORDIR}"
+mkdir -p "${OUTDIR}" "${LOGS}" "${ERRORDIR}" "${RESOURSES}"
 
 ###############################
 echo PROGRESS: Assembling, quality controlling, clustering, and classifying sequences.
@@ -90,15 +91,17 @@ cp "${OUTDIR}"/*.0.03.biom "${OUTDIR}"/final.biom
 # Cleaning Up #
 ###############
 
-echo PROGRESS: Cleaning up working directory.
+# echo PROGRESS: Cleaning up working directory.
 
-# Making dir for storing intermediate files (can be deleted later)
-mkdir -p "${OUTDIR}"/intermediate/
+# # Making dir for storing intermediate files (can be deleted later)
+# mkdir -p "${OUTDIR}"/intermediate/
 
-# Deleting unneccessary files
-rm "${OUTDIR}"/*filter.unique.precluster*fasta
-rm "${OUTDIR}"/*filter.unique.precluster*map
-rm "${OUTDIR}"/*filter.unique.precluster*count_table
+# # # Deleting unneccessary files
+# rm "${OUTDIR}"/*filter.unique.precluster*fasta
+# rm "${OUTDIR}"/*filter.unique.precluster*map
+# rm "${OUTDIR}"/*filter.unique.precluster*count_table
 
-# Moving all remaining intermediate files to the intermediate dir
-mv "${OUTDIR}"/test* "${OUTDIR}"/intermediate/
+# # # Moving all remaining intermediate files to the intermediate dir
+
+# # cp "${OUTDIR}"/*final* "${RESOURSES}"
+# mv "${OUTDIR}"/test* "${OUTDIR}"/intermediate/
