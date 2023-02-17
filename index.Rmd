@@ -86,7 +86,7 @@ library(schtools)
 <br><br>
 
 ## Screenshot of interactive snakemake report {#smkreport}
-> The snakemake html report can be viewed using any compartible browser, such as chrome to explore more on the workflow and the associated statistics. You will be able to close the left bar to get a better view of the dispaly.
+> The snakemake html report can be viewed using any compartible browser, such as chrome to explore more on the workflow and the associated statistics. You will be able to close the left bar to get a better wider view of the display.
 
 <img src="images/smkreport/screenshot.png">
 
