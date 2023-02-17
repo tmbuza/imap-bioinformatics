@@ -1,6 +1,6 @@
 # Additional
 current_files.summary
-.vscode
+.vscode/*
 .DS_store
 Rplot.pdf
 fasterq*
@@ -23,7 +23,7 @@ current_files.summary
 images/*
 figures/*
 report/*
-.snakemake
+.snakemake/*
 *.logfile
 *log*
 *.Rproj
