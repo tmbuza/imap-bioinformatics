@@ -89,7 +89,7 @@ rule samples_units_metadata:
 
 
 # Making mothur-based sample mapping file.
-rule makeMappingFile:
+rule make_insitu_mappingFile:
 	input:
 		script="workflow/scripts/makeFile.sh",
 		resources=rules.get_bioinfo_resources.output
