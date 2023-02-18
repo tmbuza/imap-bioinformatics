@@ -8,6 +8,14 @@ body{
   color: red;
   background-color: rgb(230, 224, 224);
 }
+#related-work {
+  color: black;
+  background: white;
+  padding: 20px;
+}
+#related-work h1{
+  color: black;
+}
 .main-container {
   max-width: 80%;
   background-color: black;
