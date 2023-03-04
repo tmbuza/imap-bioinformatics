@@ -198,7 +198,7 @@ rule alpha_beta_diversity:
 		"bash {input.script} {input.shared}"
 
 
-rule get_final_files:
+rule get_mothur_final_files:
 	input:
 	
 	output:
@@ -211,7 +211,7 @@ rule get_final_files:
 		biom="resources/final.biom",
 	shell:
 		"""
-		bash workflow/scripts/get_final_files.sh
+		bash workflow/scripts/get_mothur_final_files.sh
 		"""
 
 # # Get directory tree
@@ -233,7 +233,7 @@ rule dot_rulegraph:
 
 rule project_tree:
     output:
-        tree="images/project_tree.txt"
+        tree="results/project_tree.txt"
     shell:
         """
         bash workflow/scripts/tree.sh
@@ -252,7 +252,7 @@ rule deploy_to_github_pages:
         script="workflow/scripts/render.R",
         rmd="index.Rmd",
         rulegraph="dags/rulegraph.svg",
-        tree="images/project_tree.txt",
+        tree="results/project_tree.txt",
         # html2png="images/smkreport/screenshot.png",
     output:
         doc="index.html",

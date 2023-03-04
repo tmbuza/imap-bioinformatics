@@ -1,4 +1,5 @@
 #!/bin/bash
 
-tree -L 2 . >images/project_tree.txt
+mkdir -p results
+tree -L 2 . >results/project_tree.txt
 

@@ -1,14 +1,15 @@
 ---
-title:  "<big><u>IMAP-PART2</u></big><br><br>Bioinformatics Analysis of Microbiome Data<br><br>"
+title:  "<big><u>IMAP-PART 03</u></big><br><br>Bioinformatics Analysis of Microbiome Data<br><br>"
 subtitle: |
   | ![](images/bioinformatics.png)<br>
-  | Integrated Microbiome Analysis Pipelines<br>( IMAP-PART2 ) <br><br><small>[Latest GitHub-Repo](https://github.com/tmbuza/imap-bioinformatics/)</small>
-date: |
-  |  Updated on `r Sys.Date()`
+  | IMAP: Integrated Microbiome Analysis Pipelines<br><br><small>[Latest GitHub-Repo](https://github.com/tmbuza/imap-bioinformatics-analysis/)</small>
+date:
+- Updated on `r Sys.Date()`
 author: Teresia Mrema-Buza
 output: 
   html_document: 
-    css: css/styles.css
+css:
+- styles.css
 csl: "library/apa.csl"
 bibliography:
 - library/references.bib
@@ -17,16 +18,24 @@ link-citations: true
 mainfont:
 biblio-style: apalike
 email_address: "tmbuza@complexdatainsights.com"
-github_repo: "https://github.com/tmbuza/imap-bioinformatics"
-related_website: "https://complexdatainsights.com/microbiome-analysis/imap-part2"
+github_repo: "https://github.com/tmbuza/imap-bioinformatics-analysis"
 description: |
-  This repo provides integrated and highly curated solutions for reproducible research.
+  Minimal summary describing features for getting started with microbiome data analysis.
 ---
 
+<div id="main-container">
+
+<!-- Google Fonts: https://fonts.google.com/?preview.text=IMAP%20template&preview.text_type=custom -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
-<link rel="preconnect" href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Anton" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700,900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;700&display=swap" rel="stylesheet">
+
+<span class="fas fa-my-custom-icon"></span>
+
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 knitr::opts_chunk$set(
@@ -47,14 +56,7 @@ knitr::opts_chunk$set(
 
 library(tidyverse, suppressPackageStartupMessages())
 library(schtools)
-
 ```
-
-<br><div id="inprogress"><h2> --- Work In Progress! --- </h2> </div><br><br>
-
-> We continuously review and integrate the old iMAP [@TMBuza2019] with Snakemake and GitHub actions to facilitate reproducible microbiome data analysis!
-
-<br><hr width=100%><br>
 
 
 # General Overview
@@ -70,20 +72,35 @@ library(schtools)
 
 > We envision to keep fostering on continuous integration and development of highly reproducible workflows.
 
-<!-- ![](images/cicd.png) -->
 <img src="images/cicd.png">
 
-<br>
 
-## Snakemake rule-graph
+<br><br>
+
+## Current project tree
+```{bash tree, include=FALSE}
+bash workflow/scripts/tree.sh
+```
+
+```{bash treeimg}
+cat results/project_tree.txt
+```
+
+<br><br>
+
+##  Current snakemake workflow
 - Typically the snakemake workflow is defined by specifying rules.
 - The rule-graph graphically shows the input-output files. 
 - The snakemake is capable of automatically determining the dependencies between the rules and creates a dot-like DAG (Directed Acyclic Graph).
 
-<br><br>
-<img src="dags/rulegraph.svg">IMAP-PART2: Bioinformatics Snakemake DAG
+```{bash ruledag, include=FALSE}
+bash workflow/scripts/rules_dag.sh
+```
 
-<br><br>
+<img src="dags/rulegraph.svg">
+
+<br><hr width=100%><br>
+
 
 ## Screenshot of interactive snakemake report {#smkreport}
 > The snakemake html report can be viewed using any compartible browser, such as chrome to explore more on the workflow and the associated statistics. You will be able to close the left bar to get a better wider view of the display.
@@ -92,18 +109,16 @@ library(schtools)
 
 <br><hr width=100%><br>
 
-# Preprocessing 16S Reads
-- At this point we are aware of the preprocessing and bioinformatics tools needed to getting started with microbiome data analysis. 
-- We assume that the tools are already installed. Now it is time to use them to:
-  - Get simple statistics.
-  - Check the quality of the reads.
-  - Create summary report of quality metrics.
-  - Trim poor read at a user-specified cutoff.
-  - Remove contaminants.
-
-<br><br>
 
 # Microbial Profiling Using Mothur
+
+## Mothur reference databases
+<ol>
+  <li>Mothur-based SILVA reference files [@MothurSILVA].</li>
+  <li>Mothur-based RDP reference files [@MothurRDP]. Note: The RDP database is to classify 16S rRNA gene sequences to the genus level.</li>
+  <li>ZymoBIOMICS Microbial Community Standard (Cat # D6306)[@Zymo2023]. The ZymoBIOMICS Microbial Community DNA Standard is designed to assess bias, errors and other artifacts after the step of nucleic acid purification.</li>
+</ol>
+
 There are four methods that can be used to profile microbial communities present in a sample. Here we briefly decribe each method:
 
 ## 1.Classify OTUs
@@ -121,7 +136,7 @@ There are four methods that can be used to profile microbial communities present
 
 <br><br>
 
-# Mothur preliminary analysis
+# Preliminary analysis using `Mothur`
 The preliminary analysis (`alpha_beta_diversity rule`) is part of the bioinformatics analysis. It includes:
 
 - Creating reads count for each group.
@@ -133,48 +148,15 @@ The preliminary analysis (`alpha_beta_diversity rule`) is part of the bioinforma
 - Constructing sample phylip tree.
 - Generating ordination matrices including PCoA and NMDS.
 
-> The output of the preliminary analysis can be explore further (see [IMAP-PART3](https://tmbuza.github.io/imap-data-transformation)) to get full insights into the microbiome data generated in this analysis.
-
-
-<br><br><hr width=50%><br><br>
-
-```{block, echo=TRUE}
-# Related work
-> Here we show the IMAP Repos integrated with Snakemake and GitHub Actions!
-
-| Repo | Description | Summary |
-|-------------------------|---------------------------------------------------|-----------------|
-| [IMAP-PART1](https://github.com/tmbuza/imap-requirements/) | Preparing for Microbiome Data Analysis | [GH-Pages](https://tmbuza.github.io/imap-requirements/) |
-| [IMAP-PART2](https://github.com/tmbuza/imap-bioinformatics/) | Bioinformatics Analysis of Microbiome Data | [..In Progress..](https://tmbuza.github.io/imap-bioinformatics/) |
-| [IMAP-PART3](https://github.com/tmbuza/imap-data-preprocessing/) | Microbiome Data Preprocessing | [..In Progress..](https://tmbuza.github.io/imap-data-preprocessing/) |
-| [IMAP-PART4](https://github.com/tmbuza/imap-exploratory-analysis/) | Exploratory Analysis of Microbiome Data | [..In Progress..](https://tmbuza.github.io/imap-exploratory-analysis/) |
-| [IMAP-PART5](https://tmbuza.github.io/imap-machine-learning/) | Microbiome Machine Learning | [..In Progress..](https://tmbuza.github.io/imap-machine-learning/) |
-```
 
 <br>
 
 ## Citation
-  > Please consider citing the [iMAP article](https://rdcu.be/b5iVj) (see below) if you find any part of the IMAP practical user guides helpful in your microbiome data analysis.
-
-  **APA-like citation style**
-
-  Buza, T. M., Tonui, T., Stomeo, F., Tiambo, C., Katani, R., Schilling, M., … Kapur, V. (2019). iMAP: An integrated bioinformatics and visualization pipeline for microbiome data analysis. BMC Bioinformatics, 20. https://doi.org/10.1186/S12859-019-2965-4
-
-  > Please, help to increase awareness of freely available microbiome data analysis tools.
-  Current [iMAP manuscript dimensions](https://badge.dimensions.ai/details/id/pub.1117740326)
+  > Please consider citing the [iMAP article](https://rdcu.be/b5iVj) [@TMBuza2019] if you find any part of the IMAP practical user guides helpful in your microbiome data analysis.
 
 <br><hr width=100%><br>
 
 # Appendix {-}
-
-## Mothur reference databases
-<ol>
-  <li>Mothur-based SILVA reference files [@MothurSILVA].</li>
-  <li>Mothur-based RDP reference files [@MothurRDP]. Note: The RDP database is to classify 16S rRNA gene sequences to the genus level.</li>
-  <li>ZymoBIOMICS Microbial Community Standard (Cat # D6306)[@Zymo2023]. The ZymoBIOMICS Microbial Community DNA Standard is designed to assess bias, errors and other artifacts after the step of nucleic acid purification.</li>
-</ol>
-
-<br><br>
 
 ## Troubleshooting (in progress)
 <ol>
@@ -195,11 +177,15 @@ The preliminary analysis (`alpha_beta_diversity rule`) is part of the bioinforma
 ::: {#refs}
 :::
 
-<br><br><hr width=100%><br>
+<br><br>
+
+</div> <!-- end main-container -->
+
 
 <div id="footer">
 Last updated on `r format(Sys.time(), '%B %d, %Y')`. <br><br>
-The snakemake workflow mentioned in this report is continuously being reviewed, integrated, tested and compiled by [`r rmarkdown::metadata$author`](mailto:`r rmarkdown::metadata$email_address`).  
 Github_Repo: `r rmarkdown::metadata$github_repo`.  
+Repo compiled and maintained by: [`r rmarkdown::metadata$author`](mailto:`r rmarkdown::metadata$email_address`).  
+
 
 </div><br><br>
