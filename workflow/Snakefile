@@ -11,72 +11,72 @@ rule all:
 		# "data/metadata/metadata.csv",
 		"config/samples.tsv",
         "config/units.tsv",	
-
-		# Make sample mapping file
-		# "data/mothur/process/test.files",
-		
-		# Create shared, lefse and biom files
-		"data/mothur/process/final.shared",
-		"data/mothur/process/final.lefse",
-		"data/mothur/process/final.biom",
-
-		# Create group shared files
-		"data/mothur/process/sample.final.shared",
-		"data/mothur/process/mock.final.shared",
-		"data/mothur/process/control.final.shared",
-
-		# Create subsample shared file
-		"data/mothur/process/sample.final.0.03.subsample.shared",
-		
-		# Alpha and Beta diversity analysis
-		"data/mothur/process/sample.final.count.summary",
-		"data/mothur/process/sample.final.groups.summary",
-		"data/mothur/process/sample.final.groups.rarefaction",
-		"data/mothur/process/sample.final.sharedsobs.0.03.lt.dist",
-		"data/mothur/process/sample.final.thetayc.0.03.lt.dist",
-		"data/mothur/process/sample.final.braycurtis.0.03.lt.dist",
-		"data/mothur/process/sample.final.braycurtis.0.03.lt.tre",
-		"data/mothur/process/sample.final.braycurtis.0.03.lt.pcoa.axes",
-		"data/mothur/process/sample.final.braycurtis.0.03.lt.pcoa.loadings",
-		"data/mothur/process/sample.final.braycurtis.0.03.lt.nmds.iters",
-		"data/mothur/process/sample.final.braycurtis.0.03.lt.nmds.stress",
-		"data/mothur/process/sample.final.braycurtis.0.03.lt.nmds.axes",
-
-		# Error analysis
-		"data/mothur/process/error_analysis/errorinput.fasta",
-		"data/mothur/process/error_analysis/errorinput.count_table",
-		"data/mothur/process/error_analysis/errorinput.pick.error.summary",
-		
-		# # Full project tree
-		# "images/project_tree.txt",
-
-		# # Workflow DAG
-		# "dags/rulegraph.svg",
-		# "dags/rulegraph.png",
-
-		# GitHub page showing summary of the project.
 		"index.html",
-
-		# Interactive and static snakemake HTML report 
-		"report.html", #Generate the report.html manually first by running `snakemake --report report.html` on CLI.
-		"images/smkreport/screenshot.png", #Generate the report.html manually first by running `snakemake --report report.html` on CLI.
+		# # Make sample mapping file
+		# # "data/mothur/process/test.files",
 		
-		# Resources for downstream analysis
-		"resources/final.shared",
-		"resources/final.taxonomy",
-		"resources/metadata.csv",
+		# # Create shared, lefse and biom files
+		# "data/mothur/process/final.shared",
+		# "data/mothur/process/final.lefse",
+		# "data/mothur/process/final.biom",
+
+		# # Create group shared files
+		# "data/mothur/process/sample.final.shared",
+		# "data/mothur/process/mock.final.shared",
+		# "data/mothur/process/control.final.shared",
+
+		# # Create subsample shared file
+		# "data/mothur/process/sample.final.0.03.subsample.shared",
+		
+		# # Alpha and Beta diversity analysis
+		# "data/mothur/process/sample.final.count.summary",
+		# "data/mothur/process/sample.final.groups.summary",
+		# "data/mothur/process/sample.final.groups.rarefaction",
+		# "data/mothur/process/sample.final.sharedsobs.0.03.lt.dist",
+		# "data/mothur/process/sample.final.thetayc.0.03.lt.dist",
+		# "data/mothur/process/sample.final.braycurtis.0.03.lt.dist",
+		# "data/mothur/process/sample.final.braycurtis.0.03.lt.tre",
+		# "data/mothur/process/sample.final.braycurtis.0.03.lt.pcoa.axes",
+		# "data/mothur/process/sample.final.braycurtis.0.03.lt.pcoa.loadings",
+		# "data/mothur/process/sample.final.braycurtis.0.03.lt.nmds.iters",
+		# "data/mothur/process/sample.final.braycurtis.0.03.lt.nmds.stress",
+		# "data/mothur/process/sample.final.braycurtis.0.03.lt.nmds.axes",
+
+		# # Error analysis
+		# "data/mothur/process/error_analysis/errorinput.fasta",
+		# "data/mothur/process/error_analysis/errorinput.count_table",
+		# "data/mothur/process/error_analysis/errorinput.pick.error.summary",
+		
+		# # # Full project tree
+		# # "images/project_tree.txt",
+
+		# # # Workflow DAG
+		# # "dags/rulegraph.svg",
+		# # "dags/rulegraph.png",
+
+		# # GitHub page showing summary of the project.
+		# "index.html",
+
+		# # Interactive and static snakemake HTML report 
+		# "report.html", #Generate the report.html manually first by running `snakemake --report report.html` on CLI.
+		# "images/smkreport/screenshot.png", #Generate the report.html manually first by running `snakemake --report report.html` on CLI.
+		
+		# # Resources for downstream analysis
+		# "resources/final.shared",
+		# "resources/final.taxonomy",
+		# "resources/metadata.csv",
 
 ######################
 # Individual task rules
 ######################
 
-rule get_bioinfo_resources:
-	output:
-		metadata="data/metadata/metadata.csv",
-	shell:
-		"""
-		bash workflow/scripts/import_bioinfo_resources.sh
-		"""
+# rule get_bioinfo_resources:
+# 	output:
+# 		metadata="data/metadata/metadata.csv",
+# 	shell:
+# 		"""
+# 		bash workflow/scripts/import_bioinfo_resources.sh
+# 		"""
 		
 rule samples_units_metadata:
     input:
@@ -92,7 +92,7 @@ rule samples_units_metadata:
 rule make_insitu_mappingFile:
 	input:
 		script="workflow/scripts/makeFile.sh",
-		resources=rules.get_bioinfo_resources.output
+		# resources=rules.get_bioinfo_resources.output
 	output:
 		files=expand("data/mothur/process/{dataset}.files", dataset=config["dataset"]),
 	conda:
@@ -126,100 +126,100 @@ rule mothur_zymo_mock:
 	shell:
 		"bash {input.script}"
 
-# Generating master OTU shared file.
-rule make16SShared:
-	input:
-		files=expand("data/mothur/process/{dataset}.files", dataset=config["dataset"]),
-		script="workflow/scripts/mothurShared.sh",
-		silvaV4="data/references/silva.v4.align",
-		rdpFasta="data/references/trainset16_022016.pds.fasta",
-		rdpTax="data/references/trainset16_022016.pds.tax"
-	output:
-		shared="data/mothur/process/final.shared",
-		taxonomy="data/mothur/process/final.taxonomy",
-		errorFasta="data/mothur/process/error_analysis/errorinput.fasta",
-		errorCount="data/mothur/process/error_analysis/errorinput.count_table"
-	conda:
-		"envs/mothur.yaml"
-	shell:
-		"bash {input.script}"
-
-
-# Splitting master shared file into individual shared file for: i) samples, ii) controls, and iii) mocks.
-# This is used for optimal subsampling during downstream steps.
-rule split16SShared:
-	input:
-		script="workflow/scripts/mothurSplitShared.sh",
-		shared="data/mothur/process/final.shared"
-	output:
-		shared=expand("data/mothur/process/{group}.final.shared", group = config["mothurGroups"])
-	params:
-		mockGroups='-'.join(config["mothurMock"]), # Concatenates all mock group names with hyphens
-		controlGroups='-'.join(config["mothurControl"]) # Concatenates all control group names with hyphens
-	conda:
-		"envs/mothur.yaml"
-	shell:
-		"bash {input.script} {params.mockGroups} {params.controlGroups}"
-
-
-# Estimate sequencing error rate based on mock sequences.
-rule calc16SError:
-	input:
-		script="workflow/scripts/mothurError.sh",
-		errorFasta="data/mothur/process/error_analysis/errorinput.fasta",
-		errorCount="data/mothur/process/error_analysis/errorinput.count_table",
-		mockV4="data/references/zymo.mock.16S.v4.fasta"
-	output:
-		summary="data/mothur/process/error_analysis/errorinput.pick.error.summary"
-	params:
-		mockGroups='-'.join(config["mothurMock"]) # Concatenates all mock group names with hyphens
-	conda:
-		"envs/mothur.yaml"
-	shell:
-		"bash {input.script} {input.errorFasta} {input.errorCount} {input.mockV4} {params.mockGroups}"
-
-
-# ##################################################################
-# #
-# # Diversity Metrics 
-# #
-# #################################################################
-rule alpha_beta_diversity:
-	input:
-		script="workflow/scripts/mothurAlphaBeta.sh",
-		# shared="data/mothur/process/sample.final.shared",
-		shared=expand("data/mothur/process/{group}.final.shared", group = "sample"),
-	output:
-		subsample="data/mothur/process/sample.final.0.03.subsample.shared",
-		rarefy="data/mothur/process/sample.final.groups.rarefaction",
-	conda:
-		"envs/mothur.yaml"
-	shell:
-		"bash {input.script} {input.shared}"
-
-
-rule get_mothur_final_files:
-	input:
-	
-	output:
-		metadata="resources/metadata.csv",		
-		samples="resources/samples.tsv",
-		shared="resources/final.shared",
-		sampleshared="resources/sample.final.shared",
-		taxonomy="resources/final.taxonomy",
-		lefse="resources/final.lefse",
-		biom="resources/final.biom",
-	shell:
-		"""
-		bash workflow/scripts/get_mothur_final_files.sh
-		"""
-
-# # Get directory tree
-# rule get_project_tree:
+# # Generating master OTU shared file.
+# rule make16SShared:
+# 	input:
+# 		files=expand("data/mothur/process/{dataset}.files", dataset=config["dataset"]),
+# 		script="workflow/scripts/mothurShared.sh",
+# 		silvaV4="data/references/silva.v4.align",
+# 		rdpFasta="data/references/trainset16_022016.pds.fasta",
+# 		rdpTax="data/references/trainset16_022016.pds.tax"
 # 	output:
-# 		tree="images/project_tree.txt"
+# 		shared="data/mothur/process/final.shared",
+# 		taxonomy="data/mothur/process/final.taxonomy",
+# 		errorFasta="data/mothur/process/error_analysis/errorinput.fasta",
+# 		errorCount="data/mothur/process/error_analysis/errorinput.count_table"
+# 	conda:
+# 		"envs/mothur.yaml"
 # 	shell:
-# 		"tree -d . >{output}"
+# 		"bash {input.script}"
+
+
+# # Splitting master shared file into individual shared file for: i) samples, ii) controls, and iii) mocks.
+# # This is used for optimal subsampling during downstream steps.
+# rule split16SShared:
+# 	input:
+# 		script="workflow/scripts/mothurSplitShared.sh",
+# 		shared="data/mothur/process/final.shared"
+# 	output:
+# 		shared=expand("data/mothur/process/{group}.final.shared", group = config["mothurGroups"])
+# 	params:
+# 		mockGroups='-'.join(config["mothurMock"]), # Concatenates all mock group names with hyphens
+# 		controlGroups='-'.join(config["mothurControl"]) # Concatenates all control group names with hyphens
+# 	conda:
+# 		"envs/mothur.yaml"
+# 	shell:
+# 		"bash {input.script} {params.mockGroups} {params.controlGroups}"
+
+
+# # Estimate sequencing error rate based on mock sequences.
+# rule calc16SError:
+# 	input:
+# 		script="workflow/scripts/mothurError.sh",
+# 		errorFasta="data/mothur/process/error_analysis/errorinput.fasta",
+# 		errorCount="data/mothur/process/error_analysis/errorinput.count_table",
+# 		mockV4="data/references/zymo.mock.16S.v4.fasta"
+# 	output:
+# 		summary="data/mothur/process/error_analysis/errorinput.pick.error.summary"
+# 	params:
+# 		mockGroups='-'.join(config["mothurMock"]) # Concatenates all mock group names with hyphens
+# 	conda:
+# 		"envs/mothur.yaml"
+# 	shell:
+# 		"bash {input.script} {input.errorFasta} {input.errorCount} {input.mockV4} {params.mockGroups}"
+
+
+# # ##################################################################
+# # #
+# # # Diversity Metrics 
+# # #
+# # #################################################################
+# rule alpha_beta_diversity:
+# 	input:
+# 		script="workflow/scripts/mothurAlphaBeta.sh",
+# 		# shared="data/mothur/process/sample.final.shared",
+# 		shared=expand("data/mothur/process/{group}.final.shared", group = "sample"),
+# 	output:
+# 		subsample="data/mothur/process/sample.final.0.03.subsample.shared",
+# 		rarefy="data/mothur/process/sample.final.groups.rarefaction",
+# 	conda:
+# 		"envs/mothur.yaml"
+# 	shell:
+# 		"bash {input.script} {input.shared}"
+
+
+# rule get_mothur_final_files:
+# 	input:
+	
+# 	output:
+# 		metadata="resources/metadata.csv",		
+# 		samples="resources/samples.tsv",
+# 		shared="resources/final.shared",
+# 		sampleshared="resources/sample.final.shared",
+# 		taxonomy="resources/final.taxonomy",
+# 		lefse="resources/final.lefse",
+# 		biom="resources/final.biom",
+# 	shell:
+# 		"""
+# 		bash workflow/scripts/get_mothur_final_files.sh
+# 		"""
+
+# # # Get directory tree
+# # rule get_project_tree:
+# # 	output:
+# # 		tree="images/project_tree.txt"
+# # 	shell:
+# # 		"tree -d . >{output}"
 
 
 # Get dot rule graphs
@@ -253,7 +253,7 @@ rule deploy_to_github_pages:
         rmd="index.Rmd",
         rulegraph="dags/rulegraph.svg",
         tree="results/project_tree.txt",
-        # html2png="images/smkreport/screenshot.png",
+        html2png="images/smkreport/screenshot.png",
     output:
         doc="index.html",
     shell:

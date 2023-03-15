@@ -1,10 +1,10 @@
 ---
-title:  "<big><u>IMAP-PART 05</u></big><br><br>Microbial Profiling using 16S Ribosomal RNA Gene Amplicons<br><br>"
+title:  "<big><u>IMAP-PART 05</u></big><br><br>Microbiome Bioinformatics with integrated pipelines and Snakemake workdflow<br><br>"
 subtitle: |
-  | ![](images/metadata.png)<br>
+  | ![](images/funnels.png)<br>
   | Fostering Reproducible Microbiome data Analysis with Snakemake workflow
 date:
-- IMAP-PART 01<br>[Latest GitHub-Repo](https://github.com/tmbuza/imap-bioinformatics-analysis/)<br>
+- IMAP-PART 05<br>[Latest GitHub-Repo](https://github.com/tmbuza/imap-read-quality-control/)<br>
 - Updated on `r Sys.Date()`
 author: Teresia Mrema-Buza
 output: 
@@ -19,14 +19,14 @@ link-citations: true
 mainfont:
 biblio-style: apalike
 email_address: "tmbuza@complexdatainsights.com"
-github_repo: "https://github.com/tmbuza/imap-bioinformatics-analysis"
+github_repo: "https://github.com/tmbuza/imap-read-quality-control"
 description: |
-  Minimal summary describing features for getting started with microbiome data analysis.
+  | How to get started with systematic microbiome data analysis with Snakemake workflows.
 ---
+
 
 <div id="main-container">
 
-<!-- Google Fonts: https://fonts.google.com/?preview.text=IMAP%20template&preview.text_type=custom-->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton" rel="stylesheet">
@@ -35,9 +35,7 @@ description: |
 <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;700&display=swap" rel="stylesheet">
 
-<span class="fas fa-my-custom-icon"></span>
-
-```{r echo=FALSE, message=FALSE, warning=FALSE}
+```{r globalsetup, echo=FALSE, message=FALSE, warning=FALSE}
 knitr::opts_chunk$set(
   echo  =FALSE,
   message  =FALSE,
@@ -58,82 +56,61 @@ library(tidyverse, suppressPackageStartupMessages())
 library(schtools)
 ```
 
-# Microbial Profiling Using Mothur
 
-##  Current snakemake workflow
-- Typically the snakemake workflow is defined by specifying rules.
-- The rule-graph graphically shows the input-output files. 
-- The snakemake is capable of automatically determining the dependencies between the rules and creates a dot-like DAG (Directed Acyclic Graph).
-
-```{bash ruledag, include=FALSE}
-bash workflow/scripts/rules_dag.sh
+<!-- Main contents -->
+```{r child='workflow/scripts/00_preface_n_intro.Rmd'}
 ```
 
-<img src="dags/rulegraph.svg">
-
 <br><hr width=100%><br>
 
+```{r child='workflow/01_download_references.Rmd'}
+```
 
-## Mothur reference databases
-<ol>
-  <li>Mothur-based SILVA reference files [@MothurSILVA].</li>
-  <li>Mothur-based RDP reference files [@MothurRDP]. Note: The RDP database is to classify 16S rRNA gene sequences to the genus level.</li>
-  <li>ZymoBIOMICS Microbial Community Standard (Cat # D6306)[@Zymo2023]. The ZymoBIOMICS Microbial Community DNA Standard is designed to assess bias, errors and other artifacts after the step of nucleic acid purification.</li>
-</ol>
+<br>
 
-## Mothur classification methods
-There are four methods that can be used to profile microbial communities present in a sample. Here we briefly decribe each method:
+```{r child='02_taxonomic_classification.Rmd'}
+```
 
-### 1.Classify OTUs
-- OTUs (Operational Taxonomic Units (OTUs)) are clusters of similar sequences and are commonly accepted as analytical units in microbial profiling when using 16S rRNA gene markers.
+<br>
 
-### 2. Classify Phylotypes
-- A phylotype in microbiome research is a DNA sequence or group of sequences sharing more than an arbitrarily chosen level of similarity of a 16S rRNA gene marker.
+```{r child='03_preliminary_otu_analysis.Rmd'}
+```
 
-### 3. Classify ASVs
-- ASVs Amplicon Sequence Variants (ASVs)in microbiome research is any inferred single DNA sequences recovered from a bioinformatics analysis of 16S rRNA marker genes.
-- ASV is typically really a cluster of sequences that are one or two bases apart from each other.
 
-### 4. Classify Phylogenies
-- Microbial phylogenies are from gene sequence homologies.  Models of mutation determine the most-likely evolutionary histories.
+<br>
 
-<br><br>
+```{r next}
+```
 
-## Preliminary analysis using `Mothur`
-The preliminary analysis (`alpha_beta_diversity rule`) is part of the bioinformatics analysis. It includes:
 
-- Creating reads count for each group.
-- Subsampling for downstream analysis.
-- Rarefaction.
-- Computing Alpha diversity metrics.
-- Computing Beta diversity metrics.
-- Getting sample distances.
-- Constructing sample phylip tree.
-- Generating ordination matrices including PCoA and NMDS.
+<br>
+
+```{r next}
+```
 
 
 <br><hr width=100%><br>
-
 
 # Related work
 ```{block imaprepos, echo=TRUE}
 
-| Repo | Description | Summary |
-|--------------|----------------------------------|--------------|
-| [IMAP-PART1](https://github.com/tmbuza/imap-basic-requirements/) | Getting started with microbiome data analysis | [GH-Pages](https://tmbuza.github.io/imap-basic-requirements/) |
-| [IMAP-PART2](https://github.com/tmbuza/imap-sample-metadata/) | Exploring and profiling microbiome sample metadata | [GH-Pages](https://tmbuza.github.io/imap-sample-metadata/) |
-| [IMAP-PART3](https://github.com/tmbuza/imap-bioinformatics-analysis/) | Bioinformatics analysis of microbiome data | [GH-Pages](https://tmbuza.github.io/imap-bioinformatics-analysis/) |
-| [IMAP-PART4](https://github.com/tmbuza//) |  | [GH-Pages](https://tmbuza.github.io//) |
-| [IMAP-PART5](https://github.com/tmbuza//) |  | [GH-Pages](https://tmbuza.github.io//) |
-| [IMAP-PART6](https://github.com/tmbuza//) |  | [GH-Pages](https://tmbuza.github.io//) |
-| [IMAP-PART7](https://github.com/tmbuza//) |  | [GH-Pages](https://tmbuza.github.io//) |
-| [IMAP-PART8](https://github.com/tmbuza//) |  | [GH-Pages](https://tmbuza.github.io//) |
+| Repo | Description | Status |
+|:-----------------------|----------------------------------|--------------:|
+| [IMAP-PART 01](https://github.com/tmbuza/imap-software-requirements/) | Installing software to get started with microbiome data analysis with Snakemake workflows | [In-progress](https://tmbuza.github.io/imap-software-requirements/) |
+| [IMAP-PART 02](https://github.com/tmbuza/imap-sample-metadata/) | Downloading and exploring microbiome sample metadata from SRA Database | [In-progress](https://tmbuza.github.io/imap-sample-metadata/) |
+| [IMAP-PART 03](https://github.com/tmbuza/imap-download-sra-reads/) | Downloading and filtering microbiome sequencing data from SRA database | [In-progress](https://tmbuza.github.io/imap-download-sra-reads/) |
+| [IMAP-PART 04](https://github.com/tmbuza/imap-read-quality-control/) | Quality Control of Microbiome Next Generation Sequencing Reads | [In-progress](https://tmbuza.github.io/imap-read-quality-control/) |
+| [IMAP-PART 05](https://github.com/tmbuza/imap-bioinformatics-analysis/) | Bioinformatics & classification of preprocessed microbiome sequencing data | [In-progress](https://tmbuza.github.io/imap-bioinformatics-analysis/) |
+| [IMAP-PART 06](https://github.com/tmbuza//) |  | [In-progress](https://tmbuza.github.io//) |
+| [IMAP-PART 07](https://github.com/tmbuza//) |  | [In-progress](https://tmbuza.github.io//) |
+| [IMAP-PART 08](https://github.com/tmbuza//) |  | [In-progress](https://tmbuza.github.io//) |
 ```
-
 
 ## Citation
 
 > Please consider citing the iMAP article [@TMBuza2019] if you find any part of the IMAP practical user guides helpful in your microbiome data analysis.
+
+<br>
 
 # References
 ::: {#refs}
@@ -145,6 +122,7 @@ The preliminary analysis (`alpha_beta_diversity rule`) is part of the bioinforma
 
 ## Project main tree
 ```{bash, include=FALSE}
+mamba install -c conda-forge tree
 bash workflow/scripts/tree.sh
 ```
 
@@ -153,33 +131,21 @@ cat results/project_tree.txt
 ```
 
 ## Screenshot of interactive snakemake report {#smkreport}
-> The interactive snakemake html report can be viewed by opening the `report.html` using any compartible browser. You will be able to explore the workflow and the associated statistics. You will also be able to close the left bar to get a better wider view of the display.
+> The interactive snakemake HTML report can be viewed by opening the `report.html` using any compatible browser. You will be able to explore the workflow and the associated statistics. You can close the left bar to get a more expansive display view.
 
 ```{bash smkrpt, include=FALSE}
 snakemake --unlock;
 snakemake --report report.html;
+pip install html2image
 hti -H report.html -o images/smkreport;
-```
-
-```{bash staticsmk, include=FALSE}
-snakemake --report report.html
-bash workflow/scripts/smk_html_report.sh
 ```
 
 <img src="images/smkreport/screenshot.png">
 
-
 ## Troubleshooting of FAQs
 <ol>
-  <li>Are chimeras removed by default in the newer versions of mothur?</li>
-    <ul>Yes! Chimeras are removed by default. You can still run the remove.seqs command without error, but it is not necessary. Remove chimera sequence explained [here](https://forum.mothur.org/t/chimera-vsearch-removes-groups-and-generates-empty-files/21342/4)</ul>.
-  <li>Wny Mothur dist.seqs is taking too long?</li>
-  <ul>
-    <li>Merged reads are too long, probably over 300pb.</li>
-    <li>Reads not overlaping when merging the paired reads.</li>
-    <li>Too many uniques representative sequences probably caused by lack of overlapping.</li>
-    <li>No enough computer power which suggest a use of HPC or Cluster.</li>
-  </ul>
+  <li>Question</li>
+    <ul>Answer</ul>
   <li>Question</li>
     <ul>Answer</ul>
 </ol>
@@ -194,4 +160,6 @@ Last updated on `r format(Sys.time(), '%B %d, %Y')`.<br>
 Github_Repo: `r rmarkdown::metadata$github_repo`.<br>
 Repo compiled and maintained by: [`r rmarkdown::metadata$author`](mailto:`r rmarkdown::metadata$email_address`). 
 </div>
+
+
 
