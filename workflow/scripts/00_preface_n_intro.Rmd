@@ -1,18 +1,13 @@
-# Microbial Profiling Using Mothur
+# Microbial Profiling Using Mothur Pipeline
 
-##  Tentative snakemake workflow
-- Typically the snakemake workflow is defined by specifying rules.
-- The rule-graph graphically shows the input-output files. 
-- The snakemake is capable of automatically determining the dependencies between the rules and creates a dot-like DAG (Directed Acyclic Graph).
 
-```{bash ruledag, include=FALSE}
-bash workflow/scripts/rules_dag.sh
-```
+## Snakemake workflow
 
-![Tentative snakemake workflow](dags/rulegraph.svg)
+<br>
 
-<br><hr width=100%><br>
+![Snakemake workflow](dags/rulegraph.svg)
 
+<br>
 
 
 

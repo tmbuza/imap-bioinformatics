@@ -1,10 +1,10 @@
 ---
 title:  "<big><u>IMAP-PART 05</u></big><br><br>Microbiome Bioinformatics with integrated pipelines and Snakemake workdflow<br><br>"
 subtitle: |
-  | ![](images/funnels.png)<br>
+  | ![](images/bioinformatics.png)<br>
   | Fostering Reproducible Microbiome data Analysis with Snakemake workflow
 date:
-- IMAP-PART 05<br>[Latest GitHub-Repo](https://github.com/tmbuza/imap-read-quality-control/)<br>
+- IMAP-PART 05<br>[Latest GitHub-Repo](https://github.com/tmbuza/imap-bioinformatics-analysis/)<br>
 - Updated on `r Sys.Date()`
 author: Teresia Mrema-Buza
 output: 
@@ -19,7 +19,7 @@ link-citations: true
 mainfont:
 biblio-style: apalike
 email_address: "tmbuza@complexdatainsights.com"
-github_repo: "https://github.com/tmbuza/imap-read-quality-control"
+github_repo: "https://github.com/tmbuza/imap-bioinformatics-analysis"
 description: |
   | How to get started with systematic microbiome data analysis with Snakemake workflows.
 ---
@@ -56,24 +56,31 @@ library(tidyverse, suppressPackageStartupMessages())
 library(schtools)
 ```
 
-
-<!-- Main contents -->
 ```{r child='workflow/scripts/00_preface_n_intro.Rmd'}
 ```
 
-<br><hr width=100%><br>
+<br>
 
-```{r child='workflow/01_download_references.Rmd'}
+```{r child='workflow/scripts/01_download_references.Rmd'}
 ```
+
 
 <br>
 
-```{r child='02_taxonomic_classification.Rmd'}
+```{r child='workflow/scripts/02_taxonomic_classification.Rmd'}
 ```
+
 
 <br>
 
-```{r child='03_preliminary_otu_analysis.Rmd'}
+```{r child='workflow/scripts/03_preliminary_otu_analysis.Rmd'}
+```
+
+...IN PROGRESS...
+
+<br>
+
+```{r next}
 ```
 
 
@@ -81,13 +88,6 @@ library(schtools)
 
 ```{r next}
 ```
-
-
-<br>
-
-```{r next}
-```
-
 
 <br><hr width=100%><br>
 
@@ -160,6 +160,3 @@ Last updated on `r format(Sys.time(), '%B %d, %Y')`.<br>
 Github_Repo: `r rmarkdown::metadata$github_repo`.<br>
 Repo compiled and maintained by: [`r rmarkdown::metadata$author`](mailto:`r rmarkdown::metadata$email_address`). 
 </div>
-
-
-
