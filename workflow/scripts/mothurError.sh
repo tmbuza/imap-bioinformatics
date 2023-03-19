@@ -9,11 +9,12 @@ MOCKFASTA="data/mothur/process/error_analysis/errorinput.pick.fasta"
 MOCKCOUNT="data/mothur/process/error_analysis/errorinput.pick.count_table"
 
 OUTDIR=data/mothur/process
+LOGS="data/mothur/logs"
 
 ##########################
 echo PROGRESS: Calculating sequencing error rate in reference to Zymo reference sequences.
 ##########################
 
-mothur "#get.groups(fasta="${ERRORFASTA}", count="${ERRORCOUNT}", groups="${MOCKGROUPS}")"
-
-mothur "#seq.error(fasta="${MOCKFASTA}", count="${MOCKCOUNT}", reference="${MOCKV4}", aligned=F)"
+mothur "#set.logfile(name=${LOGS}/error_rate.logfile);
+    get.groups(fasta="${ERRORFASTA}", count="${ERRORCOUNT}", groups="${MOCKGROUPS}");
+    seq.error(fasta="${MOCKFASTA}", count="${MOCKCOUNT}", reference="${MOCKV4}", aligned=F)"

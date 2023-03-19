@@ -1,5 +1,7 @@
-OUTDIR=data/references # Directory for storing mothur reference files
+#!/usr/bin/env bash
 
+OUTDIR=data/references # Directory for storing mothur reference files
+LOGS="data/mothur/logs"
 
 
 ####################
@@ -30,7 +32,8 @@ cp "${OUTDIR}"/silva.seed.align "${OUTDIR}"/zymo.mock.16S.fasta "${OUTDIR}"/tmp/
 # Aligning mock sequences to the SILVA v4 region
 # Will generate the following warning message '[WARNING]: 4 of your sequences generated alignments that eliminated too many bases' 
 # because 4 of the community sequences are from Cryptococcus and Saccharomyces so those will be filtered out
-mothur "#align.seqs(fasta="${OUTDIR}"/tmp/zymo.mock.16S.fasta, reference="${OUTDIR}"/tmp/silva.seed.align, processors=8);
+mothur "#set.logfile(name=${LOGS}/zymo_mock_v4.logfile);
+	align.seqs(fasta="${OUTDIR}"/tmp/zymo.mock.16S.fasta, reference="${OUTDIR}"/tmp/silva.seed.align, processors=8);
 	pcr.seqs(fasta="${OUTDIR}"/tmp/zymo.mock.16S.align, start=11894, end=25319, keepdots=F);
 	degap.seqs(fasta="${OUTDIR}"/tmp/zymo.mock.16S.pcr.align)"
 

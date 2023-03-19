@@ -5,15 +5,28 @@ min_version("6.10.0")
 # Configuration file containing all user-specified settings
 configfile: "config/config.yml"
 
+report: "report/workflow.rst"
+
+import os
+import csv
+import pandas as pd
+
+# METADATA=pd.read_csv('resources/metadata/metadata.csv').loc[0:3]
+# ACCESSIONS=METADATA['run'].tolist() # Specify the column containing the accession, in this demo is Run
+
+
+
 # Master rule for controlling workflow.
 rule all:
 	input:
-		expand("data/mothur/process/{dataset}.files", dataset=config["dataset"]),
+		"index.html",
+		
+		# expand("data/mothur/process/{dataset}.files", dataset=config["dataset"]),
 
-		"data/references/silva.v4.align",
-		"data/references/trainset16_022016.pds.fasta",
-		"data/references/trainset16_022016.pds.tax",
-		"data/references/zymo.mock.16S.v4.fasta",
+		# "data/references/silva.v4.align",
+		# "data/references/trainset16_022016.pds.fasta",
+		# "data/references/trainset16_022016.pds.tax",
+		# "data/references/zymo.mock.16S.v4.fasta",
 		
 		"data/mothur/process/final.shared",
 		"data/mothur/process/final.lefse",
@@ -25,7 +38,9 @@ rule all:
 		"data/mothur/process/error_analysis/errorinput.count_table",
 		"data/mothur/process/error_analysis/errorinput.pick.error.summary",
 
-		"index.html"	
+		"data/mothur/process/intermediate/test.trim.contigs.good.unique.summary",
+
+	
 
 # Making mothur-based sample mapping file.
 rule make_mapping_files:
@@ -73,6 +88,7 @@ rule mothur_process_sequences:
 		rdpFasta="data/references/trainset16_022016.pds.fasta",
 		rdpTax="data/references/trainset16_022016.pds.tax"
 	output:
+		contigreport="data/mothur/process/test.contigs_report",
 		shared="data/mothur/process/final.shared",
 		taxonomy="data/mothur/process/final.taxonomy",
 		lefse="data/mothur/process/final.lefse",
@@ -101,6 +117,44 @@ rule mothur_calculate_errorrate:
 	shell:
 		"bash {input.script} {input.errorfasta} {input.errorcount} {input.mockV4} {params.mockGroups}"
 
+
+rule remove_intermedeate_files:
+	input:
+		script="workflow/scripts/mothur_clean_intermediate.sh",	
+		contigreport=rules.mothur_process_sequences.output.contigreport,
+	output:
+		"data/mothur/process/intermediate/test.trim.contigs.good.unique.summary"
+	shell:
+		"bash {input.script}"
+
+
+# Get dot rule graphs
+rule dot_rules_graph:
+	output:
+		"dags/rulegraph.svg",       
+		"dags/rulegraph.png",
+	shell:
+		"bash workflow/scripts/rules_dag.sh"
+
+
+# Get project tree
+rule project_tree:
+    output:
+        tree="results/project_tree.txt",
+    shell:
+        """
+        bash workflow/scripts/tree.sh
+        """
+
+# Get smk static report
+rule static_snakemake_report:
+    output:
+        smkhtml="report.html",
+        html2png="images/smkreport/screenshot.png"
+    shell:
+        """
+        bash workflow/scripts/smk_html_report.sh
+        """
 
 rule deploy_to_github_pages:
     input:

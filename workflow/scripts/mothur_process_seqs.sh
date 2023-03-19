@@ -85,11 +85,3 @@ cp "${OUTDIR}"/*.0.03.lefse "${OUTDIR}"/final.lefse
 cp "${OUTDIR}"/*.0.03.biom "${OUTDIR}"/final.biom
 
 
-
-###############
-# echo PROGRESS: Cleaning up working directory.
-###############
-
-# mkdir -p "${OUTDIR}"/intermediate/
-
-# mv "${OUTDIR}"/test* "${OUTDIR}"/intermediate/
