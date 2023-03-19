@@ -1,8 +1,0 @@
-
-# Mothur Reference databases
-<ol>
-  <li>Mothur-based SILVA reference files [@MothurSILVA].</li>
-  <li>Mothur-based RDP reference files [@MothurRDP]. Note: The RDP database is to classify 16S rRNA gene sequences to the genus level.</li>
-  <li>ZymoBIOMICS Microbial Community Standard (Cat # D6306)[@Zymo2023]. The ZymoBIOMICS Microbial Community DNA Standard is designed to assess bias, errors and other artifacts after the step of nucleic acid purification.</li>
-</ol>
-

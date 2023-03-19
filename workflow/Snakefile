@@ -41,7 +41,7 @@ rule make_mapping_files:
 
 # Downloading and formatting SILVA and RDP reference databases. The v4 region is extracted from 
 # SILVA database for use as reference alignment.
-rule mothur_references:
+rule get_mothur_references:
 	output:
 		silvaV4="data/references/silva.v4.align",
 		rdpFasta="data/references/trainset16_022016.pds.fasta",
@@ -53,7 +53,7 @@ rule mothur_references:
 
 
 # Downloading the Zymo mock sequence files and extracting v4 region for error estimation.
-rule mothur_zymo_mock:
+rule get_mothur_zymo_mock:
 	input:
 		script="workflow/scripts/mothurMock.sh",
 		silvaV4="data/references/silva.v4.align",
@@ -86,12 +86,12 @@ rule mothur_process_sequences:
 
 
 # Calculate estimated sequencing error rate based on mock sequences.
-rule calculate_error_rate:
+rule mothur_calculate_errorrate:
 	input:
 		script="workflow/scripts/mothurError.sh",
 		errorfasta=rules.mothur_process_sequences.output.errorfasta,
 		errorcount=rules.mothur_process_sequences.output.errorcount,
-		mockV4=rules.mothur_zymo_mock.output.mockV4
+		mockV4=rules.get_mothur_zymo_mock.output.mockV4
 	output:
 		summary="data/mothur/process/error_analysis/errorinput.pick.error.summary"
 	params:
@@ -107,7 +107,7 @@ rule deploy_to_github_pages:
         script="workflow/scripts/render.R",
         rmd="index.Rmd",
         tree="results/project_tree.txt",
-        # html2png="images/smkreport/screenshot.png",
+        html2png="images/smkreport/screenshot.png",
         rules="dags/rulegraph.svg",
     output:
         doc="index.html",

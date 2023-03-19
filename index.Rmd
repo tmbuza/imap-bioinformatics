@@ -56,37 +56,28 @@ library(tidyverse, suppressPackageStartupMessages())
 library(schtools)
 ```
 
-```{r child='workflow/scripts/00_preface_n_intro.Rmd'}
-```
+# Microbial Profiling using `Mothur` pipeline
 
-<br>
+## Mothur Snakemake workflow
 
-```{r child='workflow/scripts/01_download_references.Rmd'}
-```
-
-
-<br>
-
-```{r child='workflow/scripts/02_taxonomic_classification.Rmd'}
+```{bash ruledag, include=FALSE}
+bash workflow/scripts/rules_dag.sh
 ```
 
 
-<br>
+![](dags/rulegraph.svg)
 
-```{r child='workflow/scripts/03_preliminary_otu_analysis.Rmd'}
-```
-
-...IN PROGRESS...
-
-<br>
-
-```{r next}
-```
+ A tentative visualization of the snakemake workflow that defines **mothur bioinformatics rules** in a DAG (directed acyclic graph) format. A detailed interactive snakemake report is available [here](file:///Users/tmbuza/Dropbox/MICROBIOME/imap-bioinformatics-analysis/report.html).
 
 
 <br>
 
-```{r next}
+```{r child='workflow/scripts/01_mothur_bioinformatics.Rmd'}
+```
+
+<br>
+
+```{r child='workflow/scripts/02_preliminary_otu_analysis.Rmd'}
 ```
 
 <br><hr width=100%><br>
@@ -122,7 +113,6 @@ library(schtools)
 
 ## Project main tree
 ```{bash, include=FALSE}
-mamba install -c conda-forge tree
 bash workflow/scripts/tree.sh
 ```
 
@@ -136,6 +126,7 @@ cat results/project_tree.txt
 ```{bash smkrpt, include=FALSE}
 snakemake --unlock;
 snakemake --report report.html;
+
 pip install html2image
 hti -H report.html -o images/smkreport;
 ```
