@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 OUTDIR=data/references # Directory for storing mothur reference files
-LOGS="data/mothur/logs"
+LOGS="data/logs"
 
 
 ####################

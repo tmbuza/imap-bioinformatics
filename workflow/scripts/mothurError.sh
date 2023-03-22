@@ -1,12 +1,12 @@
 #! /bin/bash
 
-ERRORFASTA="data/mothur/process/error_analysis/errorinput.fasta"
-ERRORCOUNT="data/mothur/process/error_analysis/errorinput.count_table"
+ERRORFASTA="mothur_process/error_analysis/errorinput.fasta"
+ERRORCOUNT="mothur_process/error_analysis/errorinput.count_table"
 MOCKV4="data/references/zymo.mock.16S.v4.fasta"
 MOCKGROUPS=Mock1
 
-MOCKFASTA="data/mothur/process/error_analysis/errorinput.pick.fasta"
-MOCKCOUNT="data/mothur/process/error_analysis/errorinput.pick.count_table"
+MOCKFASTA="mothur_process/error_analysis/errorinput.pick.fasta"
+MOCKCOUNT="mothur_process/error_analysis/errorinput.pick.count_table"
 
 OUTDIR=data/mothur/process
 LOGS="data/mothur/logs"

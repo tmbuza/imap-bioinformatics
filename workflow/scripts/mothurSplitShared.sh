@@ -13,7 +13,7 @@ MOCKGROUPS=${1:?ERROR: Need to define MOCKGROUPS.} # List of mock groups in raw 
 CONTROLGROUPS=${2:?ERROR: Need to define CONTROLGROUPS.} # List of control groups in raw data dir separated by '-'
 
 # Other variables
-OUTDIR=data/mothur/process/
+OUTDIR=mothur_process
 COMBINEDGROUPS=$(echo "${MOCKGROUPS}"-"${CONTROLGROUPS}") # Combines the list of mock and control groups into a single string separated by '-'
 
 

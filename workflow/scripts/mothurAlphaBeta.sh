@@ -6,7 +6,7 @@
 
 # Creating basic variables
 
-OUTDIR="data/mothur/process"
+OUTDIR="mothur_process"
 SHARED="sample.final.shared"
 SUBSHARED="sample.final.0.03.subsample.shared"
 COUNT="sample.final.count.summary"
@@ -16,7 +16,7 @@ SUBTHRESH=500
 DIST="sample.final.braycurtis.0.03.lt.dist"
 
 
-LOGS="data/mothur/logs"
+LOGS="mothur_process/logs"
 
 mkdir -p "${OUTDIR}"  "${LOGS}"
 

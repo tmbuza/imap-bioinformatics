@@ -1,0 +1,59 @@
+set.current(processors=1);
+set.dir(input=data/test, output=mothur_process);
+system(mkdir -p mothur_process/logs);
+set.logfile(name=make_files.logfile);
+make.file(inputdir=data/test, type=gz, prefix=test);
+
+set.logfile(name=seq_assembly.logfile);
+make.contigs(file=current, maxambig=0, maxlength=275);
+unique.seqs(count=current);
+summary.seqs(fasta=current, count=current);
+
+set.logfile(name=align_n_denoise.logfile)
+align.seqs(fasta=current, reference=data/references/silva.seed.align);
+summary.seqs(fasta=current, count=current);
+
+screen.seqs(fasta=current, count=current, maxhomop=8);
+filter.seqs(fasta=current, vertical=T, trump=.);
+pre.cluster(fasta=current, count=current, diffs=2);
+unique.seqs(fasta=current, count=current);
+summary.seqs(fasta=current, count=current);
+
+set.logfile(name=chimera_removal.logfile);
+chimera.vsearch(fasta=current, count=current, dereplicate=t);
+
+set.logfile(name=silva_seed_classification.logfile);
+classify.seqs(fasta=current, count=current, reference=data/references/silva.seed.ng.fasta, taxonomy=data/references/silva.seed.tax, cutoff=97);
+remove.lineage(fasta=current, count=current, taxonomy=current, taxon=Chloroplast-Mitochondria-unknown-Archaea-Eukaryota);
+summary.seqs(fasta=current, count=current);
+
+set.logfile(name=final_files.logfile);
+rename.file(fasta=current, count=current, taxonomy=current, prefix=final)
+summary.seqs(fasta=current, count=current)
+
+set.logfile(name=LOGS/otu_clustering.logfile)
+dist.seqs(fasta=current, cutoff=0.03);
+cluster(column=current, count=current, cutoff=0.03);
+make.shared(list=current, count=current, label=0.03);
+classify.otu(list=current, count=current, taxonomy=current, label=0.03);
+make.lefse(shared=current, constaxonomy=current);
+make.biom(shared=current, constaxonomy=current);
+
+set.logfile(name=LOGS/phylotype_clustering.logfile)
+phylotype(taxonomy=current);
+make.shared(list=current, count=current, label=1);
+classify.otu(list=current, count=current, taxonomy=current, label=1);
+make.lefse(shared=current, constaxonomy=current);
+make.biom(shared=current, constaxonomy=current);
+
+set.logfile(name=LOGS/asv_clustering.logfile)
+make.shared(count=current)
+classify.otu(list=current, count=current, taxonomy=current, label=ASV)
+make.lefse(shared=current, constaxonomy=current)
+make.biom(shared=current, constaxonomy=current)
+
+set.logfile(name=LOGS/phylogenetic_clustering.logfile)
+dist.seqs(fasta=current, output=lt)
+clearcut(phylip=current)
+
+system(mv mothur_process/*.log* mothur_process/logs);

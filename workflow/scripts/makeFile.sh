@@ -3,8 +3,8 @@
 # Creating basic variables
 # SAMPLEDIR="data/reads"
 SAMPLEDIR="data/test"
-OUTDIR="data/mothur/process"
-LOGS="data/mothur/logs"
+OUTDIR="mothur_process"
+LOGS="data/logs"
 
 ###############################
 echo PROGRESS: Making mothur-based sample mapping file.

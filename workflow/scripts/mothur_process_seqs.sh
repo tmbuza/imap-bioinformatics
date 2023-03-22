@@ -3,10 +3,10 @@
 # Set the variables to be used in this script
 # SAMPLEDIR="data/reads"
 SAMPLEDIR="data/test"
-OUTDIR="data/mothur/process"
+OUTDIR="mothur_process"
 
 ERRORDIR=${OUTDIR}/error_analysis
-LOGS="data/mothur/logs"
+LOGS="data/logs"
 
 SILVAALIGN="data/references/silva.v4.align"
 CLASSIFIER="data/references/trainset16_022016.pds.fasta"

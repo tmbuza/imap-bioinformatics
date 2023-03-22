@@ -14,32 +14,63 @@ import pandas as pd
 # METADATA=pd.read_csv('resources/metadata/metadata.csv').loc[0:3]
 # ACCESSIONS=METADATA['run'].tolist() # Specify the column containing the accession, in this demo is Run
 
-report: "reports/workflow.rst"
-
 # Master rule for controlling workflow.
 rule all:
 	input:
+		"mothur_process/final.shared",
+		"mothur_process/final.lefse",
+		"mothur_process/final.biom",
+		"mothur_process/final.taxonomy",
+	
+		
+		"mothur_process/error_analysis/errorinput.fasta",
+		"mothur_process/error_analysis/errorinput.count_table",
+		"mothur_process/error_analysis/errorinput.pick.error.summary",
+
+		"mothur_process/intermediate/test.trim.contigs.good.unique.summary",
+		
+		"images/sra_config_cache.png",
+		"images/imap_part02.svg",
+		"images/imap_part03.svg",
+		"images/imap_part04.svg",
+		"images/imap_part05.svg",
+
+		# Create group shared files
+		"mothur_process/sample.final.shared",
+		"mothur_process/mock.final.shared",
+		"mothur_process/control.final.shared",
+
+		# # Create subsample shared file
+		# "mothur_process/sample.final.0.03.subsample.shared",
+		
+		# Alpha and Beta diversity analysis
+		"mothur_process/sample.final.count.summary",
+		"mothur_process/sample.final.groups.summary",
+		"mothur_process/sample.final.groups.rarefaction",
+		"mothur_process/sample.final.sharedsobs.0.03.lt.dist",
+		"mothur_process/sample.final.thetayc.0.03.lt.dist",
+		"mothur_process/sample.final.braycurtis.0.03.lt.dist",
+		"mothur_process/sample.final.braycurtis.0.03.lt.tre",
+		"mothur_process/sample.final.braycurtis.0.03.lt.pcoa.axes",
+		"mothur_process/sample.final.braycurtis.0.03.lt.pcoa.loadings",
+		"mothur_process/sample.final.braycurtis.0.03.lt.nmds.iters",
+		"mothur_process/sample.final.braycurtis.0.03.lt.nmds.stress",
+		"mothur_process/sample.final.braycurtis.0.03.lt.nmds.axes",
+
+		# Error analysis
+		"mothur_process/error_analysis/errorinput.fasta",
+		"mothur_process/error_analysis/errorinput.count_table",
+		"mothur_process/error_analysis/errorinput.pick.error.summary",
+		
+
 		"index.html",
 		
-		# expand("data/mothur/process/{dataset}.files", dataset=config["dataset"]),
+		# expand("mothur_process/{dataset}.files", dataset=config["dataset"]),
 
 		# "data/references/silva.v4.align",
 		# "data/references/trainset16_022016.pds.fasta",
 		# "data/references/trainset16_022016.pds.tax",
 		# "data/references/zymo.mock.16S.v4.fasta",
-		
-		"data/mothur/process/final.shared",
-		"data/mothur/process/final.lefse",
-		"data/mothur/process/final.biom",
-		"data/mothur/process/final.taxonomy",
-	
-		
-		"data/mothur/process/error_analysis/errorinput.fasta",
-		"data/mothur/process/error_analysis/errorinput.count_table",
-		"data/mothur/process/error_analysis/errorinput.pick.error.summary",
-
-		"data/mothur/process/intermediate/test.trim.contigs.good.unique.summary",
-
 	
 
 # Making mothur-based sample mapping file.
@@ -47,7 +78,7 @@ rule make_mapping_files:
 	input:
 		script="workflow/scripts/makeFile.sh",
 	output:
-		files=expand("data/mothur/process/{dataset}.files", dataset=config["dataset"]),
+		files=expand("mothur_process/{dataset}.files", dataset=config["dataset"]),
 	conda:
 		"envs/mothur.yml"
 	shell:
@@ -83,18 +114,18 @@ rule get_mothur_zymo_mock:
 rule mothur_process_sequences:
 	input:
 		script="workflow/scripts/mothur_process_seqs.sh",
-		files=expand("data/mothur/process/{dataset}.files", dataset=config["dataset"]),
+		files=expand("mothur_process/{dataset}.files", dataset=config["dataset"]),
 		silvaV4="data/references/silva.v4.align",
 		rdpFasta="data/references/trainset16_022016.pds.fasta",
 		rdpTax="data/references/trainset16_022016.pds.tax"
 	output:
-		contigreport="data/mothur/process/test.contigs_report",
-		shared="data/mothur/process/final.shared",
-		taxonomy="data/mothur/process/final.taxonomy",
-		lefse="data/mothur/process/final.lefse",
-		biom="data/mothur/process/final.biom",
-		errorfasta="data/mothur/process/error_analysis/errorinput.fasta",
-		errorcount="data/mothur/process/error_analysis/errorinput.count_table",
+		contigreport="mothur_process/test.contigs_report",
+		shared="mothur_process/final.shared",
+		taxonomy="mothur_process/final.taxonomy",
+		lefse="mothur_process/final.lefse",
+		biom="mothur_process/final.biom",
+		errorfasta="mothur_process/error_analysis/errorinput.fasta",
+		errorcount="mothur_process/error_analysis/errorinput.count_table",
 	conda:
 		"envs/mothur.yml"
 	shell:
@@ -109,7 +140,7 @@ rule mothur_calculate_errorrate:
 		errorcount=rules.mothur_process_sequences.output.errorcount,
 		mockV4=rules.get_mothur_zymo_mock.output.mockV4
 	output:
-		summary="data/mothur/process/error_analysis/errorinput.pick.error.summary"
+		summary="mothur_process/error_analysis/errorinput.pick.error.summary"
 	params:
 		mockGroups='-'.join(config["mothurMock"]) # Concatenates all mock group names with hyphens
 	conda:
@@ -123,15 +154,52 @@ rule remove_intermedeate_files:
 		script="workflow/scripts/mothur_clean_intermediate.sh",	
 		contigreport=rules.mothur_process_sequences.output.contigreport,
 	output:
-		"data/mothur/process/intermediate/test.trim.contigs.good.unique.summary"
+		"mothur_process/intermediate/test.trim.contigs.good.unique.summary"
 	shell:
 		"bash {input.script}"
+
+
+# Splitting master shared file into individual shared file for: i) samples, ii) controls, and iii) mocks.
+# This is used for optimal subsampling during downstream steps.
+rule samples_mock_control_shared:
+	input:
+		script="workflow/scripts/mothurSplitShared.sh",
+		shared="mothur_process/final.shared"
+	output:
+		shared=expand("mothur_process/{group}.final.shared", group = config["mothurGroups"])
+	params:
+		mockGroups='-'.join(config["mothurMock"]), # Concatenates all mock group names with hyphens
+		controlGroups='-'.join(config["mothurControl"]) # Concatenates all control group names with hyphens
+	conda:
+		"envs/mothur.yml"
+	shell:
+		"bash {input.script} {params.mockGroups} {params.controlGroups}"
+
+
+
+# ##################################################################
+# #
+# # Diversity Metrics 
+# #
+# #################################################################
+rule alpha_beta_diversity:
+	input:
+		script="workflow/scripts/mothurAlphaBeta.sh",
+		# shared="mothur_process/sample.final.shared",
+		shared=expand("mothur_process/{group}.final.shared", group = "sample"),
+	output:
+		subsample="mothur_process/sample.final.0.03.subsample.shared",
+		rarefy="mothur_process/sample.final.groups.rarefaction",
+	conda:
+		"envs/mothur.yml"
+	shell:
+		"bash {input.script} {input.shared}"
 
 
 # Get dot rule graphs
 rule dot_rules_graph:
 	output:
-		report("dags/rulegraph.svg", caption="reports/rulegraph.rst", category="Graph"),
+		"dags/rulegraph.svg",
 	shell:
 		"bash workflow/scripts/rules_dag.sh"
 
@@ -149,22 +217,29 @@ rule project_tree:
 rule static_snakemake_report:
     output:
         smkhtml="report.html",
-        html2png="images/smkreport/screenshot.png"
+        html2png="images/smkreport/screenshot.png",
     shell:
         """
         bash workflow/scripts/smk_html_report.sh
         """
 
+# Images to include in report
+rule gather_informative_images:
+	output:
+		sracache=report("images/sra_config_cache.png", caption="report/sracache.rst", category="SRA cache"),
+		part2=report("images/imap_part02.svg", caption="report/srametadata.rst", category="SRA Metadata DAG"),
+		part3=report("images/imap_part03.svg", caption="report/srareads.rst", category="Read Download DAG"),
+		part4=report("images/imap_part04.svg", caption="report/readqc.rst", category="Read QC DAG"),
+		part5=report("images/imap_part05.svg", caption="report/mothurwkflow.rst", category="Mothur DAG"),
+	shell:
+		"bash workflow/scripts/copy_files.sh"
+
+
+# User styled report for GHPages
 rule deploy_to_github_pages:
-    input:
-        script="workflow/scripts/render.R",
-        rmd="index.Rmd",
-        tree="results/project_tree.txt",
-        html2png="images/smkreport/screenshot.png",
-        rules="dags/rulegraph.svg",
     output:
         doc="index.html",
     shell:
         """
-        R -e "library(rmarkdown); render('{input.rmd}')"
+        R -e "library(rmarkdown); render('index.Rmd')"
         """

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-OUTDIR="data/mothur/process"
+OUTDIR="mothur_process"
 
 ###############
 echo PROGRESS: Cleaning up working directory.
@@ -9,3 +9,4 @@ echo PROGRESS: Cleaning up working directory.
 mkdir -p "${OUTDIR}"/intermediate/
 
 mv "${OUTDIR}"/test* "${OUTDIR}"/intermediate/
+mv "${OUTDIR}"/current_files.summary "${OUTDIR}"/intermediate/
