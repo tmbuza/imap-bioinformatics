@@ -62,6 +62,21 @@ rule all:
 		"mothur_process/error_analysis/errorinput.count_table",
 		"mothur_process/error_analysis/errorinput.pick.error.summary",
 		
+        # "data/metadata/mothur_mapping_file.tsv",
+        # "data/metadata/mothur_metadata_file.tsv",
+        # "data/metadata/mothur_design_file.tsv",
+        "resources/metadata/qiime2_manifest_file.tsv",
+        "resources/metadata/qiime2_metadata_file.tsv",
+
+		"qiime2_process/q2-sample-metadata.qzv",
+		"qiime2_process/demux.qzv",
+		"qiime2_process/rep-seqs.qza",
+		"qiime2_process/feature-table.qza",
+		"qiime2_process/stats.qza",
+
+		"qiime2_process/rep-seqs.qzv",
+		"qiime2_process/feature-table.qzv",
+		"qiime2_process/stats.qzv",
 
 		"index.html",
 		
@@ -73,8 +88,18 @@ rule all:
 		# "data/references/zymo.mock.16S.v4.fasta",
 	
 
+
+rule import_mothur_mapping_files:
+	output:
+		"resources/metadata/mothur_mapping_file.tsv",
+		"resources/metadata/mothur_metadata_file.tsv",
+		"resources/metadata/mothur_design_file.tsv",
+	shell:
+		"bash workflow/scripts/import_mothur_metadata.sh"
+
+
 # Making mothur-based sample mapping file.
-rule make_mapping_files:
+rule auto_mothur_mapping_files:
 	input:
 		script="workflow/scripts/makeFile.sh",
 	output:
@@ -117,7 +142,8 @@ rule mothur_process_sequences:
 		files=expand("mothur_process/{dataset}.files", dataset=config["dataset"]),
 		silvaV4="data/references/silva.v4.align",
 		rdpFasta="data/references/trainset16_022016.pds.fasta",
-		rdpTax="data/references/trainset16_022016.pds.tax"
+		rdpTax="data/references/trainset16_022016.pds.tax",
+		metadata=rules.import_mothur_mapping_files.output
 	output:
 		contigreport="mothur_process/test.contigs_report",
 		shared="mothur_process/final.shared",
@@ -182,6 +208,7 @@ rule samples_mock_control_shared:
 # # Diversity Metrics 
 # #
 # #################################################################
+
 rule alpha_beta_diversity:
 	input:
 		script="workflow/scripts/mothurAlphaBeta.sh",
@@ -194,6 +221,94 @@ rule alpha_beta_diversity:
 		"envs/mothur.yml"
 	shell:
 		"bash {input.script} {input.shared}"
+
+
+
+# ##################################################################
+#
+# QIIME2 Analysis
+#
+# #################################################################
+
+rule import_qiime2_mapping_files:
+	output:
+		manifest="resources/metadata/qiime2_manifest_file.tsv",
+		metadata="resources/metadata/qiime2_metadata_file.tsv",
+	shell:
+		"bash workflow/scripts/import_qiime2_metadata.sh"
+
+
+rule qiime2_validate_metadata:
+	input:
+		manifest=rules.import_qiime2_mapping_files.output.manifest
+	output:
+		"qiime2_process/q2-sample-metadata.qzv"		
+	conda:
+		"envs/qiime220232.yml"
+	shell:
+		"bash workflow/scripts/qiime2_validate_metadata.sh"
+
+
+rule qiime2_import_paired_fastq:
+	input:
+		manifest=rules.import_qiime2_mapping_files.output.manifest
+	output:
+		"qiime2_process/demux.qza"
+	conda:
+		"envs/qiime220232.yml"
+	shell:
+		"bash workflow/scripts/qiime2_import_paired_fastq.sh"
+
+
+rule qiime2_summarize_fastq:
+	input:
+		manifest=rules.qiime2_import_paired_fastq.output
+	output:
+		"qiime2_process/demux.qzv"
+	conda:
+		"envs/qiime220232.yml"
+	shell:
+		"bash workflow/scripts/qiime2_import_paired_fastq.sh"
+
+
+rule qiime2_read_qc:
+	input:
+		manifest=rules.qiime2_import_paired_fastq.output
+	output:
+		repseq="qiime2_process/rep-seqs.qza",
+		features="qiime2_process/feature-table.qza",
+		stats="qiime2_process/stats.qza",
+	conda:
+		"envs/qiime220232.yml"
+	shell:
+		"bash workflow/scripts/qiime2_read_qc.sh"
+
+
+rule qiime2_create_qc_qvz_data:
+	input:
+		metadata=rules.qiime2_validate_metadata.output,
+		qcresults=rules.qiime2_read_qc.output
+	output:
+		repseqviz="qiime2_process/rep-seqs.qzv",
+		featuresviz="qiime2_process/feature-table.qzv",
+		statsviz="qiime2_process/stats.qzv",
+	conda:
+		"envs/qiime220232.yml"
+	shell:
+		"bash workflow/scripts/qiime2_visualize_output.sh"
+
+
+# rule qiime2_view_qcdata_interactively:
+# 	input:
+# 		qcresults=rules.qiime2_create_qcvisual_data.output
+# 	output:
+# 		repseq="qiime2_process/rep-seqs.qzv",
+# 		features="qiime2_process/feature-table.qzv",
+# 		stats="qiime2_process/stats.qzv",
+# 	conda:
+# 		"envs/qiime220232.yml"
+# 	shell:
+# 		"bash workflow/scripts/qiime2_visualize_output.sh"
 
 
 # Get dot rule graphs

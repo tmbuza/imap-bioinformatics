@@ -1,5 +1,5 @@
 ---
-title:  "<big><u>IMAP-PART 05</u></big><br><br>Microbiome Bioinformatics with integrated pipelines and Snakemake workdflow<br><br>"
+title:  "<big><u>IMAP-PART 05</u></big><br><br>Microbiome Bioinformatics with integrated pipelines and Snakemake workflow<br><br>"
 subtitle: |
   | ![](images/bioinformatics.png)<br>
   | Fostering Reproducible Microbiome data Analysis with Snakemake workflow
@@ -64,7 +64,7 @@ library(schtools)
 
 <br>
 
-## Mothur Snakemake workflow
+## Bioinformatics Analysis Snakemake workflow
 
 ```{bash ruledag, include=FALSE}
 bash workflow/scripts/rules_dag.sh
@@ -78,12 +78,22 @@ A detailed interactive snakemake report is available [here](https://complexdatai
 
 <br>
 
-```{r child='workflow/scripts/01_mothur_bioinformatics.Rmd'}
+```{r child='workflow/scripts/01_mothur_pipeline.Rmd'}
 ```
 
 <br>
 
 ```{r child='workflow/scripts/02_preliminary_otu_analysis.Rmd'}
+```
+
+<br>
+
+```{r child='workflow/scripts/install_qiime2.Rmd'}
+```
+
+<br>
+
+```{r child='workflow/scripts/qiime2_pipeline.Rmd'}
 ```
 
 <br><hr width=100%><br>

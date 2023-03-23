@@ -1,13 +1,11 @@
-# QIIME 2 pipeline 
+# Microbial Profiling using QIIME 2 pipeline 
 
-## Creating `qiime2` env from YAML file
-
-### Get the YAML file (Ex. For MAC OS)
+## Get QIIME2 YAML file
 ```bash
 wget https://data.qiime2.org/distro/core/qiime2-2023.2-py38-osx-conda.yml
 ```
 
-### Create `qiime2` env and install qiime2
+## Create `qiime2` env and install qiime2
 Current YAML file: qiime2-2023.2-py38-osx-conda.yml available
 
 > The qiime2 YAML file contains over 500 dependencies. Listed below is just a few QIIME 2 framework dependencies to get the installation started.
@@ -48,6 +46,7 @@ dependencies:
     - q2-vsearch=2023.2.0
 ```
 
+## Installing QIIME2 using a bash script
 ```bash
 conda activate base
 wget https://data.qiime2.org/distro/core/qiime2-2023.2-py38-osx-conda.yml
@@ -63,3 +62,4 @@ wget \
   -O "gg-13-8-99-515-806-nb-classifier.qza" \
   "https://data.qiime2.org/2023.2/common/gg-13-8-99-515-806-nb-classifier.qza"
 ```
+> Other classifiers also exist. Check on [QIIME2 website](https://docs.qiime2.org/) for more information.
