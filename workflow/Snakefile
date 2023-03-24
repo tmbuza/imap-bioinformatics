@@ -81,7 +81,7 @@ rule all:
 		# "qiime2_process/feature-table-dn-99.qza",
 		# "qiime2_process/rep-seqs-dn-99.qza",
 		"qiime2_process/rep-seqs-dn-99.qzv",
-
+		
 		"index.html",
 		
 		# expand("mothur_process/{dataset}.files", dataset=config["dataset"]),
@@ -321,6 +321,20 @@ rule qiime2_denovo_cluster:
 		"envs/qiime220232.yml"
 	shell:
 		"bash workflow/scripts/qiime2_denovo_cluster.sh"
+
+
+# rule qiime2_closedref_cluster:
+# 	input:
+#   		"qiime2_process/feature-table.qza",
+# 		"qiime2_process/rep-seqs.qza",
+# 	output:
+# 		"qiime2_process/feature-table-dn-99.qza",
+# 		"qiime2_process/rep-seqs-dn-99.qza",
+# 		"qiime2_process/rep-seqs-dn-99.qzv",
+# 	conda:
+# 		"envs/qiime220232.yml"
+# 	shell:
+# 		"bash workflow/scripts/qiime2_closedref_cluster.sh"
 
 
 # Get dot rule graphs
