@@ -2,7 +2,7 @@
 
 # Creating basic variables
 # SAMPLEDIR="data/reads"
-SAMPLEDIR="data/test"
+SAMPLEDIR="resources/test"
 OUTDIR="mothur_process"
 LOGS="data/logs"
 

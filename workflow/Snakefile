@@ -65,18 +65,22 @@ rule all:
         # "data/metadata/mothur_mapping_file.tsv",
         # "data/metadata/mothur_metadata_file.tsv",
         # "data/metadata/mothur_design_file.tsv",
-        "resources/metadata/qiime2_manifest_file.tsv",
-        "resources/metadata/qiime2_metadata_file.tsv",
+        # "resources/metadata/qiime2_manifest_file.tsv",
+        # "resources/metadata/qiime2_metadata_file.tsv",
 
-		"qiime2_process/q2-sample-metadata.qzv",
-		"qiime2_process/demux.qzv",
-		"qiime2_process/rep-seqs.qza",
-		"qiime2_process/feature-table.qza",
-		"qiime2_process/stats.qza",
+		# "qiime2_process/q2-sample-metadata.qzv",
+		# "qiime2_process/demux.qzv",
+		# "qiime2_process/rep-seqs.qza",
+		# "qiime2_process/feature-table.qza",
+		# "qiime2_process/stats.qza",
 
 		"qiime2_process/rep-seqs.qzv",
 		"qiime2_process/feature-table.qzv",
 		"qiime2_process/stats.qzv",
+
+		# "qiime2_process/feature-table-dn-99.qza",
+		# "qiime2_process/rep-seqs-dn-99.qza",
+		"qiime2_process/rep-seqs-dn-99.qzv",
 
 		"index.html",
 		
@@ -177,7 +181,7 @@ rule mothur_calculate_errorrate:
 
 rule remove_intermedeate_files:
 	input:
-		script="workflow/scripts/mothur_clean_intermediate.sh",	
+		script="workflow/scripts/clean_intermediate.sh",	
 		contigreport=rules.mothur_process_sequences.output.contigreport,
 	output:
 		"mothur_process/intermediate/test.trim.contigs.good.unique.summary"
@@ -187,7 +191,7 @@ rule remove_intermedeate_files:
 
 # Splitting master shared file into individual shared file for: i) samples, ii) controls, and iii) mocks.
 # This is used for optimal subsampling during downstream steps.
-rule samples_mock_control_shared:
+rule mothur_split_group_shared:
 	input:
 		script="workflow/scripts/mothurSplitShared.sh",
 		shared="mothur_process/final.shared"
@@ -226,8 +230,15 @@ rule alpha_beta_diversity:
 
 # ##################################################################
 #
-# QIIME2 Analysis
+# QIIME2 pipeline
 #
+# #################################################################
+
+rule download_qiime2_resources:
+	output:
+		metadata="qiime2_tutorial/sample_metadata.tsv",
+	shell:
+		"bash workflow/scripts/download_qiime2_resources.sh"
 # #################################################################
 
 rule import_qiime2_mapping_files:
@@ -284,7 +295,7 @@ rule qiime2_read_qc:
 		"bash workflow/scripts/qiime2_read_qc.sh"
 
 
-rule qiime2_create_qc_qvz_data:
+rule qiime2_create_n_view_qc_qvz:
 	input:
 		metadata=rules.qiime2_validate_metadata.output,
 		qcresults=rules.qiime2_read_qc.output
@@ -295,20 +306,21 @@ rule qiime2_create_qc_qvz_data:
 	conda:
 		"envs/qiime220232.yml"
 	shell:
-		"bash workflow/scripts/qiime2_visualize_output.sh"
+		"bash workflow/scripts/qiime2_create_qc_qvz_data.sh"
 
 
-# rule qiime2_view_qcdata_interactively:
-# 	input:
-# 		qcresults=rules.qiime2_create_qcvisual_data.output
-# 	output:
-# 		repseq="qiime2_process/rep-seqs.qzv",
-# 		features="qiime2_process/feature-table.qzv",
-# 		stats="qiime2_process/stats.qzv",
-# 	conda:
-# 		"envs/qiime220232.yml"
-# 	shell:
-# 		"bash workflow/scripts/qiime2_visualize_output.sh"
+rule qiime2_denovo_cluster:
+	input:
+  		"qiime2_process/feature-table.qza",
+		"qiime2_process/rep-seqs.qza",
+	output:
+		"qiime2_process/feature-table-dn-99.qza",
+		"qiime2_process/rep-seqs-dn-99.qza",
+		"qiime2_process/rep-seqs-dn-99.qzv",
+	conda:
+		"envs/qiime220232.yml"
+	shell:
+		"bash workflow/scripts/qiime2_denovo_cluster.sh"
 
 
 # Get dot rule graphs
@@ -339,15 +351,15 @@ rule static_snakemake_report:
         """
 
 # Images to include in report
-rule gather_informative_images:
+rule get_files4smk_report:
 	output:
 		sracache=report("images/sra_config_cache.png", caption="report/sracache.rst", category="SRA cache"),
 		part2=report("images/imap_part02.svg", caption="report/srametadata.rst", category="SRA Metadata DAG"),
 		part3=report("images/imap_part03.svg", caption="report/srareads.rst", category="Read Download DAG"),
 		part4=report("images/imap_part04.svg", caption="report/readqc.rst", category="Read QC DAG"),
-		part5=report("images/imap_part05.svg", caption="report/mothurwkflow.rst", category="Mothur DAG"),
+		part5=report("images/imap_part05.svg", caption="report/rulegraph.rst", category="Mothur & QIIME2 DAG"),
 	shell:
-		"bash workflow/scripts/copy_files.sh"
+		"bash workflow/scripts/files4smk_report.sh"
 
 
 # User styled report for GHPages

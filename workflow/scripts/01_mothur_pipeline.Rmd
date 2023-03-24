@@ -1,9 +1,9 @@
-## Getting started
+## Getting started with `Mothur` pipeline
 
 ### Create a `mothur` YAML file 
 
 ```bash
-name: mothur
+name: mothur48
 channels:
     - conda-forge
     - bioconda
@@ -22,29 +22,41 @@ conda activate mothur48
 
 ### Download references databases
 - Download Silva alignment reference database.
-- Process degapped Silva classifier from Silva alignments.
+- Creatge Silva classifier from Silva alignments.
 - Download RDP classifier.
 
-Example: Downloading mothur references using `mothurReferences.sh` script on CLI.
 ```bash
 bash workflow/scripts/mothurReferences.sh
 ```
 
 <br>
 
-## Mothur classification methods
+### Overview of Mothur classification methods
 There are four methods that can be used to profile microbial communities present in a sample. Here we briefly decribe each method:
 
-### 1.Classify OTUs
+#### 1.Classify OTUs
 - OTUs (Operational Taxonomic Units (OTUs)) are clusters of similar sequences and are commonly accepted as analytical units in microbial profiling when using 16S rRNA gene markers.
 
-### 2. Classify Phylotypes
+#### 2. Classify Phylotypes
 - A phylotype in microbiome research is a DNA sequence or group of sequences sharing more than an arbitrarily chosen level of similarity of a 16S rRNA gene marker.
 
-### 3. Classify ASVs
+#### 3. Classify ASVs
 - ASVs Amplicon Sequence Variants (ASVs)in microbiome research is any inferred single DNA sequences recovered from a bioinformatics analysis of 16S rRNA marker genes.
 - ASV is typically really a cluster of sequences that are one or two bases apart from each other.
 
-### 4. Classify Phylogenies
+#### 4. Classify Phylogenies
 - Microbial phylogenies are from gene sequence homologies.  Models of mutation determine the most-likely evolutionary histories.
 
+<br>
+
+### Preliminary OTU analysis using `Mothur`
+The preliminary analysis (`alpha_beta_diversity rule`) is part of the bioinformatics analysis. It includes:
+
+- Creating reads count for each group.
+- Subsampling for downstream analysis.
+- Rarefaction.
+- Computing Alpha diversity metrics.
+- Computing Beta diversity metrics.
+- Getting sample distances.
+- Constructing sample phylip tree.
+- Generating ordination matrices including PCoA and NMDS.

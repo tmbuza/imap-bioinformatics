@@ -1,6 +1,6 @@
-**Mothur bioinformatics snakemake workflow**::
+**Mothur & QIIME2 bioinformatics snakemake workflow**::
 
-    This workflow performs the following tasks:
+    Mothur pipeline performs the following tasks:
         - Assembles and screens the qced reads.
         - Aligns representative sequences to a reference.
         - Denoises and removes chimeras and non-bacterial sequences.
@@ -11,3 +11,6 @@
         - Performs preliminary analysis of OTU abundances.
         - Generates snakemake interactive report and
         - Finally, it deploys a user-generated report to GitHub pages. 
+    
+    QIIME 2 pipeline performs the following tasks:
+    ---IN PROGRESS--- 

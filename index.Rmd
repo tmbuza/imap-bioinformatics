@@ -58,13 +58,11 @@ library(tidyverse, suppressPackageStartupMessages())
 library(schtools)
 ```
 
-# Microbial Profiling using `Mothur` pipeline
+# Microbiome Bioinformatics Snakemake workflow
 
 ...BRIEF INTRO IN PROGRESS...
 
 <br>
-
-## Bioinformatics Analysis Snakemake workflow
 
 ```{bash ruledag, include=FALSE}
 bash workflow/scripts/rules_dag.sh
@@ -72,7 +70,7 @@ bash workflow/scripts/rules_dag.sh
 
 ![](dags/rulegraph.svg)
 
-A tentative snakemake workflow that defines **mothur bioinformatics rules** in a DAG (directed acyclic graph) format. 
+A tentative snakemake workflow that defines **mothur and qiime2 bioinformatics rules** in a DAG (directed acyclic graph) format. 
 A detailed interactive snakemake report is available [here](https://complexdatainsights.com/imap/imap-bioinformatics-analysis/report.html).
 
 
@@ -83,17 +81,7 @@ A detailed interactive snakemake report is available [here](https://complexdatai
 
 <br>
 
-```{r child='workflow/scripts/02_preliminary_otu_analysis.Rmd'}
-```
-
-<br>
-
-```{r child='workflow/scripts/install_qiime2.Rmd'}
-```
-
-<br>
-
-```{r child='workflow/scripts/qiime2_pipeline.Rmd'}
+```{r child='workflow/scripts/02_qiime2_pipeline.Rmd'}
 ```
 
 <br><hr width=100%><br>
