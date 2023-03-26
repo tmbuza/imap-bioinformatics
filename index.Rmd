@@ -1,5 +1,5 @@
 ---
-title:  "<big><u>IMAP-PART 05</u></big><br><br>Microbiome Bioinformatics with integrated pipelines and Snakemake workflow<br><br>"
+title:  "<big><u>IMAP-PART 05</u></big><br><br> Microbial profiling using Mothur pipeline with Snakemake workflows<br><br>"
 subtitle: |
   | ![](images/bioinformatics.png)<br>
   | Fostering Reproducible Microbiome data Analysis with Snakemake workflow
