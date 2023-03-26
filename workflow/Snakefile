@@ -14,59 +14,92 @@ import pandas as pd
 # METADATA=pd.read_csv('resources/metadata/metadata.csv').loc[0:3]
 # ACCESSIONS=METADATA['run'].tolist() # Specify the column containing the accession, in this demo is Run
 
+include: "rules/mothur_process.smk"
+# include: "rules/qiime2_process.smk"
+
 # Master rule for controlling workflow.
 rule all:
 	input:
-		"mothur_process/final.shared",
-		"mothur_process/final.lefse",
-		"mothur_process/final.biom",
+		expand("mothur_process/{dataset}.files", dataset=config["dataset"]),
+
+		"data/references/silva.v4.align",
+		"data/references/trainset16_022016.pds.fasta",
+		"data/references/trainset16_022016.pds.tax",
+		"data/references/zymo.mock.16S.v4.fasta",
+
+		"mothur_process/final.fasta",
+		"mothur_process/final.count_table",
 		"mothur_process/final.taxonomy",
-	
 		
-		"mothur_process/error_analysis/errorinput.fasta",
-		"mothur_process/error_analysis/errorinput.count_table",
-		"mothur_process/error_analysis/errorinput.pick.error.summary",
+		# Prepare input file
+		expand("mothur_process/{method}/final.fasta", method=config["mothurMethod"]),
+		expand("mothur_process/{method}/final.count_table", method=config["mothurMethod"]),
+		expand("mothur_process/{method}/final.taxonomy", method=config["mothurMethod"]),
 
-		"mothur_process/intermediate/test.trim.contigs.good.unique.summary",
-		
-		"images/sra_config_cache.png",
-		"images/imap_part02.svg",
-		"images/imap_part03.svg",
-		"images/imap_part04.svg",
-		"images/imap_part05.svg",
+		# OTU analysis
+		expand("mothur_process/{method}/final.dist", method="otu_analysis"),
+		expand("mothur_process/{method}/final.opti_mcc.0.03.rep.fasta", method="otu_analysis"),
+		expand("mothur_process/{method}/final.opti_mcc.list", method="otu_analysis"),
+		expand("mothur_process/{method}/final.opti_mcc.shared", method="otu_analysis"),
+		expand("mothur_process/{method}/final.pds.wang.pick.taxonomy", method="otu_analysis"),
+		expand("mothur_process/{method}/final.opti_mcc.0.03.cons.taxonomy", method="otu_analysis"),
 
-		# Create group shared files
-		"mothur_process/sample.final.shared",
-		"mothur_process/mock.final.shared",
-		"mothur_process/control.final.shared",
+		# Phylotype analysis
+        expand("mothur_process/{method}/final.pds.wang.pick.tx.list", method="phylotype_analysis"),
+        expand("mothur_process/{method}/final.pds.wang.pick.tx.rabund", method="phylotype_analysis"),
+        expand("mothur_process/{method}/final.pds.wang.pick.tx.sabund", method="phylotype_analysis"),
+        expand("mothur_process/{method}/final.pds.wang.pick.tx.shared", method="phylotype_analysis"),
+        expand("mothur_process/{method}/final.pds.wang.pick.taxonomy", method="phylotype_analysis"),
+        expand("mothur_process/{method}/final.pds.wang.pick.tx.1.cons.taxonomy", method="phylotype_analysis"),
+        expand("mothur_process/{method}/final.pds.wang.pick.tx.1.lefse", method="phylotype_analysis"),
+        expand("mothur_process/{method}/final.pds.wang.pick.tx.1.biom", method="phylotype_analysis"),
 
-		# # Create subsample shared file
-		# "mothur_process/sample.final.0.03.subsample.shared",
-		
+
+		# ASV analysis
+        expand("mothur_process/{method}/final.asv.list", method="asv_analysis"),
+        expand("mothur_process/{method}/final.asv.shared", method="asv_analysis"),
+        expand("mothur_process/{method}/final.asv.ASV.cons.taxonomy", method="asv_analysis"),
+        expand("mothur_process/{method}/final.asv.ASV.biom", method="asv_analysis"),
+        expand("mothur_process/{method}/final.asv.ASV.lefse", method="asv_analysis"),
+
+
+		# Phylogeny analysis
+        expand("mothur_process/{method}/final.phylip.dist", method="phylogeny_analysis"),
+        expand("mothur_process/{method}/final.pds.wang.pick.taxonomy", method="phylogeny_analysis"),
+        expand("mothur_process/{method}/final.phylip.tre", method="phylogeny_analysis"),
+
+		# Error rate analysis
+        expand("mothur_process/{method}/final.pick.error.summary", method="error_analysis"),
+        expand("mothur_process/{method}/final.pick.error.seq", method="error_analysis"),
+        expand("mothur_process/{method}/final.pick.error.chimera", method="error_analysis"),
+        expand("mothur_process/{method}/final.pick.error.seq.forward", method="error_analysis"),
+        expand("mothur_process/{method}/final.pick.error.seq.reverse", method="error_analysis"),
+        expand("mothur_process/{method}/final.pick.error.count", method="error_analysis"),
+        expand("mothur_process/{method}/final.pick.error.matrix", method="error_analysis"),
+        expand("mothur_process/{method}/final.pick.error.ref", method="error_analysis"),
+
+		# Split shared files
+		 expand("mothur_process/{method}/sample.final.shared", method="otu_analysis"),
+		 expand("mothur_process/{method}/mock.final.shared", method="otu_analysis"),
+		 expand("mothur_process/{method}/control.final.shared", method="otu_analysis"),
+
 		# Alpha and Beta diversity analysis
-		"mothur_process/sample.final.count.summary",
-		"mothur_process/sample.final.groups.summary",
-		"mothur_process/sample.final.groups.rarefaction",
-		"mothur_process/sample.final.sharedsobs.0.03.lt.dist",
-		"mothur_process/sample.final.thetayc.0.03.lt.dist",
-		"mothur_process/sample.final.braycurtis.0.03.lt.dist",
-		"mothur_process/sample.final.braycurtis.0.03.lt.tre",
-		"mothur_process/sample.final.braycurtis.0.03.lt.pcoa.axes",
-		"mothur_process/sample.final.braycurtis.0.03.lt.pcoa.loadings",
-		"mothur_process/sample.final.braycurtis.0.03.lt.nmds.iters",
-		"mothur_process/sample.final.braycurtis.0.03.lt.nmds.stress",
-		"mothur_process/sample.final.braycurtis.0.03.lt.nmds.axes",
+        expand("mothur_process/{method}/{group}.final.count.summary", method="otu_analysis", group=config["mothurGroups"]),
+        expand("mothur_process/{method}/{group}.final.0.03.subsample.shared", method="otu_analysis", group=config["mothurGroups"]),
+        expand("mothur_process/{method}/{group}.final.groups.summary", method="otu_analysis", group=config["mothurGroups"]),
+        expand("mothur_process/{method}/{group}.final.groups.rarefaction", method="otu_analysis", group=config["mothurGroups"]),
+        expand("mothur_process/{method}/{group}.final.sharedsobs.0.03.lt.dist", method="otu_analysis", group=config["mothurGroups"]),
+        expand("mothur_process/{method}/{group}.final.thetayc.0.03.lt.dist", method="otu_analysis", group=config["mothurGroups"]),
+        expand("mothur_process/{method}/{group}.final.braycurtis.0.03.lt.dist", method="otu_analysis", group=config["mothurGroups"]),
+        expand("mothur_process/{method}/{group}.final.braycurtis.0.03.lt.tre", method="otu_analysis", group=config["mothurGroups"]),
+        expand("mothur_process/{method}/{group}.final.braycurtis.0.03.lt.pcoa.axes", method="otu_analysis", group=config["mothurGroups"]),
+        expand("mothur_process/{method}/{group}.final.braycurtis.0.03.lt.pcoa.loadings", method="otu_analysis", group=config["mothurGroups"]),
+        expand("mothur_process/{method}/{group}.final.braycurtis.0.03.lt.nmds.iters", method="otu_analysis", group=config["mothurGroups"]),
+        expand("mothur_process/{method}/{group}.final.braycurtis.0.03.lt.nmds.stress", method="otu_analysis", group=config["mothurGroups"]),
+        expand("mothur_process/{method}/{group}.final.braycurtis.0.03.lt.nmds.axes", method="otu_analysis", group=config["mothurGroups"]),
 
-		# Error analysis
-		"mothur_process/error_analysis/errorinput.fasta",
-		"mothur_process/error_analysis/errorinput.count_table",
-		"mothur_process/error_analysis/errorinput.pick.error.summary",
-		
-        # "data/metadata/mothur_mapping_file.tsv",
-        # "data/metadata/mothur_metadata_file.tsv",
-        # "data/metadata/mothur_design_file.tsv",
-        # "resources/metadata/qiime2_manifest_file.tsv",
-        # "resources/metadata/qiime2_metadata_file.tsv",
+
+		# QIIME2
 
 		# "qiime2_process/q2-sample-metadata.qzv",
 		# "qiime2_process/demux.qzv",
@@ -74,289 +107,217 @@ rule all:
 		# "qiime2_process/feature-table.qza",
 		# "qiime2_process/stats.qza",
 
-		"qiime2_process/rep-seqs.qzv",
-		"qiime2_process/feature-table.qzv",
-		"qiime2_process/stats.qzv",
+		# "qiime2_process/rep-seqs.qzv",
+		# "qiime2_process/feature-table.qzv",
+		# "qiime2_process/stats.qzv",
 
-		"qiime2_process/rep-seqs-dn-99.qza",
-		"qiime2_process/rep-seqs-dn-99.qzv",
+		# "qiime2_process/rep-seqs-dn-99.qza",
+		# "qiime2_process/rep-seqs-dn-99.qzv",
 		
-		"qiime2_process/table-cr-85.qza",
-		"qiime2_process/rep-seqs-cr-85.qza",
+		# "qiime2_process/table-cr-85.qza",
+		# "qiime2_process/rep-seqs-cr-85.qza",
 
-		"qiime2_process/table-or-85.qza",
-		"qiime2_process/rep-seqs-or-85.qza",
-
-
-		"index.html",
+		# "qiime2_process/table-or-85.qza",
+		# "qiime2_process/rep-seqs-or-85.qza",
 		
-		# expand("mothur_process/{dataset}.files", dataset=config["dataset"]),
-
-		# "data/references/silva.v4.align",
-		# "data/references/trainset16_022016.pds.fasta",
-		# "data/references/trainset16_022016.pds.tax",
-		# "data/references/zymo.mock.16S.v4.fasta",
-	
+		# "index.html",	
 
 
-rule import_mothur_mapping_files:
-	output:
-		"resources/metadata/mothur_mapping_file.tsv",
-		"resources/metadata/mothur_metadata_file.tsv",
-		"resources/metadata/mothur_design_file.tsv",
-	shell:
-		"bash workflow/scripts/import_mothur_metadata.sh"
-
-
-# Making mothur-based sample mapping file.
-rule auto_mothur_mapping_files:
-	input:
-		script="workflow/scripts/makeFile.sh",
-	output:
-		files=expand("mothur_process/{dataset}.files", dataset=config["dataset"]),
-	conda:
-		"envs/mothur.yml"
-	shell:
-		"bash {input.script}"
-
-
-# Downloading and formatting SILVA and RDP reference databases. The v4 region is extracted from 
-# SILVA database for use as reference alignment.
-rule get_mothur_references:
-	output:
-		silvaV4="data/references/silva.v4.align",
-		rdpFasta="data/references/trainset16_022016.pds.fasta",
-		rdpTax="data/references/trainset16_022016.pds.tax"
-	conda:
-		"envs/mothur.yml"
-	shell:
-		"bash workflow/scripts/mothurReferences.sh"
-
-
-# Downloading the Zymo mock sequence files and extracting v4 region for error estimation.
-rule get_mothur_zymo_mock:
-	input:
-		script="workflow/scripts/mothurMock.sh",
-		silvaV4="data/references/silva.v4.align",
-	output:
-		mockV4="data/references/zymo.mock.16S.v4.fasta"
-	conda:
-		"envs/mothur.yml"
-	shell:
-		"bash {input.script}"
-
-# Generating master OTU shared file.
-rule mothur_process_sequences:
-	input:
-		script="workflow/scripts/mothur_process_seqs.sh",
-		files=expand("mothur_process/{dataset}.files", dataset=config["dataset"]),
-		silvaV4="data/references/silva.v4.align",
-		rdpFasta="data/references/trainset16_022016.pds.fasta",
-		rdpTax="data/references/trainset16_022016.pds.tax",
-		metadata=rules.import_mothur_mapping_files.output
-	output:
-		contigreport="mothur_process/test.contigs_report",
-		shared="mothur_process/final.shared",
-		taxonomy="mothur_process/final.taxonomy",
-		lefse="mothur_process/final.lefse",
-		biom="mothur_process/final.biom",
-		errorfasta="mothur_process/error_analysis/errorinput.fasta",
-		errorcount="mothur_process/error_analysis/errorinput.count_table",
-	conda:
-		"envs/mothur.yml"
-	shell:
-		"bash {input.script}"
-
-
-# Calculate estimated sequencing error rate based on mock sequences.
-rule mothur_calculate_errorrate:
-	input:
-		script="workflow/scripts/mothurError.sh",
-		errorfasta=rules.mothur_process_sequences.output.errorfasta,
-		errorcount=rules.mothur_process_sequences.output.errorcount,
-		mockV4=rules.get_mothur_zymo_mock.output.mockV4
-	output:
-		summary="mothur_process/error_analysis/errorinput.pick.error.summary"
-	params:
-		mockGroups='-'.join(config["mothurMock"]) # Concatenates all mock group names with hyphens
-	conda:
-		"envs/mothur.yml"
-	shell:
-		"bash {input.script} {input.errorfasta} {input.errorcount} {input.mockV4} {params.mockGroups}"
-
-
-rule remove_intermedeate_files:
-	input:
-		script="workflow/scripts/clean_intermediate.sh",	
-		contigreport=rules.mothur_process_sequences.output.contigreport,
-	output:
-		"mothur_process/intermediate/test.trim.contigs.good.unique.summary"
-	shell:
-		"bash {input.script}"
-
-
-# Splitting master shared file into individual shared file for: i) samples, ii) controls, and iii) mocks.
-# This is used for optimal subsampling during downstream steps.
-rule mothur_split_group_shared:
-	input:
-		script="workflow/scripts/mothurSplitShared.sh",
-		shared="mothur_process/final.shared"
-	output:
-		shared=expand("mothur_process/{group}.final.shared", group = config["mothurGroups"])
-	params:
-		mockGroups='-'.join(config["mothurMock"]), # Concatenates all mock group names with hyphens
-		controlGroups='-'.join(config["mothurControl"]) # Concatenates all control group names with hyphens
-	conda:
-		"envs/mothur.yml"
-	shell:
-		"bash {input.script} {params.mockGroups} {params.controlGroups}"
+# For SMK report RST	
+		"images/sra_config_cache.png",
+		"images/imap_part02.svg",
+		"images/imap_part03.svg",
+		"images/imap_part04.svg",
+		"images/imap_part05.svg",
 
 
 
-# ##################################################################
-# #
-# # Diversity Metrics 
-# #
-# #################################################################
 
-rule alpha_beta_diversity:
-	input:
-		script="workflow/scripts/mothurAlphaBeta.sh",
-		# shared="mothur_process/sample.final.shared",
-		shared=expand("mothur_process/{group}.final.shared", group = "sample"),
-	output:
-		subsample="mothur_process/sample.final.0.03.subsample.shared",
-		rarefy="mothur_process/sample.final.groups.rarefaction",
-	conda:
-		"envs/mothur.yml"
-	shell:
-		"bash {input.script} {input.shared}"
+# rule import_mothur_mapping_files:
+# 	output:
+# 		"resources/metadata/mothur_mapping_file.tsv",
+# 		"resources/metadata/mothur_metadata_file.tsv",
+# 		"resources/metadata/mothur_design_file.tsv",
+# 	shell:
+# 		"bash workflow/scripts/import_mothur_metadata.sh"
 
 
-
-# ##################################################################
-#
-# QIIME2 pipeline
-#
-# #################################################################
-
-rule download_qiime2_resources:
-	output:
-		metadata="qiime2_tutorial/sample_metadata.tsv",
-	shell:
-		"bash workflow/scripts/download_qiime2_resources.sh"
-# #################################################################
-
-rule import_qiime2_mapping_files:
-	output:
-		manifest="resources/metadata/qiime2_manifest_file.tsv",
-		metadata="resources/metadata/qiime2_metadata_file.tsv",
-	shell:
-		"bash workflow/scripts/import_qiime2_metadata.sh"
+# # Making mothur-based sample mapping file.
+# rule auto_mothur_mapping_files:
+# 	input:
+# 		script="workflow/scripts/makeFile.sh",
+# 	output:
+# 		files=expand("mothur_process/{dataset}.files", dataset=config["dataset"]),
+# 	conda:
+# 		"envs/mothur.yml"
+# 	shell:
+# 		"bash {input.script}"
 
 
-rule qiime2_validate_metadata:
-	input:
-		manifest=rules.import_qiime2_mapping_files.output.manifest
-	output:
-		"qiime2_process/q2-sample-metadata.qzv"		
-	conda:
-		"envs/qiime220232.yml"
-	shell:
-		"bash workflow/scripts/qiime2_validate_metadata.sh"
+# # Downloading and formatting SILVA and RDP reference databases. The v4 region is extracted from 
+# # SILVA database for use as reference alignment.
+# rule get_mothur_references:
+# 	output:
+# 		silvaV4="data/references/silva.v4.align",
+# 		rdpFasta="data/references/trainset16_022016.pds.fasta",
+# 		rdpTax="data/references/trainset16_022016.pds.tax"
+# 	conda:
+# 		"envs/mothur.yml"
+# 	shell:
+# 		"bash workflow/scripts/mothurReferences.sh"
 
 
-rule qiime2_import_paired_fastq:
-	input:
-		manifest=rules.import_qiime2_mapping_files.output.manifest
-	output:
-		"qiime2_process/demux.qza"
-	conda:
-		"envs/qiime220232.yml"
-	shell:
-		"bash workflow/scripts/qiime2_import_paired_fastq.sh"
+# # Downloading the Zymo mock sequence files and extracting v4 region for error estimation.
+# rule get_mothur_zymo_mock:
+# 	input:
+# 		script="workflow/scripts/mothurMock.sh",
+# 		silvaV4="data/references/silva.v4.align",
+# 	output:
+# 		mockV4="data/references/zymo.mock.16S.v4.fasta"
+# 	conda:
+# 		"envs/mothur.yml"
+# 	shell:
+# 		"bash {input.script}"
+
+# # Generating master OTU shared file.
+# rule mothur_process_sequences:
+# 	input:
+# 		script="workflow/scripts/mothur_process_seqs.sh",
+# 		files=expand("mothur_process/{dataset}.files", dataset=config["dataset"]),
+# 		silvaV4="data/references/silva.v4.align",
+# 		rdpFasta="data/references/trainset16_022016.pds.fasta",
+# 		rdpTax="data/references/trainset16_022016.pds.tax",
+# 		metadata=rules.import_mothur_mapping_files.output
+# 	output:
+# 		fasta="mothur_process/{method}/final.fasta",
+# 		ctable="mothur_process/{method}/final.count_table",
+# 	conda:
+# 		"envs/mothur.yml"
+# 	shell:
+# 		"bash {input.script}"
+
+# # Preparing final processed fasta and count table.
+# rule mothur_final_processed_seqs:
+# 	input:
+# 		metadata=rules.mothur_process_sequences.output
+# 	output:
+# 		fasta="mothur_process/{method}/final.fasta",
+# 		ctable="mothur_process/{method}/final.count_table",
+# 	conda:
+# 		"envs/mothur.yml"
+# 	shell:
+# 		"bash {input.script}"
+
+# # Classify OTUS
+# rule mothur_classify_otus:
+# 	input:
+# 		script="workflow/scripts/mothur_classify_otus.sh",
+# 		fasta=rules.mothur_process_sequences.output.fasta,
+# 		ctable=rules.mothur_process_sequences.output.ctable,
+# 		classifier="data/references/trainset16_022016.pds.fasta",
+# 		taxonomy="data/references/trainset16_022016.pds.tax",
+# 	output:
+# 		steps="mothur_process/otus/processed.opti_mcc.steps",
+# 		sensspec="mothur_process/otus/processed.opti_mcc.sensspec",
+# 		column="mothur_process/otus/processed.dist",
+# 		fasta="mothur_process/otus/processed.opti_mcc.0.03.rep.fasta",
+# 		shared="mothur_process/otus/processed.opti_mcc.shared",
+# 		taxonomy="mothur_process/otus/processed.pds.wang.pick.taxonomy",
+# 		constaxonomy="mothur_process/otus/processed.opti_mcc.0.03.cons.taxonomy",
+# 		ctable="mothur_process/otus/processed.opti_mcc.0.03.rep.count_table",
+# 		biom="mothur_process/otus/processed.opti_mcc.0.03.biom",
+# 		lefse="mothur_process/otus/processed.opti_mcc.0.03.lefse",
+# 	conda:
+# 		"envs/mothur.yml"
+# 	shell:
+# 		"bash {input.script}"
 
 
-rule qiime2_summarize_fastq:
-	input:
-		manifest=rules.qiime2_import_paired_fastq.output
-	output:
-		"qiime2_process/demux.qzv"
-	conda:
-		"envs/qiime220232.yml"
-	shell:
-		"bash workflow/scripts/qiime2_import_paired_fastq.sh"
+# # # Classify Phylotypes
+# rule mothur_classify_phylotypes:
+# 	input:
+# 		fasta=rules.mothur_process_sequences.output.fasta,
+# 		ctable=rules.mothur_process_sequences.output.ctable,
+# 		script="workflow/scripts/mothur_classify_phylotyprs.sh",
+# 		classifier="data/references/trainset16_022016.pds.fasta",
+# 		taxonomy="data/references/trainset16_022016.pds.tax",
+# 	output:
+# 		shared="mothur_process/phylotypes/processed.asv.shared",
+# 		biom="mothur_process/phylotypes/processed.asv.1.biom",
+# 		lefse="mothur_process/phylotypes/processed.asv.1.lefse",
+# 	conda:
+# 		"envs/mothur.yml"
+# 	shell:
+# 		"bash {input.script}"
+# 		"bash {input.script}"
 
 
-rule qiime2_read_qc:
-	input:
-		manifest=rules.qiime2_import_paired_fastq.output
-	output:
-		repseq="qiime2_process/rep-seqs.qza",
-		features="qiime2_process/feature-table.qza",
-		stats="qiime2_process/stats.qza",
-	conda:
-		"envs/qiime220232.yml"
-	shell:
-		"bash workflow/scripts/qiime2_read_qc.sh"
+
+# # Calculate estimated sequencing error rate based on mock sequences.
+# rule mothur_calculate_errorrate:
+# 	input:
+# 		script="workflow/scripts/mothurError.sh",
+# 		errorfasta=rules.mothur_process_sequences.output.errorfasta,
+# 		errorcount=rules.mothur_process_sequences.output.errorcount,
+# 		mockV4=rules.get_mothur_zymo_mock.output.mockV4
+# 	output:
+# 		summary="mothur_process/error_analysis/errorinput.pick.error.summary"
+# 	params:
+# 		mockGroups='-'.join(config["mothurMock"]) # Concatenates all mock group names with hyphens
+# 	conda:
+# 		"envs/mothur.yml"
+# 	shell:
+# 		"bash {input.script} {input.errorfasta} {input.errorcount} {input.mockV4} {params.mockGroups}"
 
 
-rule qiime2_create_n_view_qc_qvz:
-	input:
-		metadata=rules.qiime2_validate_metadata.output,
-		qcresults=rules.qiime2_read_qc.output
-	output:
-		repseqviz="qiime2_process/rep-seqs.qzv",
-		featuresviz="qiime2_process/feature-table.qzv",
-		statsviz="qiime2_process/stats.qzv",
-	conda:
-		"envs/qiime220232.yml"
-	shell:
-		"bash workflow/scripts/qiime2_create_qc_qvz_data.sh"
+# rule remove_intermedeate_files:
+# 	input:
+# 		script="workflow/scripts/clean_intermediate.sh",	
+# 		contigreport=rules.mothur_process_sequences.output.contigreport,
+# 	output:
+# 		"mothur_process/intermediate/test.trim.contigs.good.unique.summary"
+# 	shell:
+# 		"bash {input.script}"
 
 
-rule qiime2_denovo_cluster:
-	input:
-  		"qiime2_process/feature-table.qza",
-		"qiime2_process/rep-seqs.qza",
-	output:
-		"qiime2_process/feature-table-dn-99.qza",
-		"qiime2_process/rep-seqs-dn-99.qza",
-		"qiime2_process/rep-seqs-dn-99.qzv",
-	conda:
-		"envs/qiime220232.yml"
-	shell:
-		"bash workflow/scripts/qiime2_denovo_cluster.sh"
+# # Splitting master shared file into individual shared file for: i) samples, ii) controls, and iii) mocks.
+# # This is used for optimal subsampling during downstream steps.
+# rule mothur_split_group_shared:
+# 	input:
+# 		script="workflow/scripts/mothurSplitShared.sh",
+# 		shared="mothur_process/final.shared"
+# 	output:
+# 		shared=expand("mothur_process/{group}.final.shared", group = config["mothurGroups"])
+# 	params:
+# 		mockGroups='-'.join(config["mothurMock"]), # Concatenates all mock group names with hyphens
+# 		controlGroups='-'.join(config["mothurControl"]) # Concatenates all control group names with hyphens
+# 	conda:
+# 		"envs/mothur.yml"
+# 	shell:
+# 		"bash {input.script} {params.mockGroups} {params.controlGroups}"
 
 
-rule qiime2_closedref_cluster:
-	input:
-		"qiime2_process/feature-table.qza",
-		"qiime2_process/rep-seqs.qza",
-		"resources/85_otus.qza",
-	output:
-		"qiime2_process/table-cr-85.qza",
-		"qiime2_process/rep-seqs-cr-85.qza",
-		"qiime2_process/unmatched-cr-85.qza",
-	conda:
-		"envs/qiime220232.yml"
-	shell:
-		"bash workflow/scripts/qiime2_closedref_cluster.sh"
+
+# # ##################################################################
+# # #
+# # # Diversity Metrics 
+# # #
+# # #################################################################
+
+# rule alpha_beta_diversity:
+# 	input:
+# 		script="workflow/scripts/mothurAlphaBeta.sh",
+# 		# shared="mothur_process/sample.final.shared",
+# 		shared=expand("mothur_process/{group}.final.shared", group = "sample"),
+# 	output:
+# 		subsample="mothur_process/sample.final.0.03.subsample.shared",
+# 		rarefy="mothur_process/sample.final.groups.rarefaction",
+# 	conda:
+# 		"envs/mothur.yml"
+# 	shell:
+# 		"bash {input.script} {input.shared}"
 
 
-rule qiime2_openref_cluster:
-	input:
-		"qiime2_process/feature-table.qza",
-		"qiime2_process/rep-seqs.qza",
-		"resources/85_otus.qza",
-	output:
-		"qiime2_process/table-or-85.qza",
-		"qiime2_process/rep-seqs-or-85.qza",
-		"qiime2_process/new-ref-seqs-or-85.qza"
-	conda:
-		"envs/qiime220232.yml"
-	shell:
-		"bash workflow/scripts/qiime2_openref_cluster.sh"
 
 
 # Get dot rule graphs

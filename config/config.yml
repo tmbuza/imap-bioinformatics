@@ -11,7 +11,13 @@ units: config/units.tsv
 
 # Auto created from fastq files
 dataset: test
-  
+
+mothurMethod:
+- otu_analysis
+- phylotype_analysis
+- asv_analysis
+- phylogeny_analysis
+- error_analysis
 
 # Images in the report
 imappart:
