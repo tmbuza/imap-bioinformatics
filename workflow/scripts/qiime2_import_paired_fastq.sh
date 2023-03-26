@@ -8,5 +8,5 @@ qiime demux summarize \
   --i-data $PWD/qiime2_process/demux.qza \
   --o-visualization $PWD/qiime2_process/demux.qzv
 
-## Visualizing output
-qiime tools view $PWD/qiime2_process/demux.qzv
+# ## Visualizing output
+# qiime tools view $PWD/qiime2_process/demux.qzv

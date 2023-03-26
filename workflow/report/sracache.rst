@@ -1,0 +1,1 @@
+Screenshot of SRA toolkit configuration.

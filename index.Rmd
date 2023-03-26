@@ -96,8 +96,10 @@ A detailed interactive snakemake report is available [here](https://complexdatai
 | [IMAP-PART 02](https://github.com/tmbuza/imap-sample-metadata/) | Downloading and exploring microbiome sample metadata from SRA Database | [In-progress](https://tmbuza.github.io/imap-sample-metadata/) |
 | [IMAP-PART 03](https://github.com/tmbuza/imap-download-sra-reads/) | Downloading and filtering microbiome sequencing data from SRA database | [In-progress](https://tmbuza.github.io/imap-download-sra-reads/) |
 | [IMAP-PART 04](https://github.com/tmbuza/imap-read-quality-control/) | Quality Control of Microbiome Next Generation Sequencing Reads | [In-progress](https://tmbuza.github.io/imap-read-quality-control/) |
-| [IMAP-PART 05](https://github.com/tmbuza/imap-bioinformatics-analysis/) | Bioinformatics & classification of preprocessed microbiome sequencing data | [In-progress](https://tmbuza.github.io/imap-bioinformatics-analysis/) |
+| [IMAP-PART 05](https://github.com/tmbuza/imap-bioinformatics-analysis/) | Microbial profiling using MOTHUR and Snakemake workflows | [In-progress](https://tmbuza.github.io/imap-bioinformatics-analysis/) |
 | [IMAP-PART 06](https://github.com/tmbuza/imap-bioinformatics-qiime2/) | Microbial profiling using QIIME2 and Snakemake workflows | [In-progress](https://tmbuza.github.io/imap-bioinformatics-qiime2/) |
+| [IMAP-SUMMARY](https://github.com/tmbuza/imap-snakemake-workflows/) | Summary ofnakemake workflows for microbiome data analysis | [In-progress](https://tmbuza.github.io/imap-snakemake-workflows/) |
+
 ```
 
 ## Citation

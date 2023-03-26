@@ -1,1 +1,0 @@
-Current snakemake rule graph for mothur and qiime2 bioinformatics pipeline.
