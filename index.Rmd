@@ -71,8 +71,9 @@ bash workflow/scripts/rules_dag.sh
 ![](dags/rulegraph.svg)
 
 A tentative snakemake workflow that defines **mothur bioinformatics rules** in a DAG (directed acyclic graph) format. 
-A detailed interactive snakemake HTML report is available [here](https://complexdatainsights.com/imap/imap-bioinformatics-analysis/report.html). 
+A detailed interactive snakemake HTML report is available [here](https://complexdatainsights.com/imap/imap-bioinformatics-mothur/report.html). 
 You will be able to explore the workflow and the associated statistics. You can close the left bar (overlap) to get a more expansive display view.
+
 
 <br>
 
