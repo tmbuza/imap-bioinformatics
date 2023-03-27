@@ -169,7 +169,7 @@ rule mothur_error_rate:
     conda:
         "../envs/mothur.yml"
     shell:
-        "bash {input.script} {input.errorfasta} {input.errorcount} {input.mockV4} {params.mockGroups}"
+        "bash {input.script} {input.infiles} {input.mockV4} {params.mockGroups}"
 
 
 
@@ -197,30 +197,21 @@ rule alpha_beta_diversity:
         script="workflow/scripts/mothur_diversity_analysis.sh",
         shared=rules.mothur_split_group_shared.output
     output:
-        expand("mothur_process/{method}/{group}.final.count.summary", method="otu_analysis", group=config["mothurGroups"]),
-        expand("mothur_process/{method}/{group}.final.0.03.subsample.shared", method="otu_analysis", group=config["mothurGroups"]),
-        expand("mothur_process/{method}/{group}.final.groups.summary", method="otu_analysis", group=config["mothurGroups"]),
-        expand("mothur_process/{method}/{group}.final.groups.rarefaction", method="otu_analysis", group=config["mothurGroups"]),
-        expand("mothur_process/{method}/{group}.final.sharedsobs.0.03.lt.dist", method="otu_analysis", group=config["mothurGroups"]),
-        expand("mothur_process/{method}/{group}.final.thetayc.0.03.lt.dist", method="otu_analysis", group=config["mothurGroups"]),
-        expand("mothur_process/{method}/{group}.final.braycurtis.0.03.lt.dist", method="otu_analysis", group=config["mothurGroups"]),
-        expand("mothur_process/{method}/{group}.final.braycurtis.0.03.lt.tre", method="otu_analysis", group=config["mothurGroups"]),
-        expand("mothur_process/{method}/{group}.final.braycurtis.0.03.lt.pcoa.axes", method="otu_analysis", group=config["mothurGroups"]),
-        expand("mothur_process/{method}/{group}.final.braycurtis.0.03.lt.pcoa.loadings", method="otu_analysis", group=config["mothurGroups"]),
-        expand("mothur_process/{method}/{group}.final.braycurtis.0.03.lt.nmds.iters", method="otu_analysis", group=config["mothurGroups"]),
-        expand("mothur_process/{method}/{group}.final.braycurtis.0.03.lt.nmds.stress", method="otu_analysis", group=config["mothurGroups"]),
-        expand("mothur_process/{method}/{group}.final.braycurtis.0.03.lt.nmds.axes", method="otu_analysis", group=config["mothurGroups"]),
+        expand("mothur_process/{method}/sample.final.count.summary", method="otu_analysis"),
+        expand("mothur_process/{method}/sample.final.0.03.subsample.shared", method="otu_analysis"),
+        expand("mothur_process/{method}/sample.final.groups.summary", method="otu_analysis"),
+        expand("mothur_process/{method}/sample.final.groups.rarefaction", method="otu_analysis"),
+        expand("mothur_process/{method}/sample.final.sharedsobs.0.03.lt.dist", method="otu_analysis"),
+        expand("mothur_process/{method}/sample.final.thetayc.0.03.lt.dist", method="otu_analysis"),
+        expand("mothur_process/{method}/sample.final.braycurtis.0.03.lt.dist", method="otu_analysis"),
+        expand("mothur_process/{method}/sample.final.braycurtis.0.03.lt.tre", method="otu_analysis"),
+        expand("mothur_process/{method}/sample.final.braycurtis.0.03.lt.pcoa.axes", method="otu_analysis"),
+        expand("mothur_process/{method}/sample.final.braycurtis.0.03.lt.pcoa.loadings", method="otu_analysis"),
+        expand("mothur_process/{method}/sample.final.braycurtis.0.03.lt.nmds.iters", method="otu_analysis"),
+        expand("mothur_process/{method}/sample.final.braycurtis.0.03.lt.nmds.stress", method="otu_analysis"),
+        expand("mothur_process/{method}/sample.final.braycurtis.0.03.lt.nmds.axes", method="otu_analysis"),
     conda:
         "../envs/mothur.yml"
     shell:
         "bash {input.script} {input.shared}"
 
-
-# rule remove_intermedeate_files:
-# 	input:
-# 		script="workflow/scripts/clean_intermediate.sh",	
-# 		contigreport=rules.mothur_process_sequences.output.contigreport,
-# 	output:
-# 		"mothur_process/intermediate/test.trim.contigs.good.unique.summary"
-# 	shell:
-# 		"bash {input.script}"

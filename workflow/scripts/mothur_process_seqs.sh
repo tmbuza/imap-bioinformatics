@@ -53,6 +53,7 @@ mothur "#set.logfile(name=${LOGS}/make_files.logfile);
 	set.logfile(name=final_files.logfile);
 	rename.file(fasta=current, count=current, taxonomy=current, prefix=final)"
 
+
    	# remove.seqs(fasta=current, accnos=current);
 	# set.logfile(name=${LOGS}/otu_clustering.logfile);
 	# dist.seqs(fasta=current, cutoff=0.03);

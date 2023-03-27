@@ -1,7 +1,7 @@
 ---
 title:  "<big><u>IMAP-PART 05</u></big><br><br> Microbial profiling using Mothur pipeline with Snakemake workflows<br><br>"
 subtitle: |
-  | ![](images/bioinformatics.png)<br>
+  | ![](images/16srrna.png)<br>
   | Fostering Reproducible Microbiome data Analysis with Snakemake workflow
 date:
 - IMAP-PART 05<br>[Latest GitHub-Repo](https://github.com/tmbuza/imap-bioinformatics-analysis/)<br>
@@ -70,23 +70,18 @@ bash workflow/scripts/rules_dag.sh
 
 ![](dags/rulegraph.svg)
 
-A tentative snakemake workflow that defines **mothur and qiime2 bioinformatics rules** in a DAG (directed acyclic graph) format. 
-A detailed interactive snakemake report is available [here](https://complexdatainsights.com/imap/imap-bioinformatics-analysis/report.html).
-
+A tentative snakemake workflow that defines **mothur bioinformatics rules** in a DAG (directed acyclic graph) format. 
+A detailed interactive snakemake HTML report is available [here](https://complexdatainsights.com/imap/imap-bioinformatics-analysis/report.html). 
+You will be able to explore the workflow and the associated statistics. You can close the left bar (overlap) to get a more expansive display view.
 
 <br>
 
 ```{r child='workflow/scripts/01_mothur_pipeline.Rmd'}
 ```
 
-<br>
-
-```{r child='workflow/scripts/02_qiime2_pipeline.Rmd'}
-```
-
 <br><hr width=100%><br>
 
-# Related work
+## Related work
 ```{block imaprepos, echo=TRUE}
 
 | Repo | Description | Status |
@@ -124,46 +119,6 @@ bash workflow/scripts/tree.sh
 ```{bash treeimg}
 cat results/project_tree.txt
 ```
-
-## Static snakemake report {#smkreport}
-> The interactive snakemake HTML report can be viewed by opening the `report.html` using any compatible browser. You will be able to explore the workflow and the associated statistics. You can close the left bar to get a more expansive display view.
-
-```{bash smkrpt, include=FALSE}
-snakemake --unlock;
-snakemake --report report.html;
-pip install html2image
-hti -H report.html -o images/smkreport;
-```
-
-<img src="images/smkreport/screenshot.png">
-
-## Summary of Informative workflows
-
-<br>
-
-![](images/smkreport/screenshot.png)
-
-<br>
-
-![](images/sra_config_cache.png)
-
-<br>
-
-![](images/imap_part02.svg)
-
-<br>
-
-![](images/imap_part03.svg)
-
-<br>
-
-![](images/imap_part04.svg)
-
-<br>
-
-![](images/imap_part05.svg)
-
-<br>
 
 
 ## Troubleshooting of FAQs

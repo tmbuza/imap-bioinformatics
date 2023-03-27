@@ -32,6 +32,8 @@ rule qiime2_output:
 		
 		"index.html",	
 
+
+
 rule download_qiime2_resources:
 	output:
 		metadata="qiime2_tutorial/sample_metadata.tsv",

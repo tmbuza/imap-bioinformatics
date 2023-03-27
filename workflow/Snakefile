@@ -15,28 +15,33 @@ import pandas as pd
 # ACCESSIONS=METADATA['run'].tolist() # Specify the column containing the accession, in this demo is Run
 
 include: "rules/mothur_process.smk"
-# include: "rules/qiime2_process.smk"
+
+# # Master rule for controlling workflow.
+# rule all:
+		# "index.html",	
+		# "report.html",
+
+		# expand("mothur_process/{dataset}.files", dataset=config["dataset"]),
+
+		# "data/references/silva.v4.align",
+		# "data/references/trainset16_022016.pds.fasta",
+		# "data/references/trainset16_022016.pds.tax",
+		# "data/references/zymo.mock.16S.v4.fasta",
+
+		# "mothur_process/final.fasta",
+		# "mothur_process/final.count_table",
+		# "mothur_process/final.taxonomy",
+		
+		# Prepare input file
+		# expand("mothur_process/{method}/final.fasta", method=config["mothurMethod"]),
+		# expand("mothur_process/{method}/final.count_table", method=config["mothurMethod"]),
+		# expand("mothur_process/{method}/final.taxonomy", method=config["mothurMethod"]),
+
+		# OTU analysis
 
 # Master rule for controlling workflow.
 rule all:
 	input:
-		expand("mothur_process/{dataset}.files", dataset=config["dataset"]),
-
-		"data/references/silva.v4.align",
-		"data/references/trainset16_022016.pds.fasta",
-		"data/references/trainset16_022016.pds.tax",
-		"data/references/zymo.mock.16S.v4.fasta",
-
-		"mothur_process/final.fasta",
-		"mothur_process/final.count_table",
-		"mothur_process/final.taxonomy",
-		
-		# Prepare input file
-		expand("mothur_process/{method}/final.fasta", method=config["mothurMethod"]),
-		expand("mothur_process/{method}/final.count_table", method=config["mothurMethod"]),
-		expand("mothur_process/{method}/final.taxonomy", method=config["mothurMethod"]),
-
-		# OTU analysis
 		expand("mothur_process/{method}/final.dist", method="otu_analysis"),
 		expand("mothur_process/{method}/final.opti_mcc.0.03.rep.fasta", method="otu_analysis"),
 		expand("mothur_process/{method}/final.opti_mcc.list", method="otu_analysis"),
@@ -84,19 +89,21 @@ rule all:
 		 expand("mothur_process/{method}/control.final.shared", method="otu_analysis"),
 
 		# Alpha and Beta diversity analysis
-        expand("mothur_process/{method}/{group}.final.count.summary", method="otu_analysis", group=config["mothurGroups"]),
-        expand("mothur_process/{method}/{group}.final.0.03.subsample.shared", method="otu_analysis", group=config["mothurGroups"]),
-        expand("mothur_process/{method}/{group}.final.groups.summary", method="otu_analysis", group=config["mothurGroups"]),
-        expand("mothur_process/{method}/{group}.final.groups.rarefaction", method="otu_analysis", group=config["mothurGroups"]),
-        expand("mothur_process/{method}/{group}.final.sharedsobs.0.03.lt.dist", method="otu_analysis", group=config["mothurGroups"]),
-        expand("mothur_process/{method}/{group}.final.thetayc.0.03.lt.dist", method="otu_analysis", group=config["mothurGroups"]),
-        expand("mothur_process/{method}/{group}.final.braycurtis.0.03.lt.dist", method="otu_analysis", group=config["mothurGroups"]),
-        expand("mothur_process/{method}/{group}.final.braycurtis.0.03.lt.tre", method="otu_analysis", group=config["mothurGroups"]),
-        expand("mothur_process/{method}/{group}.final.braycurtis.0.03.lt.pcoa.axes", method="otu_analysis", group=config["mothurGroups"]),
-        expand("mothur_process/{method}/{group}.final.braycurtis.0.03.lt.pcoa.loadings", method="otu_analysis", group=config["mothurGroups"]),
-        expand("mothur_process/{method}/{group}.final.braycurtis.0.03.lt.nmds.iters", method="otu_analysis", group=config["mothurGroups"]),
-        expand("mothur_process/{method}/{group}.final.braycurtis.0.03.lt.nmds.stress", method="otu_analysis", group=config["mothurGroups"]),
-        expand("mothur_process/{method}/{group}.final.braycurtis.0.03.lt.nmds.axes", method="otu_analysis", group=config["mothurGroups"]),
+        expand("mothur_process/{method}/sample.final.count.summary", method="otu_analysis"),
+        expand("mothur_process/{method}/sample.final.0.03.subsample.shared", method="otu_analysis"),
+        expand("mothur_process/{method}/sample.final.groups.summary", method="otu_analysis"),
+        expand("mothur_process/{method}/sample.final.groups.rarefaction", method="otu_analysis"),
+        expand("mothur_process/{method}/sample.final.sharedsobs.0.03.lt.dist", method="otu_analysis"),
+        expand("mothur_process/{method}/sample.final.thetayc.0.03.lt.dist", method="otu_analysis"),
+        expand("mothur_process/{method}/sample.final.braycurtis.0.03.lt.dist", method="otu_analysis"),
+        expand("mothur_process/{method}/sample.final.braycurtis.0.03.lt.tre", method="otu_analysis"),
+        expand("mothur_process/{method}/sample.final.braycurtis.0.03.lt.pcoa.axes", method="otu_analysis"),
+        expand("mothur_process/{method}/sample.final.braycurtis.0.03.lt.pcoa.loadings", method="otu_analysis"),
+        expand("mothur_process/{method}/sample.final.braycurtis.0.03.lt.nmds.iters", method="otu_analysis"),
+        expand("mothur_process/{method}/sample.final.braycurtis.0.03.lt.nmds.stress", method="otu_analysis"),
+        expand("mothur_process/{method}/sample.final.braycurtis.0.03.lt.nmds.axes", method="otu_analysis"),
+
+
 
 
 		# QIIME2
@@ -120,204 +127,6 @@ rule all:
 		# "qiime2_process/table-or-85.qza",
 		# "qiime2_process/rep-seqs-or-85.qza",
 		
-		# "index.html",	
-
-
-# For SMK report RST	
-		"images/sra_config_cache.png",
-		"images/imap_part02.svg",
-		"images/imap_part03.svg",
-		"images/imap_part04.svg",
-		"images/imap_part05.svg",
-
-
-
-
-# rule import_mothur_mapping_files:
-# 	output:
-# 		"resources/metadata/mothur_mapping_file.tsv",
-# 		"resources/metadata/mothur_metadata_file.tsv",
-# 		"resources/metadata/mothur_design_file.tsv",
-# 	shell:
-# 		"bash workflow/scripts/import_mothur_metadata.sh"
-
-
-# # Making mothur-based sample mapping file.
-# rule auto_mothur_mapping_files:
-# 	input:
-# 		script="workflow/scripts/makeFile.sh",
-# 	output:
-# 		files=expand("mothur_process/{dataset}.files", dataset=config["dataset"]),
-# 	conda:
-# 		"envs/mothur.yml"
-# 	shell:
-# 		"bash {input.script}"
-
-
-# # Downloading and formatting SILVA and RDP reference databases. The v4 region is extracted from 
-# # SILVA database for use as reference alignment.
-# rule get_mothur_references:
-# 	output:
-# 		silvaV4="data/references/silva.v4.align",
-# 		rdpFasta="data/references/trainset16_022016.pds.fasta",
-# 		rdpTax="data/references/trainset16_022016.pds.tax"
-# 	conda:
-# 		"envs/mothur.yml"
-# 	shell:
-# 		"bash workflow/scripts/mothurReferences.sh"
-
-
-# # Downloading the Zymo mock sequence files and extracting v4 region for error estimation.
-# rule get_mothur_zymo_mock:
-# 	input:
-# 		script="workflow/scripts/mothurMock.sh",
-# 		silvaV4="data/references/silva.v4.align",
-# 	output:
-# 		mockV4="data/references/zymo.mock.16S.v4.fasta"
-# 	conda:
-# 		"envs/mothur.yml"
-# 	shell:
-# 		"bash {input.script}"
-
-# # Generating master OTU shared file.
-# rule mothur_process_sequences:
-# 	input:
-# 		script="workflow/scripts/mothur_process_seqs.sh",
-# 		files=expand("mothur_process/{dataset}.files", dataset=config["dataset"]),
-# 		silvaV4="data/references/silva.v4.align",
-# 		rdpFasta="data/references/trainset16_022016.pds.fasta",
-# 		rdpTax="data/references/trainset16_022016.pds.tax",
-# 		metadata=rules.import_mothur_mapping_files.output
-# 	output:
-# 		fasta="mothur_process/{method}/final.fasta",
-# 		ctable="mothur_process/{method}/final.count_table",
-# 	conda:
-# 		"envs/mothur.yml"
-# 	shell:
-# 		"bash {input.script}"
-
-# # Preparing final processed fasta and count table.
-# rule mothur_final_processed_seqs:
-# 	input:
-# 		metadata=rules.mothur_process_sequences.output
-# 	output:
-# 		fasta="mothur_process/{method}/final.fasta",
-# 		ctable="mothur_process/{method}/final.count_table",
-# 	conda:
-# 		"envs/mothur.yml"
-# 	shell:
-# 		"bash {input.script}"
-
-# # Classify OTUS
-# rule mothur_classify_otus:
-# 	input:
-# 		script="workflow/scripts/mothur_classify_otus.sh",
-# 		fasta=rules.mothur_process_sequences.output.fasta,
-# 		ctable=rules.mothur_process_sequences.output.ctable,
-# 		classifier="data/references/trainset16_022016.pds.fasta",
-# 		taxonomy="data/references/trainset16_022016.pds.tax",
-# 	output:
-# 		steps="mothur_process/otus/processed.opti_mcc.steps",
-# 		sensspec="mothur_process/otus/processed.opti_mcc.sensspec",
-# 		column="mothur_process/otus/processed.dist",
-# 		fasta="mothur_process/otus/processed.opti_mcc.0.03.rep.fasta",
-# 		shared="mothur_process/otus/processed.opti_mcc.shared",
-# 		taxonomy="mothur_process/otus/processed.pds.wang.pick.taxonomy",
-# 		constaxonomy="mothur_process/otus/processed.opti_mcc.0.03.cons.taxonomy",
-# 		ctable="mothur_process/otus/processed.opti_mcc.0.03.rep.count_table",
-# 		biom="mothur_process/otus/processed.opti_mcc.0.03.biom",
-# 		lefse="mothur_process/otus/processed.opti_mcc.0.03.lefse",
-# 	conda:
-# 		"envs/mothur.yml"
-# 	shell:
-# 		"bash {input.script}"
-
-
-# # # Classify Phylotypes
-# rule mothur_classify_phylotypes:
-# 	input:
-# 		fasta=rules.mothur_process_sequences.output.fasta,
-# 		ctable=rules.mothur_process_sequences.output.ctable,
-# 		script="workflow/scripts/mothur_classify_phylotyprs.sh",
-# 		classifier="data/references/trainset16_022016.pds.fasta",
-# 		taxonomy="data/references/trainset16_022016.pds.tax",
-# 	output:
-# 		shared="mothur_process/phylotypes/processed.asv.shared",
-# 		biom="mothur_process/phylotypes/processed.asv.1.biom",
-# 		lefse="mothur_process/phylotypes/processed.asv.1.lefse",
-# 	conda:
-# 		"envs/mothur.yml"
-# 	shell:
-# 		"bash {input.script}"
-# 		"bash {input.script}"
-
-
-
-# # Calculate estimated sequencing error rate based on mock sequences.
-# rule mothur_calculate_errorrate:
-# 	input:
-# 		script="workflow/scripts/mothurError.sh",
-# 		errorfasta=rules.mothur_process_sequences.output.errorfasta,
-# 		errorcount=rules.mothur_process_sequences.output.errorcount,
-# 		mockV4=rules.get_mothur_zymo_mock.output.mockV4
-# 	output:
-# 		summary="mothur_process/error_analysis/errorinput.pick.error.summary"
-# 	params:
-# 		mockGroups='-'.join(config["mothurMock"]) # Concatenates all mock group names with hyphens
-# 	conda:
-# 		"envs/mothur.yml"
-# 	shell:
-# 		"bash {input.script} {input.errorfasta} {input.errorcount} {input.mockV4} {params.mockGroups}"
-
-
-# rule remove_intermedeate_files:
-# 	input:
-# 		script="workflow/scripts/clean_intermediate.sh",	
-# 		contigreport=rules.mothur_process_sequences.output.contigreport,
-# 	output:
-# 		"mothur_process/intermediate/test.trim.contigs.good.unique.summary"
-# 	shell:
-# 		"bash {input.script}"
-
-
-# # Splitting master shared file into individual shared file for: i) samples, ii) controls, and iii) mocks.
-# # This is used for optimal subsampling during downstream steps.
-# rule mothur_split_group_shared:
-# 	input:
-# 		script="workflow/scripts/mothurSplitShared.sh",
-# 		shared="mothur_process/final.shared"
-# 	output:
-# 		shared=expand("mothur_process/{group}.final.shared", group = config["mothurGroups"])
-# 	params:
-# 		mockGroups='-'.join(config["mothurMock"]), # Concatenates all mock group names with hyphens
-# 		controlGroups='-'.join(config["mothurControl"]) # Concatenates all control group names with hyphens
-# 	conda:
-# 		"envs/mothur.yml"
-# 	shell:
-# 		"bash {input.script} {params.mockGroups} {params.controlGroups}"
-
-
-
-# # ##################################################################
-# # #
-# # # Diversity Metrics 
-# # #
-# # #################################################################
-
-# rule alpha_beta_diversity:
-# 	input:
-# 		script="workflow/scripts/mothurAlphaBeta.sh",
-# 		# shared="mothur_process/sample.final.shared",
-# 		shared=expand("mothur_process/{group}.final.shared", group = "sample"),
-# 	output:
-# 		subsample="mothur_process/sample.final.0.03.subsample.shared",
-# 		rarefy="mothur_process/sample.final.groups.rarefaction",
-# 	conda:
-# 		"envs/mothur.yml"
-# 	shell:
-# 		"bash {input.script} {input.shared}"
-
-
 
 
 # Get dot rule graphs
@@ -338,26 +147,14 @@ rule project_tree:
         """
 
 # Get smk static report
-rule static_snakemake_report:
+rule snakemake_html_report:
     output:
         smkhtml="report.html",
-        html2png="images/smkreport/screenshot.png",
+        # html2png="images/smkreport/screenshot.png",
     shell:
         """
         bash workflow/scripts/smk_html_report.sh
         """
-
-# Images to include in report
-rule get_files4smk_report:
-	output:
-		sracache=report("images/sra_config_cache.png", caption="report/sracache.rst", category="SRA cache"),
-		part2=report("images/imap_part02.svg", caption="report/srametadata.rst", category="SRA Metadata DAG"),
-		part3=report("images/imap_part03.svg", caption="report/srareads.rst", category="Read Download DAG"),
-		part4=report("images/imap_part04.svg", caption="report/readqc.rst", category="Read QC DAG"),
-		part5=report("images/imap_part05.svg", caption="report/rulegraph.rst", category="Mothur & QIIME2 DAG"),
-	shell:
-		"bash workflow/scripts/files4smk_report.sh"
-
 
 # User styled report for GHPages
 rule deploy_to_github_pages:

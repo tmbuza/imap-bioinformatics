@@ -14,18 +14,30 @@ units: config/units.tsv
 dataset: test
 
 mothurMethod:
-- otu_analysis
-- phylotype_analysis
-- asv_analysis
-- phylogeny_analysis
-- error_analysis
+  - otu_analysis
+  - phylotype_analysis
+  - asv_analysis
+  - phylogeny_analysis
+  - error_analysis
 
 # Images in the report
 imappart:
-  - 02
-  - 03
-  - 04
-  - 05
+  - imap_part01
+  - imap_part02
+  - imap_part03
+  - imap_part04
+  - imap_part05
+  - imap_part06
+  - imap_part07
+  # - imap_part
+  # - imap_part
+  # - imap_part
+  # - imap_part
+  # - imap_part
+  # - imap_part
+  # - imap_part
+  # - imap_part
+  # - imap_part
   
 # Group names of mock samples (e.g. Mock1_S1_L001_R1_001.fastq.gz = Mock1).
 mothurMock:

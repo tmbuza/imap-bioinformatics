@@ -17,7 +17,10 @@ MOCKCOUNT="mothur_process/error_analysis/final.pick.count_table"
 echo PROGRESS: Calculating sequencing error rate in reference to Zymo mock reference.
 ##########################
 
+mkdir -p \
+	"${OUTDIR}" \
+	"${LOGS}"
+
 mothur "#set.logfile(name=${LOGS}/error_rate.logfile);
     get.groups(fasta="${FASTA}", count="${COUNTTABLE}", groups="${MOCKGROUPS}");
-    
     seq.error(fasta="${MOCKFASTA}", count="${MOCKCOUNT}", reference="${MOCKV4}", aligned=F)"
