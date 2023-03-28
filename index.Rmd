@@ -58,7 +58,7 @@ library(tidyverse, suppressPackageStartupMessages())
 library(schtools)
 ```
 
-# Microbiome Bioinformatics Snakemake workflow
+# Microbiome analysis with MOTHUR
 
 ...BRIEF INTRO IN PROGRESS...
 
