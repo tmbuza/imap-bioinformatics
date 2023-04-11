@@ -84,6 +84,7 @@ mothurGroups:
   - mock
   - control
 
+threads: 1
 
 # Random seed
 seed: 110912

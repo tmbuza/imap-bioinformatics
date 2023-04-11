@@ -71,8 +71,7 @@ bash workflow/scripts/rules_dag.sh
 ![](dags/rulegraph.svg)
 
 A tentative snakemake workflow that defines **mothur bioinformatics rules** in a DAG (directed acyclic graph) format. 
-A detailed interactive snakemake HTML report is available [here](https://complexdatainsights.com/imap/imap-bioinformatics-mothur/report.html). 
-You will be able to explore the workflow and the associated statistics. You can close the left bar (overlap) to get a more expansive display view.
+A detailed interactive snakemake HTML report is available [here](https://complexdatainsights.com/imap/imap-bioinformatics-mothur/report.html). Use a wider screen to get a better interactive snakemake report.
 
 
 <br>
@@ -94,8 +93,9 @@ You will be able to explore the workflow and the associated statistics. You can 
 | [IMAP-PART 04](https://github.com/tmbuza/imap-read-quality-control/) | Quality Control of Microbiome Next Generation Sequencing Reads | [In-progress](https://tmbuza.github.io/imap-read-quality-control/) |
 | [IMAP-PART 05](https://github.com/tmbuza/imap-bioinformatics-mothur/) | Microbial profiling using MOTHUR and Snakemake workflows | [In-progress](https://tmbuza.github.io/imap-bioinformatics-mothur/) |
 | [IMAP-PART 06](https://github.com/tmbuza/imap-bioinformatics-qiime2/) | Microbial profiling using QIIME2 and Snakemake workflows | [In-progress](https://tmbuza.github.io/imap-bioinformatics-qiime2/) |
-| [IMAP-SUMMARY](https://github.com/tmbuza/imap-snakemake-workflows/) | Summary ofnakemake workflows for microbiome data analysis | [In-progress](https://tmbuza.github.io/imap-snakemake-workflows/) |
-
+| [IMAP-PART 07](https://github.com/tmbuza/imap-data-processing/) | Processing Output from 16S-Based microbiome bioinformatics pipelines| [In-progress](https://tmbuza.github.io/imap-data-processing/) |
+| [IMAP-PART 08](https://github.com/tmbuza/imap-exploratory-analysis/) | Exploratory Analysis of 16S-Based Microbiome Processed Data | [In-progress](https://tmbuza.github.io/imap-exploratory-analysis/) |
+| [IMAP-SUMMARY](https://github.com/tmbuza/imap-snakemake-workflows/) | Summary of snakemake workflows for microbiome data analysis | [In-progress](https://tmbuza.github.io/imap-snakemake-workflows/) |
 ```
 
 ## Citation
@@ -120,6 +120,12 @@ bash workflow/scripts/tree.sh
 ```{bash treeimg}
 cat results/project_tree.txt
 ```
+
+<br>
+
+![](images/smkreport/screenshot.png)
+
+<br>
 
 
 ## Troubleshooting of FAQs

@@ -48,11 +48,9 @@ rule get_mothur_zymo_mock:
 rule mothur_process_sequences:
 	input:
 		script="workflow/scripts/mothur_process_seqs.sh",
-		files=expand("mothur_process/{dataset}.files", dataset=config["dataset"]),
 		silvaV4="data/references/silva.v4.align",
 		rdpFasta="data/references/trainset16_022016.pds.fasta",
 		rdpTax="data/references/trainset16_022016.pds.tax",
-		metadata=rules.import_mothur_mapping_files.output
 	output:
 		fasta="mothur_process/final.fasta",
 		ctable="mothur_process/final.count_table",

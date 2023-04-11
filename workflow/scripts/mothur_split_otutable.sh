@@ -3,7 +3,7 @@
 
 # Set the variables to be used in this script
 MOCKGROUPS=Mock1 # List of mock groups in raw data dir separated by '-'
-CONTROLGROUPS=Water1 # List of control groups in raw data dir separated by '-'
+CONTROLGROUPS=Mock1 # List of control groups in raw data dir separated by '-'
 SHARED="final.opti_mcc.shared"
 
 # Other variables
