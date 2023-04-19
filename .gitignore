@@ -1,5 +1,5 @@
 # Additional
-mothur_process/*
+mothur_process*
 !mothur_process/final.*
 current_files.summary
 .vscode/*
