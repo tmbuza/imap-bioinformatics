@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 
 # Set the variables to be used in this script
-# SAMPLEDIR="data/reads"
-SAMPLEDIR="data/test"
+SAMPLEDIR="data/reads"
 OUTDIR="mothur_process"
 
 LOGS=${OUTDIR}/logs

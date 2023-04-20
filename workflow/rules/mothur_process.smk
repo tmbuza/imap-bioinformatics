@@ -1,23 +1,24 @@
-rule import_mothur_mapping_files:
-	output:
-		"resources/metadata/mothur_mapping_file.tsv",
-		"resources/metadata/mothur_metadata_file.tsv",
-		"resources/metadata/mothur_design_file.tsv",
-	shell:
-		"bash workflow/scripts/import_mothur_metadata.sh"
+# rule import_mothur_mapping_files:
+# 	output:
+# 		"resources/metadata/mothur_mapping_file.tsv",
+# 		"resources/metadata/mothur_metadata_file.tsv",
+# 		"resources/metadata/mothur_design_file.tsv",
+# 	shell:
+# 		"bash workflow/scripts/import_mothur_metadata.sh"
+# Import reads
+
+rule import_reads:
+    output:
+        expand('{outdir}/{sample}_{readNum}_001.fastq.gz', outdir=OUTDIR, sample=SAMPLES, readNum=config["readNum"]),
+    shell:
+        "bash workflow/scripts/import_data.sh"
 
 
-# Making mothur-based sample mapping file.
-rule auto_mothur_mapping_files:
-	input:
-		script="workflow/scripts/makeFile.sh",
-	output:
-		files=expand("mothur_process/{dataset}.files", dataset=config["dataset"]),
-	conda:
-		"../envs/mothur.yml"
-	shell:
-		"bash {input.script}"
-
+rule import_metadata:
+    output:
+        "data/metadata/test.files"
+    shell:
+        "bash workflow/scripts/import_data.sh"
 
 # Downloading and formatting SILVA and RDP reference databases. The v4 region is extracted from 
 # SILVA database for use as reference alignment.
@@ -45,20 +46,35 @@ rule get_mothur_zymo_mock:
 		"bash {input.script}"
 
 # Generating master OTU shared file.
-rule mothur_process_sequences:
+
+# Making mothur-based sample mapping file.
+rule mothur_autogenerate_mapping_files:
 	input:
-		script="workflow/scripts/mothur_process_seqs.sh",
-		silvaV4="data/references/silva.v4.align",
-		rdpFasta="data/references/trainset16_022016.pds.fasta",
-		rdpTax="data/references/trainset16_022016.pds.tax",
+		script="workflow/scripts/makeFile.sh",
 	output:
-		fasta="mothur_process/final.fasta",
-		ctable="mothur_process/final.count_table",
-		taxonomy="mothur_process/final.taxonomy",
+		expand("mothur_process/{dataset}.files", dataset=config["dataset"]),
 	conda:
 		"../envs/mothur.yml"
 	shell:
 		"bash {input.script}"
+
+
+
+rule mothur_process_sequences:
+    input:
+        "data/metadata/test.files",
+        script="workflow/scripts/mothur_process_seqs.sh",
+        silvaV4="data/references/silva.v4.align",
+        rdpFasta="data/references/trainset16_022016.pds.fasta",
+        rdpTax="data/references/trainset16_022016.pds.tax",
+    output:
+        fasta="mothur_process/final.fasta",
+        ctable="mothur_process/final.count_table",
+        taxonomy="mothur_process/final.taxonomy",
+    conda:
+        "../envs/mothur.yml"
+    shell:
+        "bash {input.script}"
 
 # Preparing final processed fasta and count table.
 rule mothur_final_processed_seqs:
