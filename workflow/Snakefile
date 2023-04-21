@@ -5,8 +5,6 @@ min_version("6.10.0")
 # Configuration file containing all user-specified settings
 configfile: "config/config.yml"
 
-report: "report/workflow.rst"
-
 import os
 import csv
 import pandas as pd
@@ -17,58 +15,35 @@ METADATA = (
     .sort_index()
 )
 
-SAMPLES = METADATA["group"]
+GROUP = METADATA["group"]
 
-OUTDIR="data/reads"  
+PREFIX = ["count_table", "fasta", "map"]
 
-SAMPLES = list(set(glob_wildcards(os.path.join('data/reads', '{sample}_{readNum, R[12]}_001.fastq.gz')).sample))
+report: "report/workflow.rst"
 
-if not os.path.exists(OUTDIR): os.makedirs(OUTDIR)
-
-
+# Setup rules
 include: "rules/mothur_process.smk"
+include: "rules/remove_intermediate_files.smk"
 
-# # Master rule for controlling workflow.
-# rule previous:
-		# "index.html",	
-		# "report.html",
-
-		# expand("mothur_process/{dataset}.files", dataset=config["dataset"]),
-
-		# "data/references/silva.v4.align",
-		# "data/references/trainset16_022016.pds.fasta",
-		# "data/references/trainset16_022016.pds.tax",
-		# "data/references/zymo.mock.16S.v4.fasta",
-
-		# "mothur_process/final.fasta",
-		# "mothur_process/final.count_table",
-		# "mothur_process/final.taxonomy",
-		
-		# Prepare input file
-		# expand("mothur_process/{method}/final.fasta", method=config["mothurMethod"]),
-		# expand("mothur_process/{method}/final.count_table", method=config["mothurMethod"]),
-		# expand("mothur_process/{method}/final.taxonomy", method=config["mothurMethod"]),
-
-		# OTU analysis
+include: "rules/rmd_report.smk"
 
 # Master rule for controlling workflow.
 rule all:
 	input:
- 		"dags/rulegraph.svg",
 		"index.html",
-		"report.html",
+		# "report.html",
 
-        expand('{outdir}/{sample}_{readNum}_001.fastq.gz', outdir=OUTDIR, sample=SAMPLES, readNum=config["readNum"]),
-        "data/metadata/test.files",
+		# Make files
+		# expand("mothur_process/{dataset}.files", dataset=config["dataset"]),
 
-		expand("mothur_process/{dataset}.files", dataset=config["dataset"]),
+		# OTU analysis
+		# expand("mothur_process/{method}/final.dist", method="otu_analysis"),
+		# expand("mothur_process/{method}/final.opti_mcc.0.03.rep.fasta", method="otu_analysis"),
+		# expand("mothur_process/{method}/final.opti_mcc.list", method="otu_analysis"),
+		# expand("mothur_process/{method}/final.opti_mcc.shared", method="otu_analysis"),
+		# expand("mothur_process/{method}/final.pds.wang.pick.taxonomy", method="otu_analysis"),
+		# expand("mothur_process/{method}/final.opti_mcc.0.03.cons.taxonomy", method="otu_analysis"),
 
-		expand("mothur_process/{method}/final.dist", method="otu_analysis"),
-		expand("mothur_process/{method}/final.opti_mcc.0.03.rep.fasta", method="otu_analysis"),
-		expand("mothur_process/{method}/final.opti_mcc.list", method="otu_analysis"),
-		expand("mothur_process/{method}/final.opti_mcc.shared", method="otu_analysis"),
-		expand("mothur_process/{method}/final.pds.wang.pick.taxonomy", method="otu_analysis"),
-		expand("mothur_process/{method}/final.opti_mcc.0.03.cons.taxonomy", method="otu_analysis"),
 
 		# Phylotype analysis
         expand("mothur_process/{method}/final.pds.wang.pick.tx.list", method="phylotype_analysis"),
@@ -105,9 +80,9 @@ rule all:
         expand("mothur_process/{method}/final.pick.error.ref", method="error_analysis"),
 
 		# Split shared files
-		 expand("mothur_process/{method}/sample.final.shared", method="otu_analysis"),
-		 expand("mothur_process/{method}/mock.final.shared", method="otu_analysis"),
-		 expand("mothur_process/{method}/control.final.shared", method="otu_analysis"),
+		#  expand("mothur_process/{method}/sample.final.shared", method="otu_analysis"),
+		#  expand("mothur_process/{method}/mock.final.shared", method="otu_analysis"),
+		#  expand("mothur_process/{method}/control.final.shared", method="otu_analysis"),
 
 		# Alpha and Beta diversity analysis
         expand("mothur_process/{method}/sample.final.count.summary", method="otu_analysis"),
@@ -124,41 +99,8 @@ rule all:
         expand("mothur_process/{method}/sample.final.braycurtis.0.03.lt.nmds.stress", method="otu_analysis"),
         expand("mothur_process/{method}/sample.final.braycurtis.0.03.lt.nmds.axes", method="otu_analysis"),
 
-
-
-# Get dot rule graphs
-rule get_dot_rulegraph:
-	output:
-		"dags/rulegraph.svg",
-		"dags/rulegraph.png",
-	shell:
-		"bash workflow/scripts/rules_dag.sh"
-
-# Get project tree
-rule project_tree:
-    output:
-        tree="results/project_tree.txt"
-    shell:
-        "bash workflow/scripts/tree.sh"
-
-# Get smk html report
-rule snakemake_html_report:
-	output:
-		"report.html",
-		"images/smkreport/screenshot.png",
-	shell:
-		"bash workflow/scripts/smk_html_report.sh"
-
-rule deploy_to_github_pages:
-    input:
-        script="workflow/scripts/render.R",
-        rmd="index.Rmd",
-        rulegraph="dags/rulegraph.svg",
-        tree="results/project_tree.txt",
-        html2png="images/smkreport/screenshot.png",
-    output:
-        doc="index.html",
-    shell:
-        """
-        R -e "library(rmarkdown); render('{input.rmd}')"
-        """
+        expand("mothur_process/intermediate/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.{sample}.{prefix}", 
+        outdir=OUTDIR, 
+        dataset=config["dataset"], 
+        sample=GROUP, 
+        prefix=PREFIX)

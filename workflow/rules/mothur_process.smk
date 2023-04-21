@@ -1,11 +1,7 @@
-# rule import_mothur_mapping_files:
-# 	output:
-# 		"resources/metadata/mothur_mapping_file.tsv",
-# 		"resources/metadata/mothur_metadata_file.tsv",
-# 		"resources/metadata/mothur_design_file.tsv",
-# 	shell:
-# 		"bash workflow/scripts/import_mothur_metadata.sh"
-# Import reads
+OUTDIR="data/reads"  
+
+SAMPLES = list(set(glob_wildcards(os.path.join('data/reads', '{sample}_{readNum, R[12]}_001.fastq.gz')).sample))
+# SAMPLES = list(set(glob_wildcards(os.path.join('data/reads', '{sample}_{sradNum, [12]}.fastq.gz')).sample))
 
 rule import_reads:
     output:
@@ -48,21 +44,23 @@ rule get_mothur_zymo_mock:
 # Generating master OTU shared file.
 
 # Making mothur-based sample mapping file.
-rule mothur_autogenerate_mapping_files:
-	input:
-		script="workflow/scripts/makeFile.sh",
-	output:
-		expand("mothur_process/{dataset}.files", dataset=config["dataset"]),
-	conda:
-		"../envs/mothur.yml"
-	shell:
-		"bash {input.script}"
+rule mothur_mapping_files:
+    input:
+        script="workflow/scripts/makeFile.sh",
+        reads=expand('{outdir}/{sample}_{readNum}_001.fastq.gz', outdir=OUTDIR, sample=SAMPLES, readNum=config["readNum"])
+    output:
+        expand("mothur_process/{dataset}.files", dataset=config["dataset"]),
+    conda:
+        "../envs/mothur.yml"
+    shell:
+        "bash {input.script}"
 
 
 
 rule mothur_process_sequences:
     input:
         "data/metadata/test.files",
+        expand("mothur_process/{dataset}.files", dataset=config["dataset"]),
         script="workflow/scripts/mothur_process_seqs.sh",
         silvaV4="data/references/silva.v4.align",
         rdpFasta="data/references/trainset16_022016.pds.fasta",
@@ -228,4 +226,3 @@ rule alpha_beta_diversity:
         "../envs/mothur.yml"
     shell:
         "bash {input.script} {input.shared}"
-
