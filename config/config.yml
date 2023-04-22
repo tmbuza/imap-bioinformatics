@@ -62,11 +62,10 @@ mothurAlpha:
 # Desired beta diversity metrics.
 mothurBeta:
   - sharedsobs
-  - thetayc
   - braycurtis
 
 # Minimum read threshold for subsampling. Review sample statistics from preprocessing step
-subthresh: 100
+subthresh: 20
 
 # NOTE: Leave these settings as is.
 

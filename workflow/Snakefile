@@ -23,7 +23,7 @@ report: "report/workflow.rst"
 
 # Setup rules
 include: "rules/mothur_process.smk"
-include: "rules/remove_intermediate_files.smk"
+# include: "rules/remove_intermediate_files.smk"
 
 include: "rules/rmd_report.smk"
 
@@ -33,7 +33,8 @@ rule all:
 		"index.html",
 		# "report.html",
 
-		# Make files
+		# Mothur files
+        # "data/metadata/test.files",
 		# expand("mothur_process/{dataset}.files", dataset=config["dataset"]),
 
 		# OTU analysis
@@ -43,7 +44,6 @@ rule all:
 		# expand("mothur_process/{method}/final.opti_mcc.shared", method="otu_analysis"),
 		# expand("mothur_process/{method}/final.pds.wang.pick.taxonomy", method="otu_analysis"),
 		# expand("mothur_process/{method}/final.opti_mcc.0.03.cons.taxonomy", method="otu_analysis"),
-
 
 		# Phylotype analysis
         expand("mothur_process/{method}/final.pds.wang.pick.tx.list", method="phylotype_analysis"),
@@ -85,19 +85,30 @@ rule all:
 		#  expand("mothur_process/{method}/control.final.shared", method="otu_analysis"),
 
 		# Alpha and Beta diversity analysis
-        expand("mothur_process/{method}/sample.final.count.summary", method="otu_analysis"),
-        expand("mothur_process/{method}/sample.final.0.03.subsample.shared", method="otu_analysis"),
-        expand("mothur_process/{method}/sample.final.groups.summary", method="otu_analysis"),
-        expand("mothur_process/{method}/sample.final.groups.rarefaction", method="otu_analysis"),
-        expand("mothur_process/{method}/sample.final.sharedsobs.0.03.lt.dist", method="otu_analysis"),
-        expand("mothur_process/{method}/sample.final.thetayc.0.03.lt.dist", method="otu_analysis"),
-        expand("mothur_process/{method}/sample.final.braycurtis.0.03.lt.dist", method="otu_analysis"),
-        expand("mothur_process/{method}/sample.final.braycurtis.0.03.lt.tre", method="otu_analysis"),
-        expand("mothur_process/{method}/sample.final.braycurtis.0.03.lt.pcoa.axes", method="otu_analysis"),
-        expand("mothur_process/{method}/sample.final.braycurtis.0.03.lt.pcoa.loadings", method="otu_analysis"),
-        expand("mothur_process/{method}/sample.final.braycurtis.0.03.lt.nmds.iters", method="otu_analysis"),
-        expand("mothur_process/{method}/sample.final.braycurtis.0.03.lt.nmds.stress", method="otu_analysis"),
-        expand("mothur_process/{method}/sample.final.braycurtis.0.03.lt.nmds.axes", method="otu_analysis"),
+        "mothur_process/otu_analysis/sample.final.count.summary",
+        # "mothur_process/otu_analysis/sample.final.0.03.subsample.shared",
+        "mothur_process/otu_analysis/sample.final.0.03.subsample.groups.summary",
+        "mothur_process/otu_analysis/sample.final.0.03.subsample.groups.rarefaction",
+        # "mothur_process/otu_analysis/sample.final.0.03.subsample.sharedsobs.0.03.lt.dist",
+        # "mothur_process/otu_analysis/sample.final.0.03.subsample.braycurtis.0.03.lt.dist",
+        "mothur_process/otu_analysis/sample.final.0.03.subsample.braycurtis.0.03.lt.tre",
+        "mothur_process/otu_analysis/sample.final.0.03.subsample.braycurtis.0.03.lt.pcoa.axes",
+        "mothur_process/otu_analysis/sample.final.0.03.subsample.braycurtis.0.03.lt.pcoa.loadings",
+        "mothur_process/otu_analysis/sample.final.0.03.subsample.braycurtis.0.03.lt.nmds.iters",
+        "mothur_process/otu_analysis/sample.final.0.03.subsample.braycurtis.0.03.lt.nmds.stress",
+        "mothur_process/otu_analysis/sample.final.0.03.subsample.braycurtis.0.03.lt.nmds.axes",
+        # expand("mothur_process/{method}/sample.final.count.summary", method="otu_analysis"),
+        # expand("mothur_process/{method}/sample.final.0.03.subsample.shared", method="otu_analysis"),
+        # expand("mothur_process/{method}/sample.final.groups.summary", method="otu_analysis"),
+        # expand("mothur_process/{method}/sample.final.groups.rarefaction", method="otu_analysis"),
+        # expand("mothur_process/{method}/sample.final.sharedsobs.0.03.lt.dist", method="otu_analysis"),
+        # expand("mothur_process/{method}/sample.final.braycurtis.0.03.lt.dist", method="otu_analysis"),
+        # expand("mothur_process/{method}/sample.final.braycurtis.0.03.lt.tre", method="otu_analysis"),
+        # expand("mothur_process/{method}/sample.final.braycurtis.0.03.lt.pcoa.axes", method="otu_analysis"),
+        # expand("mothur_process/{method}/sample.final.braycurtis.0.03.lt.pcoa.loadings", method="otu_analysis"),
+        # expand("mothur_process/{method}/sample.final.braycurtis.0.03.lt.nmds.iters", method="otu_analysis"),
+        # expand("mothur_process/{method}/sample.final.braycurtis.0.03.lt.nmds.stress", method="otu_analysis"),
+        # expand("mothur_process/{method}/sample.final.braycurtis.0.03.lt.nmds.axes", method="otu_analysis"),
 
         expand("mothur_process/intermediate/{dataset}.trim.contigs.good.unique.good.filter.unique.precluster.{sample}.{prefix}", 
         outdir=OUTDIR, 

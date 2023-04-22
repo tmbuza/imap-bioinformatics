@@ -3,22 +3,25 @@ OUTDIR="data/reads"
 SAMPLES = list(set(glob_wildcards(os.path.join('data/reads', '{sample}_{readNum, R[12]}_001.fastq.gz')).sample))
 # SAMPLES = list(set(glob_wildcards(os.path.join('data/reads', '{sample}_{sradNum, [12]}.fastq.gz')).sample))
 
-rule import_reads:
+rule import_fastq_reads:
     output:
         expand('{outdir}/{sample}_{readNum}_001.fastq.gz', outdir=OUTDIR, sample=SAMPLES, readNum=config["readNum"]),
     shell:
         "bash workflow/scripts/import_data.sh"
 
 
-rule import_metadata:
+rule import_mothur_metadata:
+    input:
+        "config/units.tsv"
     output:
         "data/metadata/test.files"
     shell:
         "bash workflow/scripts/import_data.sh"
 
+
 # Downloading and formatting SILVA and RDP reference databases. The v4 region is extracted from 
 # SILVA database for use as reference alignment.
-rule get_mothur_references:
+rule download_mothur_refs:
 	output:
 		silvaV4="data/references/silva.v4.align",
 		rdpFasta="data/references/trainset16_022016.pds.fasta",
@@ -44,7 +47,7 @@ rule get_mothur_zymo_mock:
 # Generating master OTU shared file.
 
 # Making mothur-based sample mapping file.
-rule mothur_mapping_files:
+rule mothur_generated_mapping:
     input:
         script="workflow/scripts/makeFile.sh",
         reads=expand('{outdir}/{sample}_{readNum}_001.fastq.gz', outdir=OUTDIR, sample=SAMPLES, readNum=config["readNum"])
@@ -73,6 +76,7 @@ rule mothur_process_sequences:
         "../envs/mothur.yml"
     shell:
         "bash {input.script}"
+
 
 # Preparing final processed fasta and count table.
 rule mothur_final_processed_seqs:
@@ -189,7 +193,6 @@ rule mothur_error_rate:
 # This is used for optimal subsampling during downstream steps.
 rule mothur_split_group_shared:
 	input:
-		script="workflow/scripts/mothur_split_otutable.sh",
 		shared=rules.mothur_classify_otus.output
 	output:
 		shared=expand("mothur_process/{method}/{group}.final.shared", method="otu_analysis", group=config["mothurGroups"])
@@ -199,30 +202,114 @@ rule mothur_split_group_shared:
 	conda:
 		"../envs/mothur.yml"
 	shell:
-		"bash {input.script} {params.mockGroups} {params.controlGroups}"
+		"bash workflow/scripts/mothur_split_otutable.sh"
 
 
 # Diversity Metrics 
 
-rule alpha_beta_diversity:
+# rule alpha_beta_diversity:
+#     input:
+#         script="workflow/scripts/mothur_diversity_analysis.sh",
+#         shared=rules.mothur_split_group_shared.output
+#     output:
+#         "mothur_process/otu_analysis/sample.final.count.summary",
+#         "mothur_process/otu_analysis/sample.final.0.03.subsample.shared",
+#         "mothur_process/otu_analysis/sample.final.0.03.subsample.groups.summary",
+#         "mothur_process/otu_analysis/sample.final.0.03.subsample.groups.rarefaction",
+#         "mothur_process/otu_analysis/sample.final.0.03.subsample.sharedsobs.0.03.lt.dist",
+#         "mothur_process/otu_analysis/sample.final.0.03.subsample.braycurtis.0.03.lt.dist",
+#         "mothur_process/otu_analysis/sample.final.0.03.subsample.braycurtis.0.03.lt.tre",
+#         "mothur_process/otu_analysis/sample.final.0.03.subsample.braycurtis.0.03.lt.pcoa.axes",
+#         "mothur_process/otu_analysis/sample.final.0.03.subsample.braycurtis.0.03.lt.pcoa.loadings",
+#         "mothur_process/otu_analysis/sample.final.0.03.subsample.braycurtis.0.03.lt.nmds.iters",
+#         "mothur_process/otu_analysis/sample.final.0.03.subsample.braycurtis.0.03.lt.nmds.stress",
+#         "mothur_process/otu_analysis/sample.final.0.03.subsample.braycurtis.0.03.lt.nmds.axes",
+
+#     conda:
+#         "../envs/mothur.yml"
+#     shell:
+#         "bash {input.script} {input.shared}"
+
+
+# Count classified reads per sample 
+rule count_classified_reads:
     input:
-        script="workflow/scripts/mothur_diversity_analysis.sh",
         shared=rules.mothur_split_group_shared.output
     output:
         expand("mothur_process/{method}/sample.final.count.summary", method="otu_analysis"),
-        expand("mothur_process/{method}/sample.final.0.03.subsample.shared", method="otu_analysis"),
-        expand("mothur_process/{method}/sample.final.groups.summary", method="otu_analysis"),
-        expand("mothur_process/{method}/sample.final.groups.rarefaction", method="otu_analysis"),
-        expand("mothur_process/{method}/sample.final.sharedsobs.0.03.lt.dist", method="otu_analysis"),
-        expand("mothur_process/{method}/sample.final.thetayc.0.03.lt.dist", method="otu_analysis"),
-        expand("mothur_process/{method}/sample.final.braycurtis.0.03.lt.dist", method="otu_analysis"),
-        expand("mothur_process/{method}/sample.final.braycurtis.0.03.lt.tre", method="otu_analysis"),
-        expand("mothur_process/{method}/sample.final.braycurtis.0.03.lt.pcoa.axes", method="otu_analysis"),
-        expand("mothur_process/{method}/sample.final.braycurtis.0.03.lt.pcoa.loadings", method="otu_analysis"),
-        expand("mothur_process/{method}/sample.final.braycurtis.0.03.lt.nmds.iters", method="otu_analysis"),
-        expand("mothur_process/{method}/sample.final.braycurtis.0.03.lt.nmds.stress", method="otu_analysis"),
-        expand("mothur_process/{method}/sample.final.braycurtis.0.03.lt.nmds.axes", method="otu_analysis"),
     conda:
         "../envs/mothur.yml"
     shell:
-        "bash {input.script} {input.shared}"
+        "bash workflow/scripts/count_reads_per_sample.sh.sh"
+
+
+rule get_subsample_otutable:
+    input:
+        shared=rules.mothur_split_group_shared.output
+    output:
+        expand("mothur_process/{method}/sample.final.0.03.subsample.shared", method="otu_analysis"),
+    conda:
+        "../envs/mothur.yml"
+    shell:
+        "bash workflow/scripts/subsample_otutable.sh"
+
+
+rule rarefaction_table:
+    input:
+        shared=rules.get_subsample_otutable.output
+    output:
+        expand("mothur_process/{method}/sample.final.0.03.subsample.groups.rarefaction", method="otu_analysis"),
+    conda:
+        "../envs/mothur.yml"
+    shell:
+        "bash workflow/scripts/rarefaction.sh"
+
+
+# Alpha diversity Metrics
+rule alpha_diversity_metrics:
+    input:
+        shared=rules.get_subsample_otutable.output
+    output:
+        expand("mothur_process/{method}/sample.final.0.03.subsample.groups.summary", method="otu_analysis"),
+    conda:
+        "../envs/mothur.yml"
+    shell:
+        "bash workflow/scripts/alphadiv_metrics.sh"
+
+# Beta diversity Metrics
+rule beta_distance_measures:
+    input:
+        shared=rules.get_subsample_otutable.output
+    output:
+        expand("mothur_process/{method}/sample.final.0.03.subsample.sharedsobs.0.03.lt.dist", method="otu_analysis"),
+        expand("mothur_process/{method}/sample.final.0.03.subsample.braycurtis.0.03.lt.dist", method="otu_analysis"),
+        expand("mothur_process/{method}/sample.final.0.03.subsample.braycurtis.0.03.lt.tre", method="otu_analysis"),
+    conda:
+        "../envs/mothur.yml"
+    shell:
+        "bash workflow/scripts/betadiv_dist_tree.sh"
+
+
+rule pcoa_mds_axes:
+    input:
+        shared=rules.get_subsample_otutable.output
+    output:
+        expand("mothur_process/{method}/sample.final.0.03.subsample.braycurtis.0.03.lt.pcoa.axes", method="otu_analysis"),
+        expand("mothur_process/{method}/sample.final.0.03.subsample.braycurtis.0.03.lt.pcoa.loadings", method="otu_analysis"),
+    conda:
+        "../envs/mothur.yml"
+    shell:
+        "bash workflow/scripts/pcoa_mds_axes.sh"
+
+
+rule nmds_axes_table:
+    input:
+        shared=rules.get_subsample_otutable.output
+    output:
+        expand("mothur_process/{method}/sample.final.0.03.subsample.braycurtis.0.03.lt.nmds.iters", method="otu_analysis"),
+        expand("mothur_process/{method}/sample.final.0.03.subsample.braycurtis.0.03.lt.nmds.stress", method="otu_analysis"),
+        expand("mothur_process/{method}/sample.final.0.03.subsample.braycurtis.0.03.lt.nmds.axes", method="otu_analysis"),
+    conda:
+        "../envs/mothur.yml"
+    shell:
+        "bash workflow/scripts/nmds_axes.sh"

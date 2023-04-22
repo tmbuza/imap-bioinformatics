@@ -12,4 +12,5 @@ mv "${INPUTDIR}"/test.trim.contigs.good.unique.good.filter.unique.precluster.*.c
 mv "${INPUTDIR}"/test.trim.contigs.good.unique.good.filter.unique.precluster.*.fasta
 mv "${INPUTDIR}"/test.trim.contigs.good.unique.good.filter.unique.precluster.*.map
 
-mv "${INPUTDIR}"/test* "${OUTDIR}"
+mv "${INPUTDIR}"/test.conti* "${OUTDIR}"
+mv "${INPUTDIR}"/test.trim* "${OUTDIR}"

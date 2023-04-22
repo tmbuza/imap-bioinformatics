@@ -11,9 +11,9 @@ SHARED="sample.final.shared"
 SUBSHARED="sample.final.0.03.subsample.shared"
 COUNT="sample.final.count.summary"
 ALPHA=nseqs-coverage-invsimpson-shannon-sobs 
-BETA=sharedsobs-thetayc-braycurtis
-SUBTHRESH=500
-DIST="sample.final.braycurtis.0.03.lt.dist"
+BETA=sharedsobs-braycurtis
+SUBTHRESH=20
+DIST="sample.final.0.03.subsample.braycurtis.0.03.lt.dist"
 
 
 LOGS="mothur_process/logs"
@@ -37,13 +37,13 @@ mothur "#set.logfile(name=${LOGS}/mothurSubsampleShared.logfile);
     sub.sample(shared="${OUTDIR}"/"${SHARED}", size="${READCOUNT}")"
 
 mothur "#set.logfile(name=${LOGS}/mothurAlpha.logfile);
-    summary.single(shared = "${OUTDIR}"/"${SHARED}", calc="${ALPHA}", subsample="${READCOUNT}")"
+    summary.single(shared = "${OUTDIR}"/"${SUBSHARED}", calc="${ALPHA}", subsample="${READCOUNT}")"
 
 mothur "#set.logfile(name=${LOGS}/mothurRarefaction.logfile);
-    rarefaction.single(shared="${OUTDIR}"/"${SHARED}", calc=sobs, freq=100)"
+    rarefaction.single(shared="${OUTDIR}"/"${SUBSHARED}", calc=sobs, freq=20)"
 
 mothur "#set.logfile(name=${LOGS}/mothurBeta.logfile);
-    dist.shared(shared = "${OUTDIR}"/"${SHARED}", calc="${BETA}", subsample="${READCOUNT}")"
+    dist.shared(shared = "${OUTDIR}"/"${SUBSHARED}", calc="${BETA}", subsample="${READCOUNT}")"
 
 mothur "#set.logfile(name=${LOGS}/mothurSampleTree.logfile);
     tree.shared(phylip="${OUTDIR}"/"${DIST}")"
