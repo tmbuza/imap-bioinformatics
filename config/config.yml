@@ -55,9 +55,12 @@ mothurControl:
 mothurAlpha:
   - nseqs
   - coverage
+  - sobs
+  - chao
+  - simpson
   - invsimpson
   - shannon
-  - sobs
+
 
 # Desired beta diversity metrics.
 mothurBeta:

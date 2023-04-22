@@ -15,5 +15,4 @@ LOGS="mothur_process/logs"
 mkdir -p "${OUTDIR}"  "${LOGS}"
 
 mothur "#set.logfile(name=${LOGS}/mothurRarefaction.logfile);
-    rarefaction.single(shared="${OUTDIR}"/"${SUBSHARED}", calc=sobs, freq=20)"
-
+    rarefaction.single(shared="${OUTDIR}"/"${SHARED}", calc=sobs, freq=20)"

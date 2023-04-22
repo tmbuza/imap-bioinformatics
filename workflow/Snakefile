@@ -23,7 +23,7 @@ report: "report/workflow.rst"
 
 # Setup rules
 include: "rules/mothur_process.smk"
-# include: "rules/remove_intermediate_files.smk"
+include: "rules/remove_intermediate_files.smk"
 
 include: "rules/rmd_report.smk"
 
@@ -87,16 +87,17 @@ rule all:
 		# Alpha and Beta diversity analysis
         "mothur_process/otu_analysis/sample.final.count.summary",
         # "mothur_process/otu_analysis/sample.final.0.03.subsample.shared",
-        "mothur_process/otu_analysis/sample.final.0.03.subsample.groups.summary",
-        "mothur_process/otu_analysis/sample.final.0.03.subsample.groups.rarefaction",
-        # "mothur_process/otu_analysis/sample.final.0.03.subsample.sharedsobs.0.03.lt.dist",
-        # "mothur_process/otu_analysis/sample.final.0.03.subsample.braycurtis.0.03.lt.dist",
+        "mothur_process/otu_analysis/sample.final.groups.rarefaction",
+        "mothur_process/otu_analysis/sample.final.0.03.subsample.groups.ave-std.summary",
+        "mothur_process/otu_analysis/sample.final.0.03.subsample.sharedsobs.0.03.lt.dist",
+        "mothur_process/otu_analysis/sample.final.0.03.subsample.braycurtis.0.03.lt.dist",
         "mothur_process/otu_analysis/sample.final.0.03.subsample.braycurtis.0.03.lt.tre",
         "mothur_process/otu_analysis/sample.final.0.03.subsample.braycurtis.0.03.lt.pcoa.axes",
         "mothur_process/otu_analysis/sample.final.0.03.subsample.braycurtis.0.03.lt.pcoa.loadings",
         "mothur_process/otu_analysis/sample.final.0.03.subsample.braycurtis.0.03.lt.nmds.iters",
         "mothur_process/otu_analysis/sample.final.0.03.subsample.braycurtis.0.03.lt.nmds.stress",
         "mothur_process/otu_analysis/sample.final.0.03.subsample.braycurtis.0.03.lt.nmds.axes",
+        
         # expand("mothur_process/{method}/sample.final.count.summary", method="otu_analysis"),
         # expand("mothur_process/{method}/sample.final.0.03.subsample.shared", method="otu_analysis"),
         # expand("mothur_process/{method}/sample.final.groups.summary", method="otu_analysis"),
